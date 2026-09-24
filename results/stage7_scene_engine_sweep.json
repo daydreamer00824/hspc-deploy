@@ -1,0 +1,94 @@
+{
+  "hsi": {
+    "n_samples": 9645,
+    "tiers": [
+      {
+        "max_batch": 1024,
+        "n_calls": 10,
+        "device_memory_size_bytes": 41464320,
+        "wall_ms_median": 53.95150699405349,
+        "wall_ms_min": 51.58140599814942,
+        "gpu_event_ms_median": 25.787295877933502,
+        "plan": "<scratch>/stage7_engines/hsi_fp16_scene1024.plan",
+        "plan_size_kb": 7730.87109375,
+        "wall_ms_median_fwd": 53.95150699405349,
+        "wall_ms_median_rev": 53.26075650009443,
+        "wall_ms_combined": 53.60613174707396
+      },
+      {
+        "max_batch": 2048,
+        "n_calls": 5,
+        "device_memory_size_bytes": 98701824,
+        "wall_ms_median": 51.212956499512075,
+        "wall_ms_min": 49.896705997525714,
+        "gpu_event_ms_median": 24.780656099319458,
+        "plan": "<scratch>/stage7_engines/hsi_fp16_scene2048.plan",
+        "plan_size_kb": 7493.52734375,
+        "wall_ms_median_fwd": 51.212956499512075,
+        "wall_ms_median_rev": 49.98220600100467,
+        "wall_ms_combined": 50.59758125025837
+      },
+      {
+        "max_batch": 4096,
+        "n_calls": 3,
+        "device_memory_size_bytes": 165843456,
+        "wall_ms_median": 48.19675600447226,
+        "wall_ms_min": 46.91390500374837,
+        "gpu_event_ms_median": 24.023664355278015,
+        "plan": "<scratch>/stage7_engines/hsi_fp16_scene4096.plan",
+        "plan_size_kb": 7731.02734375,
+        "wall_ms_median_fwd": 48.19675600447226,
+        "wall_ms_median_rev": 49.205655999685405,
+        "wall_ms_combined": 48.701206002078834
+      }
+    ],
+    "rule": "wall 与最快档位相差 ≤5% 的档位中取 device_memory_size 最小者",
+    "chosen_max_batch": 2048
+  },
+  "pc": {
+    "n_samples": 1000,
+    "tiers": [
+      {
+        "max_batch": 1024,
+        "n_calls": 1,
+        "device_memory_size_bytes": 60944384,
+        "wall_ms_median": 4.940849001286551,
+        "wall_ms_min": 4.836499996599741,
+        "gpu_event_ms_median": 3.912495970726013,
+        "plan": "<scratch>/stage7_engines/pc_fp16_scene1024.plan",
+        "plan_size_kb": 7723.66015625,
+        "wall_ms_median_fwd": 4.940849001286551,
+        "wall_ms_median_rev": 4.860949997237185,
+        "wall_ms_combined": 4.900899499261868
+      },
+      {
+        "max_batch": 2048,
+        "n_calls": 1,
+        "device_memory_size_bytes": 121888768,
+        "wall_ms_median": 4.6754494978813455,
+        "wall_ms_min": 4.635700002836529,
+        "gpu_event_ms_median": 3.8097440004348755,
+        "plan": "<scratch>/stage7_engines/pc_fp16_scene2048.plan",
+        "plan_size_kb": 7398.83203125,
+        "wall_ms_median_fwd": 4.6754494978813455,
+        "wall_ms_median_rev": 4.677700002503116,
+        "wall_ms_combined": 4.676574750192231
+      },
+      {
+        "max_batch": 4096,
+        "n_calls": 1,
+        "device_memory_size_bytes": 243777536,
+        "wall_ms_median": 4.684299503423972,
+        "wall_ms_min": 4.629299997759517,
+        "gpu_event_ms_median": 3.761568069458008,
+        "plan": "<scratch>/stage7_engines/pc_fp16_scene4096.plan",
+        "plan_size_kb": 6946.01171875,
+        "wall_ms_median_fwd": 4.684299503423972,
+        "wall_ms_median_rev": 4.645199500373565,
+        "wall_ms_combined": 4.664749501898768
+      }
+    ],
+    "rule": "wall 与最快档位相差 ≤5% 的档位中取 device_memory_size 最小者",
+    "chosen_max_batch": 2048
+  }
+}

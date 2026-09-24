@@ -1,0 +1,50 @@
+{
+  "description": "HSI INT8(QDQ) 精度核查：ORT 直接跑 QDQ 模型 + TensorRT 独立重建多次；参考为 PyTorch FP32，验证集为后200条",
+  "ort_direct": {
+    "ort_cpu": {
+      "n": 200,
+      "cos_sim_mean": 0.9952092170715332,
+      "cos_sim_min": 0.8581591844558716,
+      "max_abs_err": 2.6379857063293457,
+      "top1_agreement": 0.8450000286102295,
+      "top5_agreement": 0.9950000047683716
+    },
+    "ort_cuda_tf32_off": {
+      "n": 200,
+      "cos_sim_mean": 0.9977269172668457,
+      "cos_sim_min": 0.7858011722564697,
+      "max_abs_err": 1.6023309230804443,
+      "top1_agreement": 0.9100000262260437,
+      "top5_agreement": 0.9950000047683716
+    }
+  },
+  "trt_rebuilds": [
+    {
+      "n": 200,
+      "cos_sim_mean": 0.9973691701889038,
+      "cos_sim_min": 0.7474228739738464,
+      "max_abs_err": 1.669765830039978,
+      "top1_agreement": 0.9200000166893005,
+      "top5_agreement": 0.9900000095367432,
+      "size_kb": 8272.80078125
+    },
+    {
+      "n": 200,
+      "cos_sim_mean": 0.997581958770752,
+      "cos_sim_min": 0.7547491192817688,
+      "max_abs_err": 1.7029168605804443,
+      "top1_agreement": 0.9100000262260437,
+      "top5_agreement": 0.9950000047683716,
+      "size_kb": 6420.80859375
+    },
+    {
+      "n": 200,
+      "cos_sim_mean": 0.997581958770752,
+      "cos_sim_min": 0.7547491192817688,
+      "max_abs_err": 1.7029168605804443,
+      "top1_agreement": 0.9100000262260437,
+      "top5_agreement": 0.9950000047683716,
+      "size_kb": 6350.75390625
+    }
+  ]
+}

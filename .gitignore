@@ -1,0 +1,32 @@
+# 模型结构、权重、原始/校准样本数据（未公开）
+hspc_encoder/
+
+# 导出产物（依赖模型结构，且体积大）
+onnx/
+engines/*.plan
+engines/*.calib
+*.pt
+*.onnx
+*.plan
+
+# 含原始HSI波段值/原始光谱/点云坐标的缓存
+results/e2e_scene_preprocessed.npz
+results/e2e_scene_geo.json
+
+# 真实场景的逐样本索引与匹配输出（仅保留本地）
+results/e2e_scene_index.npz
+results/stage4_fp32_match.npz
+
+# 真实样本经真实权重算出的参考特征（暂不公开）
+results/ref/
+
+# 本机profiling产物（含主机名/路径等本地信息）
+results/logs/*.nsys-rep
+
+# 跨模态匹配打分规则（课题方法本身，未公开）
+scripts/matching.py
+
+# 杂项
+__pycache__/
+*.pyc
+*:Zone.Identifier

@@ -1,0 +1,13 @@
+{
+  "hsi_path": "<data_root>/hsi_spatial_spectral_resampled_common_342/24data/hsi/10.6/1_spec342.dat",
+  "las_path": "<data_root>/lai_icp_registered_resampled_hsi/24data/10.6/rice_las/1_rice_icp.las",
+  "hsi_shape": [
+    342,
+    96,
+    165
+  ],
+  "n_las_points": 159897,
+  "n_eligible_total_before_sample": 137905,
+  "n_sampled": 1000,
+  "n_grid_patches": 15840
+}

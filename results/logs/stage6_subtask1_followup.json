@@ -1,0 +1,172 @@
+{
+  "part_a_forced_fp16_deploy": {
+    "profile": [
+      1,
+      1024,
+      4096
+    ],
+    "force_half": true,
+    "build_sec": 14.962268590927124,
+    "size_kb": 7186.19140625,
+    "out_path": "/tmp/hspc_stage6_scratch/engines/hsi_fp16_deploy_forced_half.plan",
+    "n_layers_precision_forced": 105,
+    "n_layers_precision_skip": 991,
+    "accuracy": {
+      "cos_sim_min": 0.9904806017875671,
+      "cos_sim_mean": 0.9999387264251709,
+      "max_abs_err": 0.30570000410079956,
+      "top1_agreement": 0.9750000238418579
+    },
+    "benchmark": {
+      "forced_half_batch64": {
+        "batch": 64,
+        "mean_ms": 0.4137253335118294,
+        "p50_ms": 0.40857601165771484
+      },
+      "forced_half_batch1024": {
+        "batch": 1024,
+        "mean_ms": 2.5044575985272726,
+        "p50_ms": 2.504703998565674
+      },
+      "trt_auto_fp32like_deploy_batch64": {
+        "batch": 64,
+        "mean_ms": 0.7573836823304494,
+        "p50_ms": 0.754688024520874
+      },
+      "trt_auto_fp32like_deploy_batch1024": {
+        "batch": 1024,
+        "mean_ms": 7.345749659538269,
+        "p50_ms": 7.328767776489258
+      }
+    }
+  },
+  "part_b1_existing_default_builds_quantified": [
+    {
+      "tag": "plain_rep1",
+      "size_kb": 12430.32421875,
+      "cos_sim_min": 0.9999997615814209,
+      "top1_agreement": 1.0,
+      "max_abs_err": 0.00010484457015991211,
+      "batch1_p50_ms": 0.39526399970054626,
+      "batch64_p50_ms": 0.8273919820785522
+    },
+    {
+      "tag": "plain_rep2",
+      "size_kb": 7300.04296875,
+      "cos_sim_min": 0.9995149374008179,
+      "top1_agreement": 0.9950000047683716,
+      "max_abs_err": 0.09102857112884521,
+      "batch1_p50_ms": 0.2744320034980774,
+      "batch64_p50_ms": 0.3235839903354645
+    },
+    {
+      "tag": "detailed_rep1",
+      "size_kb": 7395.23828125,
+      "cos_sim_min": 0.9998748302459717,
+      "top1_agreement": 0.9950000047683716,
+      "max_abs_err": 0.04613730311393738,
+      "batch1_p50_ms": 0.2662400007247925,
+      "batch64_p50_ms": 0.37060800194740295
+    },
+    {
+      "tag": "detailed_rep2",
+      "size_kb": 7232.01953125,
+      "cos_sim_min": 0.9904806017875671,
+      "top1_agreement": 0.9750000238418579,
+      "max_abs_err": 0.30570000410079956,
+      "batch1_p50_ms": 0.24883200228214264,
+      "batch64_p50_ms": 0.3891200125217438
+    }
+  ],
+  "part_b2_mitigation_a_shared_timing_cache": [
+    {
+      "profile": [
+        1,
+        8,
+        64
+      ],
+      "force_half": false,
+      "build_sec": 22.568679809570312,
+      "size_kb": 12431.08203125,
+      "out_path": "/tmp/hspc_stage6_scratch/engines/hsi_fp16_default_sharedcache_rep1.plan",
+      "cos_sim_min": 0.9999997615814209,
+      "max_abs_err": 0.00010257959365844727
+    },
+    {
+      "profile": [
+        1,
+        8,
+        64
+      ],
+      "force_half": false,
+      "build_sec": 25.442142724990845,
+      "size_kb": 7218.41796875,
+      "out_path": "/tmp/hspc_stage6_scratch/engines/hsi_fp16_default_sharedcache_rep2.plan",
+      "cos_sim_min": 0.9890413284301758,
+      "max_abs_err": 0.32718437910079956
+    },
+    {
+      "profile": [
+        1,
+        8,
+        64
+      ],
+      "force_half": false,
+      "build_sec": 23.170731782913208,
+      "size_kb": 7124.68359375,
+      "out_path": "/tmp/hspc_stage6_scratch/engines/hsi_fp16_default_sharedcache_rep3.plan",
+      "cos_sim_min": 0.9904806017875671,
+      "max_abs_err": 0.30570000410079956
+    }
+  ],
+  "part_b3_mitigation_b_forced_half_default": [
+    {
+      "profile": [
+        1,
+        8,
+        64
+      ],
+      "force_half": true,
+      "build_sec": 15.731963396072388,
+      "size_kb": 6875.62109375,
+      "out_path": "/tmp/hspc_stage6_scratch/engines/hsi_fp16_default_forced_half_rep1.plan",
+      "n_layers_precision_forced": 105,
+      "n_layers_precision_skip": 991,
+      "cos_sim_min": 0.9899113178253174,
+      "max_abs_err": 0.31546562910079956,
+      "top1_agreement": 0.9750000238418579
+    },
+    {
+      "profile": [
+        1,
+        8,
+        64
+      ],
+      "force_half": true,
+      "build_sec": 18.72021746635437,
+      "size_kb": 7045.20703125,
+      "out_path": "/tmp/hspc_stage6_scratch/engines/hsi_fp16_default_forced_half_rep2.plan",
+      "n_layers_precision_forced": 105,
+      "n_layers_precision_skip": 991,
+      "cos_sim_min": 0.9904923439025879,
+      "max_abs_err": 0.30521172285079956,
+      "top1_agreement": 0.9750000238418579
+    },
+    {
+      "profile": [
+        1,
+        8,
+        64
+      ],
+      "force_half": true,
+      "build_sec": 18.441966772079468,
+      "size_kb": 6989.41015625,
+      "out_path": "/tmp/hspc_stage6_scratch/engines/hsi_fp16_default_forced_half_rep3.plan",
+      "n_layers_precision_forced": 105,
+      "n_layers_precision_skip": 991,
+      "cos_sim_min": 0.9907798171043396,
+      "max_abs_err": 0.30057305097579956,
+      "top1_agreement": 0.9750000238418579
+    }
+  ]
+}

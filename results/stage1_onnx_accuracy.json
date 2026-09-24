@@ -1,0 +1,53 @@
+{
+  "thresholds": {
+    "cos_sim_min": 0.9999,
+    "max_abs_err": 0.00015
+  },
+  "all_pass": true,
+  "results": {
+    "pc": {
+      "CPUExecutionProvider": {
+        "n": 200,
+        "cos_sim_mean": 1.0,
+        "cos_sim_min": 0.9999998211860657,
+        "max_abs_err": 6.794929504394531e-06,
+        "mean_abs_err": 5.306334287524805e-07,
+        "rel_l2": 5.719620617128385e-07,
+        "top1_agreement": 1.0,
+        "top5_agreement": 1.0
+      },
+      "CUDAExecutionProvider": {
+        "n": 200,
+        "cos_sim_mean": 1.0,
+        "cos_sim_min": 0.9999998211860657,
+        "max_abs_err": 1.049041748046875e-05,
+        "mean_abs_err": 7.151685963435739e-07,
+        "rel_l2": 8.215377533815627e-07,
+        "top1_agreement": 1.0,
+        "top5_agreement": 1.0
+      }
+    },
+    "hsi": {
+      "CPUExecutionProvider": {
+        "n": 200,
+        "cos_sim_mean": 1.0,
+        "cos_sim_min": 0.9999997615814209,
+        "max_abs_err": 0.0001087188720703125,
+        "mean_abs_err": 1.7856774547908572e-06,
+        "rel_l2": 3.7798915855091764e-06,
+        "top1_agreement": 1.0,
+        "top5_agreement": 1.0
+      },
+      "CUDAExecutionProvider": {
+        "n": 200,
+        "cos_sim_mean": 1.0,
+        "cos_sim_min": 0.9999997615814209,
+        "max_abs_err": 9.78708267211914e-05,
+        "mean_abs_err": 1.2093604482288356e-06,
+        "rel_l2": 2.8362169359752443e-06,
+        "top1_agreement": 1.0,
+        "top5_agreement": 1.0
+      }
+    }
+  }
+}

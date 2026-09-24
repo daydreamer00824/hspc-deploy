@@ -1,0 +1,86 @@
+{
+  "correctness_vs_reference": {
+    "eligible_identical": true,
+    "offsets_identical": true,
+    "ref_rows_identical": true,
+    "ref_cols_identical": true
+  },
+  "las_pipeline_sections_ms": {
+    "laspy_read_io": {
+      "median_ms": 15.40109949928592,
+      "min_ms": 13.372526998864487
+    },
+    "crs_transformer_init_this_call": {
+      "median_ms": 0.000400003045797348,
+      "min_ms": 0.0003249951987527311
+    },
+    "coordinate_projection": {
+      "median_ms": 17.681306999293156,
+      "min_ms": 17.542943001899403
+    },
+    "in_bounds_and_veg_mask_filter": {
+      "median_ms": 1.3755425025010481,
+      "min_ms": 1.301862001128029
+    },
+    "rng_sample": {
+      "median_ms": 0.12306800272199325,
+      "min_ms": 0.11257099686190486
+    },
+    "ckdtree_build": {
+      "median_ms": 15.829888001462677,
+      "min_ms": 15.642035999917425
+    },
+    "ckdtree_query": {
+      "median_ms": 2.4138230000971816,
+      "min_ms": 2.3122999991755933
+    },
+    "offsets_python_loop": {
+      "median_ms": 2.714195001317421,
+      "min_ms": 2.6865030013141222
+    }
+  },
+  "las_pipeline_total_median_ms": 55.539323009725194,
+  "patch_build_ms": {
+    "median_ms": 58.393646497279406,
+    "min_ms": 56.68337699898984
+  },
+  "match_total_median_ms": 72.89509200199973,
+  "core_sum_ms": 186.82806150900433,
+  "optimization_a_ckdtree_balanced_tree": {
+    "identical": true,
+    "before_ms": {
+      "median_ms": 31.757837499753805,
+      "min_ms": 31.426686997292563
+    },
+    "after_ms": {
+      "median_ms": 20.170092000626028,
+      "min_ms": 19.809992001682986
+    },
+    "caveats": "1) kNN找到的近邻集合不依赖建树方式，是精确搜索，但当查询点到多个候选近邻距离恰好相等(tie)时，不同建树方式下返回的近邻顺序理论上可能不同——本场景验证时没有触发过这种tie(逐位比对全部通过)，不代表任意点云分布下都不会发生；2) 逐位验证只覆盖了24data/10.6/1这一景，换场景后建议重新验证。"
+  },
+  "optimization_b_merged_score_window": {
+    "identical": true,
+    "before_ms": {
+      "median_ms": 169.7863325025537,
+      "min_ms": 166.82953299459768
+    },
+    "after_ms": {
+      "median_ms": 72.89509200199973,
+      "min_ms": 70.14907999837305
+    }
+  },
+  "cprofile_match": "         37045 function calls in 0.078 seconds\n\n   Ordered by: cumulative time\n   List reduced from 29 to 15 due to restriction <15>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.078    0.078 <repo>/scripts/stage7_cpu_profile.py:265(<lambda>)\n        1    0.033    0.033    0.078    0.078 <repo>/scripts/deploy_scene.py:258(numpy_score_window_multi)\n     3000    0.023    0.000    0.023    0.000 {method 'reshape' of 'numpy.ndarray' objects}\n        2    0.009    0.004    0.013    0.007 <site-packages>/numpy/linalg/_linalg.py:2575(norm)\n     3002    0.007    0.000    0.007    0.000 {method 'reduce' of 'numpy.ufunc' objects}\n     3000    0.001    0.000    0.003    0.000 {method 'any' of 'numpy.ndarray' objects}\n     3000    0.001    0.000    0.003    0.000 <site-packages>/numpy/_core/_methods.py:58(_any)\n     2000    0.001    0.000    0.002    0.000 <site-packages>/numpy/_core/fromnumeric.py:1251(argmax)\n     2000    0.001    0.000    0.001    0.000 <site-packages>/numpy/_core/fromnumeric.py:51(_wrapfunc)\n     2000    0.001    0.000    0.001    0.000 {built-in method numpy.arange}\n     3000    0.001    0.000    0.001    0.000 {method 'astype' of 'numpy.ndarray' objects}\n     2000    0.001    0.000    0.001    0.000 {method 'argmax' of 'numpy.ndarray' objects}\n     4000    0.000    0.000    0.000    0.000 {built-in method builtins.max}\n     3000    0.000    0.000    0.000    0.000 <site-packages>/numpy/_core/multiarray.py:383(where)\n     2000    0.000    0.000    0.000    0.000 {built-in method builtins.min}\n\n\n",
+  "cprofile_las_pipeline": "         3535 function calls (3274 primitive calls) in 0.054 seconds\n\n   Ordered by: cumulative time\n   List reduced from 238 to 15 due to restriction <15>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.054    0.054 <repo>/scripts/stage7_cpu_profile.py:272(<lambda>)\n        1    0.017    0.017    0.054    0.054 <repo>/scripts/stage7_cpu_profile.py:47(timed_las_pipeline)\n        1    0.015    0.015    0.015    0.015 <site-packages>/pyproj/transformer.py:713(transform)\n        1    0.000    0.000    0.012    0.012 <site-packages>/laspy/lib.py:209(read_las)\n        1    0.000    0.000    0.010    0.010 <site-packages>/laspy/lasreader.py:119(read)\n        1    0.000    0.000    0.010    0.010 <site-packages>/laspy/lasreader.py:78(read_points)\n        1    0.000    0.000    0.010    0.010 <site-packages>/laspy/lasreader.py:335(read_n_points)\n        1    0.009    0.009    0.009    0.009 {method 'readinto' of '_io.BufferedReader' objects}\n        9    0.003    0.000    0.003    0.000 {method 'reduce' of 'numpy.ufunc' objects}\n        4    0.000    0.000    0.003    0.001 <site-packages>/numpy/_core/fromnumeric.py:69(_wrapreduction)\n        1    0.000    0.000    0.003    0.003 <site-packages>/laspy/point/dims.py:571(__array_function__)\n        1    0.000    0.000    0.002    0.002 <site-packages>/laspy/lib.py:26(open_las)\n        1    0.000    0.000    0.002    0.002 <repo>/scripts/preprocess.py:177(map_to_canonical_pixel)\n     1007    0.002    0.000    0.002    0.000 {method 'astype' of 'numpy.ndarray' objects}\n        1    0.000    0.000    0.002    0.002 <site-packages>/numpy/_core/fromnumeric.py:3306(amin)\n\n\n",
+  "cprofile_patch_build": "         106109 function calls in 0.073 seconds\n\n   Ordered by: cumulative time\n   List reduced from 19 to 15 due to restriction <15>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n        1    0.000    0.000    0.073    0.073 <repo>/scripts/stage7_cpu_profile.py:277(<lambda>)\n        1    0.000    0.000    0.073    0.073 <repo>/scripts/preprocess.py:116(build_hsi_patches)\n        1    0.052    0.052    0.055    0.055 <site-packages>/numpy/_core/shape_base.py:380(stack)\n        1    0.001    0.001    0.018    0.018 <repo>/scripts/preprocess.py:118(<listcomp>)\n     9645    0.010    0.000    0.016    0.000 <repo>/scripts/preprocess.py:93(extract_patch)\n    57870    0.004    0.000    0.004    0.000 {built-in method builtins.max}\n    19290    0.001    0.000    0.001    0.000 {built-in method builtins.min}\n        1    0.001    0.001    0.001    0.001 <site-packages>/numpy/_core/shape_base.py:466(<listcomp>)\n        1    0.000    0.000    0.001    0.001 <site-packages>/numpy/_core/shape_base.py:454(<listcomp>)\n     9645    0.001    0.000    0.001    0.000 {built-in method numpy.asarray}\n        1    0.000    0.000    0.000    0.000 <site-packages>/numpy/_core/shape_base.py:458(<setcomp>)\n     9645    0.000    0.000    0.000    0.000 {built-in method numpy.asanyarray}\n        1    0.000    0.000    0.000    0.000 <site-packages>/numpy/_core/shape_base.py:370(_stack_dispatcher)\n        1    0.000    0.000    0.000    0.000 <site-packages>/numpy/_core/shape_base.py:208(_arrays_for_stack_dispatcher)\n        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}\n\n\n",
+  "optimization_c_patch_prealloc_explored_not_adopted": {
+    "hypothesis": "cProfile显示np.stack占patch构建73ms里的55ms(75%)，猜测预分配数组代替list+stack能省掉这部分开销",
+    "identical": true,
+    "before_ms_list_stack": 57.15,
+    "after_ms_prealloc": 59.76,
+    "verdict": "未采用：预分配版本反而略慢（59.76ms vs 57.15ms）。np.stack本身的开销主要是119MB量级的内存拷贝（9645*342*9*4字节），这部分拷贝在预分配写入(out[i]=...)里同样要发生，不是list+stack这个模式本身的额外开销。cProfile的tottime把这次拷贝记在了stack头上，容易误导成\"能省\"，实测才发现省不掉——与阶段5的教训一致（向量化方案必须实测，不能只看profile就下结论）。"
+  },
+  "pending_patch_direct_to_trt_buffer": {
+    "status": "not_implemented_this_round",
+    "description": "待定项：patch 直接生成到 TRT 输入 buffer（build_hsi_patches 目前先在普通numpy数组里生成完整patch数组，再整体拷进LiteTrtRunner的host buffer），如果改成extract_patch直接写入TRT的h_in（或pinned buffer）对应位置，能省掉一次约119MB的host端拷贝(9645*342*3*3*4字节)。这也是pinned内存真正发挥作用的前提——目前pinned buffer仍需要先在pageable内存生成数据再拷入，拷贝次数没有减少(见scripts/deploy_scene.py的PinnedArray/LiteTrtRunner docstring)。本次不实现。"
+  }
+}
