@@ -1,0 +1,35 @@
+{
+  "question": "results/stage5_deploy_opt.json 的不含IO总耗时282ms，与 results/stage7_final_e2e.json 里 S7 的331.7ms 是同一配置（同engine/同runner/同数据），为什么差约18%？",
+  "method": "控制变量：每组只改一个因素，固定用 e2e_scene_preprocessed.npz 缓存的真实数据（9645个valid HSI patch、1000个点的offsets），只测 hsi_infer/pc_infer/feature_grid_assemble 三段（GPU相关段），跳过IO/CPU前处理段（那部分差异已知：GDAL load_hsi 469ms vs np.fromfile 49ms，跟本疑点无关）。warmup2+repeat10，与两边原口径一致。",
+  "groups": {
+    "a_hspc_preprocess_no_torch": {
+      "env": "conda hspc-preprocess", "note": "复现 deploy_scene.py 的条件",
+      "hsi_infer_median_ms": 55.93, "pc_infer_median_ms": 5.02, "feature_grid_median_ms": 7.57
+    },
+    "c_modelopt_no_torch": {
+      "env": "conda modelopt", "note": "只换 conda 环境，其余同 a",
+      "hsi_infer_median_ms": 56.30, "pc_infer_median_ms": 5.06, "feature_grid_median_ms": 7.43
+    },
+    "d_modelopt_torch_cuda_init": {
+      "env": "conda modelopt", "note": "在 c 基础上额外 import torch 并显式 torch.cuda.init()+分配一个cuda tensor",
+      "hsi_infer_median_ms": 56.44, "pc_infer_median_ms": 5.03, "feature_grid_median_ms": 7.70
+    },
+    "e_modelopt_12_resident_contexts": {
+      "env": "conda modelopt",
+      "note": "复现 stage7_final_e2e.py 的实际行为：按 CONFIGS 顺序为 S0~S6 依次创建 engine 且不释放（含3份重复的 hsi/pc_fp16_scene.plan，来自S4/S5/S6各自 load_engines()），共12个resident engine/context后，才创建 S7 的目标 runner 并测速",
+      "hsi_infer_median_ms": 55.74, "pc_infer_median_ms": 5.00, "feature_grid_median_ms": 7.36
+    },
+    "f_modelopt_simulated_cpu_idle_gap": {
+      "env": "conda modelopt",
+      "note": "在 c 基础上，每次迭代 hsi_infer 前 sleep 113ms（模拟真实链路里 patch_build+laspy_read+crs_init+projection+mask_filter+rng_sample+ckdtree_build+ckdtree_query 这段纯CPU工作耗时之和）、迭代末尾 match 段前 sleep 93ms，模拟GPU在这些CPU段完全空闲",
+      "hsi_infer_median_ms": 69.54, "hsi_infer_all_ms": [54.7, 69.2, 72.6, 78.0, 54.1, 69.9, 57.7, 72.2, 73.4, 66.8],
+      "pc_infer_median_ms": 4.97, "feature_grid_median_ms": 7.56
+    }
+  },
+  "conclusion": "conda环境差异（a vs c）和torch共存/CUDA context数量（c vs d vs e）都不是原因——三者的 hsi_infer 中位数都稳定在 55.7~56.4ms，跟 deploy_scene.py 实测的 56.1ms 一致，12个resident context也没有制造额外开销。真正相关的变量是**GPU在两次kernel launch之间的空闲时长**：组f只是粗略地在每次迭代前后插入约113ms/93ms的sleep模拟真实链路里CPU前处理段（patch_build/laspy/projection/cKDTree等）的耗时，hsi_infer中位数就从56ms升到69.5ms，且方差显著变宽（54~78ms，最快的几次仍接近56ms基线，说明不是固定开销，是间歇性的）。这个模式与本仓库此前记录的\"WSL2 GPU时钟状态不稳定\"（见阶段3 benchmark 诊断记录）方向一致：真实链路里 hsi_infer 前有一大段CPU-only工作（LAS读取+投影+cKDTree等，累计约100ms+），GPU在这段时间完全空闲，WSL2下时钟可能因此回落，下次kernel启动时还没恢复到满血频率。",
+  "caveats": [
+    "这是一个方向性验证（用sleep粗略模拟CPU段耗时），不是对真实链路的精确复现——组f的69.5ms中位数没有完全达到final_e2e实测的94.8ms，说明可能还有其他因素叠加（比如真实的cKDTree/laspy调用本身比sleep更占用CPU缓存/内存带宽，对后续GPU传输有轻微影响；或者GPU降频的严重程度跟具体空闲时长/次数的关系是非线性的）",
+    "没有条件验证GPU实际时钟频率（WSL2下 nvidia-smi 的 clocks.sm 查询在部分驱动版本下不可靠，未做锁频对照实验）",
+    "口径结论：加速比统一用 stage7_final_e2e.json 的同进程对比（分子分母在同一次运行里测得，内部一致，不受这个18%差异影响）；deploy_scene.py 的282ms作为独立进程的绝对部署延迟参考，两者不应直接相减或比较"
+  ]
+}

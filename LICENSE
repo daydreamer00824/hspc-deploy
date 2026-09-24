@@ -1,0 +1,12 @@
+Copyright (c) 2026 daydreamer00824. All rights reserved.
+
+This repository is made publicly available solely for portfolio presentation and
+technical review. Except for use, display, performance, and reproduction by
+forking through GitHub as permitted by GitHub's Terms of Service, no license or
+permission is granted to copy, modify, distribute, sublicense, commercially use,
+or create derivative works from any part of this repository without the prior
+written permission of the copyright holder.
+
+The repository excludes the underlying research model definitions, trained
+weights, source data, calibration samples, and cross-modal matching method.
+Any rights in those materials are reserved separately.

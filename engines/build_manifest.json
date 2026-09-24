@@ -1,0 +1,62 @@
+{
+  "created": "2026-09-23",
+  "trt_version": "10.13.3.9",
+  "precision_policy": "mixed",
+  "profile": {
+    "min": 1,
+    "opt": 8,
+    "max": 64
+  },
+  "description": "OBEY_PRECISION_CONSTRAINTS选择性混合精度：绝大部分算术层HALF，敏感层组保留FLOAT。取代此前fp16(auto)模式（TRT自选精度，同配置重建结果不稳定，见 results/followup_stage6_verification.json）。",
+  "models": {
+    "hsi": {
+      "fp32_groups": [
+        "stem"
+      ],
+      "fp32_layers": [
+        "/stem/stem.0/Conv",
+        "/stem/stem.2/Div",
+        "/stem/stem.2/Erf",
+        "/stem/stem.2/Add",
+        "/stem/stem.2/Mul",
+        "/stem/stem.2/Mul_1"
+      ],
+      "fp32_layers_note": "stem = Conv2d + BatchNorm2d(推理时已折叠进Conv) + GELU；Div/Erf/Add/Mul/Mul_1 是GELU的展开，不是LayerNorm",
+      "plan": "engines/hsi_fp16.plan",
+      "sha256": "d6f9301ff4e4d55ad026813d85a9b53929de62fef30f9b5a3d730e53d34dadd9",
+      "legacy_plan": "engines/hsi_fp16_legacy.plan",
+      "legacy_sha256": "db1b335268714ee9f9533d47e7d686a32de29de5d9a722cb5eba6b32f25305a1",
+      "scene_plan": "engines/hsi_fp16_scene.plan",
+      "scene_sha256": "ca658fb30207d81455a7e0c98fbb3f6f1cf97d7f99556c0637a495e8028836bb",
+      "scene_profile": {
+        "min": 1,
+        "opt": 2048,
+        "max": 2048
+      }
+    },
+    "pc": {
+      "fp32_groups": [
+        "softmax"
+      ],
+      "fp32_layers": [
+        "/transformer/layers.0/self_attn/Softmax",
+        "/transformer/layers.1/self_attn/Softmax",
+        "/transformer/layers.2/self_attn/Softmax"
+      ],
+      "plan": "engines/pc_fp16.plan",
+      "sha256": "3d9cf0328af4bdd9dd79e0bcb4863af2cb5e62429b5ddd1c6cd1ed2359004aef",
+      "legacy_plan": "engines/pc_fp16_legacy.plan",
+      "legacy_sha256": "8d9a832f04efbd39b97ac76a09145da09fbd21d48ec33367a66a796ceb6124ed",
+      "scene_plan": "engines/pc_fp16_scene.plan",
+      "scene_sha256": "87d6c6d0602e1d1fa2a51749138d20a458dcf7db47f8ca082ecd7b05d302fe33",
+      "scene_profile": {
+        "min": 1,
+        "opt": 2048,
+        "max": 2048
+      }
+    }
+  },
+  "build_command": "PYTHONPATH=/usr/lib/python3.10/dist-packages python scripts/build_trt.py --which {hsi|pc} --modes fp16 --precision-policy mixed --fp32-groups {stem|softmax}",
+  "selection_process": "results/stage7_mixed_precision.json（敏感度搜索+稳定性验证+精度-速度取舍+不一致点分析）",
+  "scene_engine_note": "2026-09-23 阶段7步骤2/4：整景推理（HSI约9645 patch/景、PC约1000点/景）用 *_fp16_scene.plan (min=1/opt=2048/max=2048)，比 batch64 的 *_fp16.plan 快约2.1~2.5x（同一进程正反两轮验证，见 results/stage7_batch_pinned.json、results/stage7_scene_engine_sweep.json）。max=2048 由档位扫描选定：与max=4096相比速度差<5%、显存约减半。batch64 的 *_fp16.plan 保留作低延迟单点/小批推理场景使用（不推荐用于整景批量推理）。"
+}

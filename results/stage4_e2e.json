@@ -1,0 +1,227 @@
+{
+  "scene": "24data/10.6/1",
+  "n_grid_patches": 15840,
+  "n_points": 1000,
+  "timing_method": "warmup 1 + repeat 5，每次前后 cuda.synchronize()，perf_counter 墙钟计时；加载(load_sec)不计入推理时间；报告中位数(median)与最小值(min)",
+  "backends": {
+    "pytorch_fp32": {
+      "load_sec": 2.2749950290017296,
+      "timing_sec": {
+        "hsi_infer_median": 0.23333350500251981,
+        "hsi_infer_min": 0.22343930400165846,
+        "pc_infer_median": 0.017221300000528572,
+        "pc_infer_min": 0.01705769999898621
+      },
+      "timing_sec_all_reps": {
+        "hsi_infer": [
+          0.22343930400165846,
+          0.23268600499795866,
+          0.23475070399945253,
+          0.2346598050025932,
+          0.23333350500251981
+        ],
+        "pc_infer": [
+          0.01705769999898621,
+          0.017235701001482084,
+          0.017387899999448564,
+          0.017221300000528572,
+          0.017163500997412484
+        ]
+      },
+      "determinism": {
+        "hsi_feats_identical_across_reps": true,
+        "pc_feats_identical_across_reps": true,
+        "match_rowcols_identical_across_reps": {
+          "DTP": true,
+          "DTP+Spatial": true
+        }
+      },
+      "variants": {
+        "DTP": {
+          "n_none": 0,
+          "match_time_sec": 0.212613704999967,
+          "pixel_match_agreement_vs_fp32": 1.0,
+          "pixel_displacement_mean": 4.184220790863037,
+          "pixel_displacement_diff_vs_fp32_mean": 0.0,
+          "cosine_mean": 0.33505627512931824,
+          "matched_spectra_max_abs_err_vs_truth_mean": 0.04713871330022812,
+          "matched_spectra_max_abs_err_vs_truth_median": 0.04251336678862572
+        },
+        "DTP+Spatial": {
+          "n_none": 0,
+          "match_time_sec": 0.13905750299818465,
+          "pixel_match_agreement_vs_fp32": 1.0,
+          "pixel_displacement_mean": 1.75734281539917,
+          "pixel_displacement_diff_vs_fp32_mean": 0.0,
+          "cosine_mean": 0.291838675737381,
+          "matched_spectra_max_abs_err_vs_truth_mean": 0.03453734889626503,
+          "matched_spectra_max_abs_err_vs_truth_median": 0.03264294192194939
+        }
+      }
+    },
+    "trt_fp16": {
+      "load_sec": 0.1220241029986937,
+      "timing_sec": {
+        "hsi_infer_median": 0.20552470400070888,
+        "hsi_infer_min": 0.20283440400089603,
+        "pc_infer_median": 0.01175170100032119,
+        "pc_infer_min": 0.011297000000922708
+      },
+      "timing_sec_all_reps": {
+        "hsi_infer": [
+          0.22563040400200407,
+          0.20535750400085817,
+          0.2058424049973837,
+          0.20283440400089603,
+          0.20552470400070888
+        ],
+        "pc_infer": [
+          0.011787100000219652,
+          0.01175170100032119,
+          0.011838900001748698,
+          0.011297000000922708,
+          0.01147309999942081
+        ]
+      },
+      "determinism": {
+        "hsi_feats_identical_across_reps": true,
+        "pc_feats_identical_across_reps": true
+      },
+      "variants": {
+        "DTP": {
+          "n_none": 0,
+          "match_time_sec": 0.11642170199775137,
+          "pixel_match_agreement_vs_fp32": 1.0,
+          "pixel_displacement_mean": 4.184220790863037,
+          "pixel_displacement_diff_vs_fp32_mean": 0.0,
+          "cosine_mean": 0.3350124657154083,
+          "matched_spectra_max_abs_err_vs_truth_mean": 0.04713871330022812,
+          "matched_spectra_max_abs_err_vs_truth_median": 0.04251336678862572
+        },
+        "DTP+Spatial": {
+          "n_none": 0,
+          "match_time_sec": 0.13894880299994838,
+          "pixel_match_agreement_vs_fp32": 0.997,
+          "pixel_displacement_mean": 1.7578017711639404,
+          "pixel_displacement_diff_vs_fp32_mean": 0.0040131923742592335,
+          "cosine_mean": 0.29184967279434204,
+          "matched_spectra_max_abs_err_vs_truth_mean": 0.03454562649130821,
+          "matched_spectra_max_abs_err_vs_truth_median": 0.03276480734348297
+        }
+      },
+      "speedup_vs_pytorch_fp32": {
+        "hsi_infer_median": 1.1353063668770205,
+        "pc_infer_median": 1.4654304087602203
+      },
+      "hsi_embedding_accuracy": {
+        "n": 15840,
+        "cos_sim_mean": 0.9999338388442993,
+        "cos_sim_min": 0.9954891800880432,
+        "max_abs_err": 0.2997109889984131,
+        "mean_abs_err": 0.0074577853083610535,
+        "rel_l2": 0.011405739933252335,
+        "top1_agreement": 0.9683080911636353,
+        "top5_agreement": 0.9766414165496826
+      },
+      "pc_embedding_accuracy": {
+        "n": 1000,
+        "cos_sim_mean": 0.9999988675117493,
+        "cos_sim_min": 0.9999948740005493,
+        "max_abs_err": 0.023854732513427734,
+        "mean_abs_err": 0.001474796561524272,
+        "rel_l2": 0.0015789897879585624,
+        "top1_agreement": 0.9929999709129333,
+        "top5_agreement": 1.0
+      }
+    },
+    "trt_int8": {
+      "load_sec": 0.08974730200134218,
+      "timing_sec": {
+        "hsi_infer_median": 0.1879154029993515,
+        "hsi_infer_min": 0.1852354029979324,
+        "pc_infer_median": 0.011082400000304915,
+        "pc_infer_min": 0.01106660000004922
+      },
+      "timing_sec_all_reps": {
+        "hsi_infer": [
+          0.1879154029993515,
+          0.18738830400252482,
+          0.18858860399996047,
+          0.1852354029979324,
+          0.18799220400251215
+        ],
+        "pc_infer": [
+          0.011066800998378312,
+          0.011696599998685997,
+          0.011082400000304915,
+          0.01106660000004922,
+          0.011570699996809708
+        ]
+      },
+      "determinism": {
+        "hsi_feats_identical_across_reps": true,
+        "pc_feats_identical_across_reps": true
+      },
+      "variants": {
+        "DTP": {
+          "n_none": 0,
+          "match_time_sec": 0.15439170299941907,
+          "pixel_match_agreement_vs_fp32": 0.995,
+          "pixel_displacement_mean": 4.181595802307129,
+          "pixel_displacement_diff_vs_fp32_mean": 0.003295124741271138,
+          "cosine_mean": 0.33516088128089905,
+          "matched_spectra_max_abs_err_vs_truth_mean": 0.0470978245139122,
+          "matched_spectra_max_abs_err_vs_truth_median": 0.04251336678862572
+        },
+        "DTP+Spatial": {
+          "n_none": 0,
+          "match_time_sec": 0.1299958030031121,
+          "pixel_match_agreement_vs_fp32": 0.996,
+          "pixel_displacement_mean": 1.7594232559204102,
+          "pixel_displacement_diff_vs_fp32_mean": 0.0047480640932917595,
+          "cosine_mean": 0.2919658422470093,
+          "matched_spectra_max_abs_err_vs_truth_mean": 0.034636519849300385,
+          "matched_spectra_max_abs_err_vs_truth_median": 0.032860949635505676
+        }
+      },
+      "speedup_vs_pytorch_fp32": {
+        "hsi_infer_median": 1.2416944075804421,
+        "pc_infer_median": 1.5539323612263367
+      },
+      "hsi_embedding_accuracy": {
+        "n": 15840,
+        "cos_sim_mean": 0.999957263469696,
+        "cos_sim_min": 0.9598293304443359,
+        "max_abs_err": 0.7319179773330688,
+        "mean_abs_err": 0.005824251100420952,
+        "rel_l2": 0.008881296031177044,
+        "top1_agreement": 0.9684343338012695,
+        "top5_agreement": 0.9765151739120483
+      },
+      "pc_embedding_accuracy": {
+        "n": 1000,
+        "cos_sim_mean": 0.9999986886978149,
+        "cos_sim_min": 0.9999929070472717,
+        "max_abs_err": 0.02527618408203125,
+        "mean_abs_err": 0.0014649502700194716,
+        "rel_l2": 0.0016048894030973315,
+        "top1_agreement": 0.9929999709129333,
+        "top5_agreement": 1.0
+      }
+    }
+  },
+  "runner_overhead_vs_stage3_kernel": {
+    "trt_fp16": {
+      "stage3_batch64_p50_ms": 0.377935990691185,
+      "kernel_only_us_per_patch": 5.905249854549766,
+      "e2e_us_per_patch": 12.975044444489196,
+      "overhead_ratio": 2.1972049894709245
+    },
+    "trt_int8": {
+      "stage3_batch64_p50_ms": 0.36608000099658966,
+      "kernel_only_us_per_patch": 5.7200000155717134,
+      "e2e_us_per_patch": 11.863346148948958,
+      "overhead_ratio": 2.0740115588554273
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "hsi": {
+    "groups": [
+      {
+        "range": [
+          0,
+          200
+        ],
+        "source": "24data/hsi/7.17/1_spec342.dat",
+        "max_abs_err": 0.0,
+        "n_exact": 200,
+        "n": 200
+      },
+      {
+        "range": [
+          200,
+          400
+        ],
+        "source": "24data/hsi/8.23/1_spec342.dat",
+        "max_abs_err": 0.0,
+        "n_exact": 200,
+        "n": 200
+      },
+      {
+        "range": [
+          400,
+          600
+        ],
+        "source": "24data/hsi/10.6/1_spec342.dat",
+        "max_abs_err": 0.0,
+        "n_exact": 200,
+        "n": 200
+      }
+    ],
+    "gdal_vs_fromfile_max_diff": 0.0
+  },
+  "pc": {
+    "matched_source": "24data/10.6/rice_las/1_rice_icp.las",
+    "matched_range": [
+      400,
+      600
+    ],
+    "max_abs_err": 0.0,
+    "n": 200,
+    "unmatched_range": [
+      0,
+      400
+    ],
+    "unmatched_note": "已穷举 lai_icp_registered_resampled_hsi/ 下全部 registered_las(250) + rice_las(250) 共500个文件，索引0-399均未命中，源LAS不在给定F盘目录内"
+  },
+  "elapsed_sec": 10.0
+}

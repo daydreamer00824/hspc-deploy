@@ -1,0 +1,82 @@
+{
+  "pc/fp16": {
+    "n": 200,
+    "cos_sim_mean": 0.9999986886978149,
+    "cos_sim_min": 0.9999957084655762,
+    "max_abs_err": 0.017683863639831543,
+    "mean_abs_err": 0.0014994569355621934,
+    "rel_l2": 0.0016030314145609736,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  },
+  "pc/fp16_deploy": {
+    "n": 200,
+    "cos_sim_mean": 1.0,
+    "cos_sim_min": 0.9999998211860657,
+    "max_abs_err": 1.239776611328125e-05,
+    "mean_abs_err": 8.722560096430243e-07,
+    "rel_l2": 9.805733043322107e-07,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  },
+  "pc/int8_implicit": {
+    "n": 200,
+    "cos_sim_mean": 0.9999988079071045,
+    "cos_sim_min": 0.9999940395355225,
+    "max_abs_err": 0.02329730987548828,
+    "mean_abs_err": 0.001471069292165339,
+    "rel_l2": 0.0016190659953281283,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  },
+  "pc/int8_implicit_deploy": {
+    "n": 200,
+    "cos_sim_mean": 1.0,
+    "cos_sim_min": 0.9999998211860657,
+    "max_abs_err": 1.239776611328125e-05,
+    "mean_abs_err": 8.722560096430243e-07,
+    "rel_l2": 9.805733043322107e-07,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  },
+  "hsi/fp16": {
+    "n": 200,
+    "cos_sim_mean": 0.9999838471412659,
+    "cos_sim_min": 0.9991081357002258,
+    "max_abs_err": 0.18533861637115479,
+    "mean_abs_err": 0.003009747015312314,
+    "rel_l2": 0.00515131838619709,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  },
+  "hsi/fp16_deploy": {
+    "n": 200,
+    "cos_sim_mean": 1.0,
+    "cos_sim_min": 0.9999997615814209,
+    "max_abs_err": 0.00010406970977783203,
+    "mean_abs_err": 1.2530798585430603e-06,
+    "rel_l2": 2.735198222580948e-06,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  },
+  "hsi/int8_implicit": {
+    "n": 200,
+    "cos_sim_mean": 0.9999459981918335,
+    "cos_sim_min": 0.9915679693222046,
+    "max_abs_err": 0.28714531660079956,
+    "mean_abs_err": 0.0029084370471537113,
+    "rel_l2": 0.007110960315912962,
+    "top1_agreement": 0.9800000190734863,
+    "top5_agreement": 1.0
+  },
+  "hsi/int8_implicit_deploy": {
+    "n": 200,
+    "cos_sim_mean": 1.0,
+    "cos_sim_min": 0.9999997615814209,
+    "max_abs_err": 0.00010406970977783203,
+    "mean_abs_err": 1.2530798585430603e-06,
+    "rel_l2": 2.735198222580948e-06,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  }
+}

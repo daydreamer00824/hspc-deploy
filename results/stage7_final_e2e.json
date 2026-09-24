@@ -1,0 +1,1146 @@
+{
+  "guardrail": {
+    "eligible_identical": true,
+    "offsets_identical": true,
+    "ref_rows_identical": true,
+    "ref_cols_identical": true,
+    "patches_identical": true
+  },
+  "cold_start": {
+    "S0_stage4_original": {
+      "timing_ms": {
+        "load_hsi_io": 54.2,
+        "standardize_and_mask": 15.57,
+        "patch_build": 107.05,
+        "laspy_read_io": 14.36,
+        "crs_transformer_init": 0.46,
+        "projection": 17.58,
+        "mask_filter": 1.21,
+        "rng_sample": 0.14,
+        "ckdtree_build": 29.46,
+        "ckdtree_query_offsets": 5.49,
+        "hsi_infer": 199.72,
+        "pc_infer": 12.84,
+        "feature_grid_assemble": 7.92,
+        "match": 418.75
+      },
+      "total_with_io_ms": 884.7402189931017,
+      "total_without_io_ms": 816.1816319916397
+    },
+    "S7_final_ckdtree_unbalanced": {
+      "timing_ms": {
+        "load_hsi_io": 54.61,
+        "standardize_and_mask": 15.03,
+        "patch_build": 79.01,
+        "laspy_read_io": 14.21,
+        "crs_transformer_init": 0.49,
+        "projection": 17.4,
+        "mask_filter": 1.33,
+        "rng_sample": 0.15,
+        "ckdtree_build": 16.8,
+        "ckdtree_query_offsets": 5.34,
+        "hsi_infer": 62.48,
+        "pc_infer": 5.74,
+        "feature_grid_assemble": 22.54,
+        "match": 94.1
+      },
+      "total_with_io_ms": 389.23299200541805,
+      "total_without_io_ms": 320.40900400897954
+    }
+  },
+  "forward": {
+    "S0_stage4_original": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 54.90526349967695,
+          "min_ms": 52.12521299836226
+        },
+        "standardize_and_mask": {
+          "median_ms": 12.24700150123681,
+          "min_ms": 12.00010299362475
+        },
+        "patch_build": {
+          "median_ms": 135.40498400107026,
+          "min_ms": 108.2472029956989
+        },
+        "laspy_read_io": {
+          "median_ms": 17.612203999306075,
+          "min_ms": 14.747604000149295
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.45694999789702706,
+          "min_ms": 0.4408999957377091
+        },
+        "projection": {
+          "median_ms": 17.103702000895282,
+          "min_ms": 16.78750400606077
+        },
+        "mask_filter": {
+          "median_ms": 1.261250003153691,
+          "min_ms": 1.2006010001641698
+        },
+        "rng_sample": {
+          "median_ms": 0.13995000335853547,
+          "min_ms": 0.12630000128410757
+        },
+        "ckdtree_build": {
+          "median_ms": 28.714757001580438,
+          "min_ms": 28.096305999497417
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.194452005525818,
+          "min_ms": 4.966900996805634
+        },
+        "hsi_infer": {
+          "median_ms": 192.92519699956756,
+          "min_ms": 178.17050499434117
+        },
+        "pc_infer": {
+          "median_ms": 12.055453000357375,
+          "min_ms": 11.550802999408916
+        },
+        "feature_grid_assemble": {
+          "median_ms": 22.74160600063624,
+          "min_ms": 7.664400000066962
+        },
+        "match": {
+          "median_ms": 286.4047200018831,
+          "min_ms": 243.38415900274413
+        }
+      },
+      "total_with_io_median_ms": 787.1674900161452,
+      "total_without_io_median_ms": 714.6500225171621,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 1.0,
+        "DTP+Spatial": 0.997
+      }
+    },
+    "S1_mixed_precision_batch64": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 57.44069350112113,
+          "min_ms": 56.26801700418582
+        },
+        "standardize_and_mask": {
+          "median_ms": 14.126010999461869,
+          "min_ms": 12.69700400007423
+        },
+        "patch_build": {
+          "median_ms": 146.43309399980353,
+          "min_ms": 106.85513199859997
+        },
+        "laspy_read_io": {
+          "median_ms": 15.758604498842033,
+          "min_ms": 13.980304000142496
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.47664999874541536,
+          "min_ms": 0.45400000090012327
+        },
+        "projection": {
+          "median_ms": 17.53550549983629,
+          "min_ms": 17.208804994879756
+        },
+        "mask_filter": {
+          "median_ms": 1.3467004973790608,
+          "min_ms": 1.273201996809803
+        },
+        "rng_sample": {
+          "median_ms": 0.15944999540806748,
+          "min_ms": 0.14209999790182337
+        },
+        "ckdtree_build": {
+          "median_ms": 30.197273001249414,
+          "min_ms": 29.55850899888901
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 6.079155002225889,
+          "min_ms": 5.647001002216712
+        },
+        "hsi_infer": {
+          "median_ms": 206.15550450020237,
+          "min_ms": 177.4071539985016
+        },
+        "pc_infer": {
+          "median_ms": 12.339603999862447,
+          "min_ms": 12.166803004220128
+        },
+        "feature_grid_assemble": {
+          "median_ms": 23.941417999594705,
+          "min_ms": 8.576503001677338
+        },
+        "match": {
+          "median_ms": 338.5758585027361,
+          "min_ms": 285.33248500025366
+        }
+      },
+      "total_with_io_median_ms": 870.5655219964683,
+      "total_without_io_median_ms": 797.3662239965051,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.998,
+        "DTP+Spatial": 0.998
+      }
+    },
+    "S2_valid_pixels_only": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 57.522890499967616,
+          "min_ms": 56.30110899801366
+        },
+        "standardize_and_mask": {
+          "median_ms": 15.20541050194879,
+          "min_ms": 14.117603001068346
+        },
+        "patch_build": {
+          "median_ms": 76.36321500103804,
+          "min_ms": 64.41727799392538
+        },
+        "laspy_read_io": {
+          "median_ms": 16.193361501791514,
+          "min_ms": 13.922001999162603
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.5087999998067971,
+          "min_ms": 0.4716000039479695
+        },
+        "projection": {
+          "median_ms": 17.79455349969794,
+          "min_ms": 17.267203002120368
+        },
+        "mask_filter": {
+          "median_ms": 1.3699004957743455,
+          "min_ms": 1.2308010045671836
+        },
+        "rng_sample": {
+          "median_ms": 0.16240050172200426,
+          "min_ms": 0.14390000433195382
+        },
+        "ckdtree_build": {
+          "median_ms": 30.709820999618387,
+          "min_ms": 28.868304994830396
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 6.109204001404578,
+          "min_ms": 5.696300999261439
+        },
+        "hsi_infer": {
+          "median_ms": 136.55822549844743,
+          "min_ms": 125.28685200231848
+        },
+        "pc_infer": {
+          "median_ms": 14.20366000093054,
+          "min_ms": 13.209102995460853
+        },
+        "feature_grid_assemble": {
+          "median_ms": 23.140304499975173,
+          "min_ms": 8.97011099732481
+        },
+        "match": {
+          "median_ms": 310.7561684992106,
+          "min_ms": 275.10345300106565
+        }
+      },
+      "total_with_io_median_ms": 706.5979155013338,
+      "total_without_io_median_ms": 632.8816634995746,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.998,
+        "DTP+Spatial": 0.998
+      }
+    },
+    "S3_lite_runner_no_torch": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 59.91191200155299,
+          "min_ms": 55.785810996894725
+        },
+        "standardize_and_mask": {
+          "median_ms": 13.677252998604672,
+          "min_ms": 12.653902005695272
+        },
+        "patch_build": {
+          "median_ms": 76.19514950056328,
+          "min_ms": 63.40111199824605
+        },
+        "laspy_read_io": {
+          "median_ms": 15.973102999851108,
+          "min_ms": 14.743202998943161
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.46519950046786107,
+          "min_ms": 0.4544990006252192
+        },
+        "projection": {
+          "median_ms": 17.73853849954321,
+          "min_ms": 17.3679030049243
+        },
+        "mask_filter": {
+          "median_ms": 1.3830494972353335,
+          "min_ms": 1.2514979971456341
+        },
+        "rng_sample": {
+          "median_ms": 0.15614999938406982,
+          "min_ms": 0.1388989985571243
+        },
+        "ckdtree_build": {
+          "median_ms": 30.124755499855382,
+          "min_ms": 28.947555998456664
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 6.348502000037115,
+          "min_ms": 5.615490998025052
+        },
+        "hsi_infer": {
+          "median_ms": 142.21278650074964,
+          "min_ms": 129.0288239979418
+        },
+        "pc_infer": {
+          "median_ms": 13.24282999848947,
+          "min_ms": 12.54498100024648
+        },
+        "feature_grid_assemble": {
+          "median_ms": 23.735483999189455,
+          "min_ms": 7.424301002174616
+        },
+        "match": {
+          "median_ms": 351.42946650012163,
+          "min_ms": 292.03515900007915
+        }
+      },
+      "total_with_io_median_ms": 752.5941794956452,
+      "total_without_io_median_ms": 676.7091644942411,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.998,
+        "DTP+Spatial": 0.998
+      }
+    },
+    "S4_scene_engine": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 57.902156502677826,
+          "min_ms": 55.83850699622417
+        },
+        "standardize_and_mask": {
+          "median_ms": 14.680102001875639,
+          "min_ms": 12.28670099953888
+        },
+        "patch_build": {
+          "median_ms": 77.16205900214845,
+          "min_ms": 61.946408000949305
+        },
+        "laspy_read_io": {
+          "median_ms": 15.696702001150697,
+          "min_ms": 15.375301001768094
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.4985999948985409,
+          "min_ms": 0.44219999836059287
+        },
+        "projection": {
+          "median_ms": 17.75435199670028,
+          "min_ms": 17.236902000149712
+        },
+        "mask_filter": {
+          "median_ms": 1.3084499987598974,
+          "min_ms": 1.2243000019225292
+        },
+        "rng_sample": {
+          "median_ms": 0.15610000264132395,
+          "min_ms": 0.12489999789977446
+        },
+        "ckdtree_build": {
+          "median_ms": 30.1207529992098,
+          "min_ms": 27.844703996379394
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 6.147200499981409,
+          "min_ms": 5.087199999252334
+        },
+        "hsi_infer": {
+          "median_ms": 95.5025114963064,
+          "min_ms": 68.57510800182354
+        },
+        "pc_infer": {
+          "median_ms": 8.111650997307152,
+          "min_ms": 5.2304010023362935
+        },
+        "feature_grid_assemble": {
+          "median_ms": 24.151052999513922,
+          "min_ms": 7.193699995696079
+        },
+        "match": {
+          "median_ms": 324.9934894993203,
+          "min_ms": 305.59243600146146
+        }
+      },
+      "total_with_io_median_ms": 674.1851799924916,
+      "total_without_io_median_ms": 600.5863214886631,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.997,
+        "DTP+Spatial": 0.995
+      }
+    },
+    "S5_numpy_match_separate": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 54.1275069990661,
+          "min_ms": 48.61533000075724
+        },
+        "standardize_and_mask": {
+          "median_ms": 13.384201003646012,
+          "min_ms": 12.517702001787256
+        },
+        "patch_build": {
+          "median_ms": 61.11841999882017,
+          "min_ms": 56.98862300050678
+        },
+        "laspy_read_io": {
+          "median_ms": 17.328702000668272,
+          "min_ms": 13.646052000694908
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.4889249976258725,
+          "min_ms": 0.4409159955685027
+        },
+        "projection": {
+          "median_ms": 16.956014500465244,
+          "min_ms": 16.02342700061854
+        },
+        "mask_filter": {
+          "median_ms": 1.3490999990608543,
+          "min_ms": 1.224208994244691
+        },
+        "rng_sample": {
+          "median_ms": 0.1744874971336685,
+          "min_ms": 0.14235800335882232
+        },
+        "ckdtree_build": {
+          "median_ms": 29.146549502911512,
+          "min_ms": 26.68261100188829
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 6.25570050033275,
+          "min_ms": 5.70744199649198
+        },
+        "hsi_infer": {
+          "median_ms": 96.27127699786797,
+          "min_ms": 88.4043109981576
+        },
+        "pc_infer": {
+          "median_ms": 10.125455501110991,
+          "min_ms": 8.583201000874396
+        },
+        "feature_grid_assemble": {
+          "median_ms": 22.47391950004385,
+          "min_ms": 8.824901000480168
+        },
+        "match": {
+          "median_ms": 205.29480300319847,
+          "min_ms": 191.23822899564402
+        }
+      },
+      "total_with_io_median_ms": 534.4950620019517,
+      "total_without_io_median_ms": 463.03885300221737,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.997,
+        "DTP+Spatial": 0.995
+      }
+    },
+    "S6_numpy_match_merged": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 49.818897001387086,
+          "min_ms": 46.62524599552853
+        },
+        "standardize_and_mask": {
+          "median_ms": 12.137150999478763,
+          "min_ms": 11.046109997550957
+        },
+        "patch_build": {
+          "median_ms": 60.80535650107777,
+          "min_ms": 54.56706500262953
+        },
+        "laspy_read_io": {
+          "median_ms": 14.280501494795317,
+          "min_ms": 13.325127001735382
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.469078997411998,
+          "min_ms": 0.4028749972349033
+        },
+        "projection": {
+          "median_ms": 17.138402003183728,
+          "min_ms": 15.599285005009733
+        },
+        "mask_filter": {
+          "median_ms": 1.2599500005308073,
+          "min_ms": 1.1452840044512413
+        },
+        "rng_sample": {
+          "median_ms": 0.14150000424706377,
+          "min_ms": 0.11192500096512958
+        },
+        "ckdtree_build": {
+          "median_ms": 28.892954000184545,
+          "min_ms": 25.64971100218827
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.4825004990561865,
+          "min_ms": 4.607900002156384
+        },
+        "hsi_infer": {
+          "median_ms": 98.31396100344136,
+          "min_ms": 65.54543200036278
+        },
+        "pc_infer": {
+          "median_ms": 9.463301001233049,
+          "min_ms": 6.954383999982383
+        },
+        "feature_grid_assemble": {
+          "median_ms": 22.253653001826024,
+          "min_ms": 6.667925998044666
+        },
+        "match": {
+          "median_ms": 92.92955999990227,
+          "min_ms": 71.08906599751208
+        }
+      },
+      "total_with_io_median_ms": 413.38676650775596,
+      "total_without_io_median_ms": 349.28736801157356,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.997,
+        "DTP+Spatial": 0.995
+      }
+    },
+    "S7_final_ckdtree_unbalanced": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 49.4528060007724,
+          "min_ms": 48.7672230010503
+        },
+        "standardize_and_mask": {
+          "median_ms": 12.680490501224995,
+          "min_ms": 12.032377999275923
+        },
+        "patch_build": {
+          "median_ms": 59.152734000235796,
+          "min_ms": 58.04628499754472
+        },
+        "laspy_read_io": {
+          "median_ms": 13.560274503106484,
+          "min_ms": 13.143636999302544
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.45148250137572177,
+          "min_ms": 0.42990499787265435
+        },
+        "projection": {
+          "median_ms": 16.825236998556647,
+          "min_ms": 16.568295999604743
+        },
+        "mask_filter": {
+          "median_ms": 1.2701289997494314,
+          "min_ms": 1.202917002956383
+        },
+        "rng_sample": {
+          "median_ms": 0.14564999582944438,
+          "min_ms": 0.12470399815356359
+        },
+        "ckdtree_build": {
+          "median_ms": 16.566935497394297,
+          "min_ms": 16.273106994049158
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.312867000611732,
+          "min_ms": 5.025794998800848
+        },
+        "hsi_infer": {
+          "median_ms": 94.79483499671915,
+          "min_ms": 88.55416900041746
+        },
+        "pc_infer": {
+          "median_ms": 9.945108504325617,
+          "min_ms": 9.857192999334075
+        },
+        "feature_grid_assemble": {
+          "median_ms": 21.70790850141202,
+          "min_ms": 7.505692999984603
+        },
+        "match": {
+          "median_ms": 92.86862250155536,
+          "min_ms": 75.9895380033413
+        }
+      },
+      "total_with_io_median_ms": 394.7350805028691,
+      "total_without_io_median_ms": 331.7219999989902,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.997,
+        "DTP+Spatial": 0.995
+      }
+    }
+  },
+  "reverse": {
+    "S7_final_ckdtree_unbalanced": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 51.73534499772359,
+          "min_ms": 49.896949996764306
+        },
+        "standardize_and_mask": {
+          "median_ms": 13.296335499035195,
+          "min_ms": 12.042485999700148
+        },
+        "patch_build": {
+          "median_ms": 60.715289997460786,
+          "min_ms": 57.89426899718819
+        },
+        "laspy_read_io": {
+          "median_ms": 14.182926999637857,
+          "min_ms": 13.235878002888057
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.46687199574080296,
+          "min_ms": 0.4309739961172454
+        },
+        "projection": {
+          "median_ms": 17.110633500124095,
+          "min_ms": 16.652079997584224
+        },
+        "mask_filter": {
+          "median_ms": 1.3082764999126084,
+          "min_ms": 1.240327997948043
+        },
+        "rng_sample": {
+          "median_ms": 0.14651599849457853,
+          "min_ms": 0.12412100477376953
+        },
+        "ckdtree_build": {
+          "median_ms": 17.115408500103513,
+          "min_ms": 16.120214997499716
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.4038160014897585,
+          "min_ms": 4.90157499734778
+        },
+        "hsi_infer": {
+          "median_ms": 98.9985494998109,
+          "min_ms": 87.40713999577565
+        },
+        "pc_infer": {
+          "median_ms": 10.360788499383489,
+          "min_ms": 10.02194299508119
+        },
+        "feature_grid_assemble": {
+          "median_ms": 21.889278996241046,
+          "min_ms": 7.200298001407646
+        },
+        "match": {
+          "median_ms": 94.72084850131068,
+          "min_ms": 75.63496100192424
+        }
+      },
+      "total_with_io_median_ms": 407.4508854864689,
+      "total_without_io_median_ms": 341.53261348910746,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.997,
+        "DTP+Spatial": 0.995
+      }
+    },
+    "S6_numpy_match_merged": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 51.82354250064236,
+          "min_ms": 49.177695997059345
+        },
+        "standardize_and_mask": {
+          "median_ms": 12.859799000580097,
+          "min_ms": 12.337642001511995
+        },
+        "patch_build": {
+          "median_ms": 61.052584496792406,
+          "min_ms": 59.24506099836435
+        },
+        "laspy_read_io": {
+          "median_ms": 14.097633000346832,
+          "min_ms": 13.323100996785797
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.4605094982252922,
+          "min_ms": 0.4431019988260232
+        },
+        "projection": {
+          "median_ms": 17.21321600052761,
+          "min_ms": 16.919494002650026
+        },
+        "mask_filter": {
+          "median_ms": 1.2985834982828237,
+          "min_ms": 1.2237689952598885
+        },
+        "rng_sample": {
+          "median_ms": 0.14294600259745494,
+          "min_ms": 0.12928000069223344
+        },
+        "ckdtree_build": {
+          "median_ms": 29.37773650046438,
+          "min_ms": 28.61871699860785
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.564517501625232,
+          "min_ms": 5.121016001794487
+        },
+        "hsi_infer": {
+          "median_ms": 96.16037899832008,
+          "min_ms": 89.41164400312118
+        },
+        "pc_infer": {
+          "median_ms": 10.117989499121904,
+          "min_ms": 10.039933004009072
+        },
+        "feature_grid_assemble": {
+          "median_ms": 21.261489499011077,
+          "min_ms": 7.359372000792064
+        },
+        "match": {
+          "median_ms": 94.252853999933,
+          "min_ms": 81.99700900149764
+        }
+      },
+      "total_with_io_median_ms": 415.68377999647055,
+      "total_without_io_median_ms": 349.76260449548136,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.997,
+        "DTP+Spatial": 0.995
+      }
+    },
+    "S5_numpy_match_separate": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 55.00675099756336,
+          "min_ms": 50.67542700271588
+        },
+        "standardize_and_mask": {
+          "median_ms": 12.933324003824964,
+          "min_ms": 12.178138000308536
+        },
+        "patch_build": {
+          "median_ms": 66.95755399778136,
+          "min_ms": 60.458842002844904
+        },
+        "laspy_read_io": {
+          "median_ms": 15.898887999355793,
+          "min_ms": 14.008393001859076
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.47018600162118673,
+          "min_ms": 0.45008699817117304
+        },
+        "projection": {
+          "median_ms": 17.485341501014773,
+          "min_ms": 16.90403099928517
+        },
+        "mask_filter": {
+          "median_ms": 1.354810498014558,
+          "min_ms": 1.2232640001457185
+        },
+        "rng_sample": {
+          "median_ms": 0.14879600348649547,
+          "min_ms": 0.12648599658859894
+        },
+        "ckdtree_build": {
+          "median_ms": 29.66708749954705,
+          "min_ms": 28.73422999982722
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.864179995114682,
+          "min_ms": 5.45474100363208
+        },
+        "hsi_infer": {
+          "median_ms": 96.89943350167596,
+          "min_ms": 63.87164400075562
+        },
+        "pc_infer": {
+          "median_ms": 10.230602503725095,
+          "min_ms": 5.092952000268269
+        },
+        "feature_grid_assemble": {
+          "median_ms": 21.840465004061116,
+          "min_ms": 8.03350200294517
+        },
+        "match": {
+          "median_ms": 198.4219324986043,
+          "min_ms": 170.88095999497455
+        }
+      },
+      "total_with_io_median_ms": 533.1793520053907,
+      "total_without_io_median_ms": 462.27371300847153,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.997,
+        "DTP+Spatial": 0.995
+      }
+    },
+    "S4_scene_engine": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 54.46805900282925,
+          "min_ms": 51.83649399987189
+        },
+        "standardize_and_mask": {
+          "median_ms": 12.702680502115982,
+          "min_ms": 12.15494200005196
+        },
+        "patch_build": {
+          "median_ms": 74.3369564988825,
+          "min_ms": 61.23422099335585
+        },
+        "laspy_read_io": {
+          "median_ms": 15.65843950083945,
+          "min_ms": 13.960017000499647
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.49074650087277405,
+          "min_ms": 0.4429319960763678
+        },
+        "projection": {
+          "median_ms": 17.830739001510665,
+          "min_ms": 16.903408999496605
+        },
+        "mask_filter": {
+          "median_ms": 1.3329015018825885,
+          "min_ms": 1.225564003107138
+        },
+        "rng_sample": {
+          "median_ms": 0.1465995010221377,
+          "min_ms": 0.1191970004583709
+        },
+        "ckdtree_build": {
+          "median_ms": 29.512104498280678,
+          "min_ms": 27.792791996034794
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.594081500021275,
+          "min_ms": 5.014454996853601
+        },
+        "hsi_infer": {
+          "median_ms": 95.68673450121423,
+          "min_ms": 73.18667299841763
+        },
+        "pc_infer": {
+          "median_ms": 10.55546850329847,
+          "min_ms": 7.739576001768
+        },
+        "feature_grid_assemble": {
+          "median_ms": 21.340095499908784,
+          "min_ms": 7.287189000635408
+        },
+        "match": {
+          "median_ms": 320.4594975031796,
+          "min_ms": 279.6594989995356
+        }
+      },
+      "total_with_io_median_ms": 660.1151040158584,
+      "total_without_io_median_ms": 589.9886055121897,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.997,
+        "DTP+Spatial": 0.995
+      }
+    },
+    "S3_lite_runner_no_torch": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 57.08651650274987,
+          "min_ms": 55.19360099424375
+        },
+        "standardize_and_mask": {
+          "median_ms": 13.91679999869666,
+          "min_ms": 12.439500002074055
+        },
+        "patch_build": {
+          "median_ms": 74.46895199609571,
+          "min_ms": 61.68540599901462
+        },
+        "laspy_read_io": {
+          "median_ms": 14.964600501116365,
+          "min_ms": 13.606613996671513
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.4983174985682126,
+          "min_ms": 0.4506430050241761
+        },
+        "projection": {
+          "median_ms": 17.615179502172396,
+          "min_ms": 17.030396993504837
+        },
+        "mask_filter": {
+          "median_ms": 1.3906415006204043,
+          "min_ms": 1.2879999994765967
+        },
+        "rng_sample": {
+          "median_ms": 0.1575124988448806,
+          "min_ms": 0.1257799958693795
+        },
+        "ckdtree_build": {
+          "median_ms": 29.888100500102155,
+          "min_ms": 29.230303000076674
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 6.020359000103781,
+          "min_ms": 5.653000000165775
+        },
+        "hsi_infer": {
+          "median_ms": 143.44475400139345,
+          "min_ms": 137.1159229965997
+        },
+        "pc_infer": {
+          "median_ms": 13.764690502284793,
+          "min_ms": 13.06480000494048
+        },
+        "feature_grid_assemble": {
+          "median_ms": 22.15400050044991,
+          "min_ms": 7.523333995777648
+        },
+        "match": {
+          "median_ms": 313.5020150002674,
+          "min_ms": 268.0189060047269
+        }
+      },
+      "total_with_io_median_ms": 708.872439503466,
+      "total_without_io_median_ms": 636.8213224995998,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.998,
+        "DTP+Spatial": 0.998
+      }
+    },
+    "S2_valid_pixels_only": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 55.71069500001613,
+          "min_ms": 53.86049499793444
+        },
+        "standardize_and_mask": {
+          "median_ms": 12.937048497406067,
+          "min_ms": 12.167898996267468
+        },
+        "patch_build": {
+          "median_ms": 73.03809350196389,
+          "min_ms": 61.47680099820718
+        },
+        "laspy_read_io": {
+          "median_ms": 14.909949000866618,
+          "min_ms": 13.807998002448585
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.4638999998860527,
+          "min_ms": 0.4439999975147657
+        },
+        "projection": {
+          "median_ms": 17.358498498651898,
+          "min_ms": 17.02359899354633
+        },
+        "mask_filter": {
+          "median_ms": 1.3553999961004592,
+          "min_ms": 1.2925999981234781
+        },
+        "rng_sample": {
+          "median_ms": 0.14739999824087135,
+          "min_ms": 0.13029999536229298
+        },
+        "ckdtree_build": {
+          "median_ms": 29.04849750120775,
+          "min_ms": 27.879198001755867
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.634499499137746,
+          "min_ms": 5.027099003200419
+        },
+        "hsi_infer": {
+          "median_ms": 129.9614455019764,
+          "min_ms": 116.77608899481129
+        },
+        "pc_infer": {
+          "median_ms": 13.748049499554327,
+          "min_ms": 13.047398999333382
+        },
+        "feature_grid_assemble": {
+          "median_ms": 21.386248496128246,
+          "min_ms": 7.5013000023318455
+        },
+        "match": {
+          "median_ms": 305.22133899648907,
+          "min_ms": 280.57697400072357
+        }
+      },
+      "total_with_io_median_ms": 680.9210639876255,
+      "total_without_io_median_ms": 610.3004199867428,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.998,
+        "DTP+Spatial": 0.998
+      }
+    },
+    "S1_mixed_precision_batch64": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 55.517146003694506,
+          "min_ms": 53.801295995071996
+        },
+        "standardize_and_mask": {
+          "median_ms": 13.045599003817188,
+          "min_ms": 12.041989000863396
+        },
+        "patch_build": {
+          "median_ms": 140.0065404995985,
+          "min_ms": 108.77026399975875
+        },
+        "laspy_read_io": {
+          "median_ms": 14.55884250026429,
+          "min_ms": 13.635098999657203
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.48009999954956584,
+          "min_ms": 0.45110000064596534
+        },
+        "projection": {
+          "median_ms": 17.555132999405032,
+          "min_ms": 17.187899000418838
+        },
+        "mask_filter": {
+          "median_ms": 1.3588494985015132,
+          "min_ms": 1.2093999976059422
+        },
+        "rng_sample": {
+          "median_ms": 0.14459949670708738,
+          "min_ms": 0.1315990011789836
+        },
+        "ckdtree_build": {
+          "median_ms": 29.618698001286248,
+          "min_ms": 28.34227299899794
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.5390970010194,
+          "min_ms": 5.152195000846405
+        },
+        "hsi_infer": {
+          "median_ms": 198.38219650046085,
+          "min_ms": 195.52800900419243
+        },
+        "pc_infer": {
+          "median_ms": 12.987248996068956,
+          "min_ms": 12.279998998565134
+        },
+        "feature_grid_assemble": {
+          "median_ms": 22.739837997505674,
+          "min_ms": 9.124890995735768
+        },
+        "match": {
+          "median_ms": 320.394213002146,
+          "min_ms": 282.4139809963526
+        }
+      },
+      "total_with_io_median_ms": 832.3281015000248,
+      "total_without_io_median_ms": 762.252112996066,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 0.998,
+        "DTP+Spatial": 0.998
+      }
+    },
+    "S0_stage4_original": {
+      "segments_ms": {
+        "load_hsi_io": {
+          "median_ms": 57.170104497345164,
+          "min_ms": 53.5371119985939
+        },
+        "standardize_and_mask": {
+          "median_ms": 13.357499501580605,
+          "min_ms": 12.21000199439004
+        },
+        "patch_build": {
+          "median_ms": 138.4891259986034,
+          "min_ms": 109.77272400486981
+        },
+        "laspy_read_io": {
+          "median_ms": 14.938550997612765,
+          "min_ms": 13.584602995251771
+        },
+        "crs_transformer_init": {
+          "median_ms": 0.46565000229747966,
+          "min_ms": 0.4386000000522472
+        },
+        "projection": {
+          "median_ms": 17.37614950252464,
+          "min_ms": 17.006898997351527
+        },
+        "mask_filter": {
+          "median_ms": 1.3555494988395367,
+          "min_ms": 1.2223999947309494
+        },
+        "rng_sample": {
+          "median_ms": 0.14725000073667616,
+          "min_ms": 0.1286000042455271
+        },
+        "ckdtree_build": {
+          "median_ms": 29.186998999648495,
+          "min_ms": 28.587405999132898
+        },
+        "ckdtree_query_offsets": {
+          "median_ms": 5.706801501219161,
+          "min_ms": 5.181599997740705
+        },
+        "hsi_infer": {
+          "median_ms": 205.5542960006278,
+          "min_ms": 185.32114100526087
+        },
+        "pc_infer": {
+          "median_ms": 12.81985100285965,
+          "min_ms": 11.755995998100843
+        },
+        "feature_grid_assemble": {
+          "median_ms": 22.064695996959927,
+          "min_ms": 8.458802003588062
+        },
+        "match": {
+          "median_ms": 319.85337150035775,
+          "min_ms": 278.1830859967158
+        }
+      },
+      "total_with_io_median_ms": 838.4858950012131,
+      "total_without_io_median_ms": 766.3772395062551,
+      "agreement_vs_pytorch_fp32": {
+        "DTP": 1.0,
+        "DTP+Spatial": 0.997
+      }
+    }
+  },
+  "direction_consistent": true,
+  "overall_speedup_without_io": 2.154364264412181,
+  "overall_speedup_with_io": 1.9941665407932339,
+  "contribution_breakdown_forward_without_io": {
+    "S0_stage4_original->S1_mixed_precision_batch64": {
+      "delta_ms": -82.716201479343,
+      "pct_of_total_saved": -21.600978934733796
+    },
+    "S1_mixed_precision_batch64->S2_valid_pixels_only": {
+      "delta_ms": 164.4845604969305,
+      "pct_of_total_saved": 42.9544329023674
+    },
+    "S2_valid_pixels_only->S3_lite_runner_no_torch": {
+      "delta_ms": -43.82750099466648,
+      "pct_of_total_saved": -11.44536268368467
+    },
+    "S3_lite_runner_no_torch->S4_scene_engine": {
+      "delta_ms": 76.12284300557803,
+      "pct_of_total_saved": 19.879151832500224
+    },
+    "S4_scene_engine->S5_numpy_match_separate": {
+      "delta_ms": 137.54746848644572,
+      "pct_of_total_saved": 35.91992760987305
+    },
+    "S5_numpy_match_separate->S6_numpy_match_merged": {
+      "delta_ms": 113.7514849906438,
+      "pct_of_total_saved": 29.705709245983876
+    },
+    "S6_numpy_match_merged->S7_final_ckdtree_unbalanced": {
+      "delta_ms": 17.56536801258335,
+      "pct_of_total_saved": 4.587120027693921
+    }
+  },
+  "contribution_note": "贡献拆分依赖累加顺序，各步之间可能存在交互效应（比如只算有效像元在batch64下省得更多，因为batch64调用次数更敏感于patch数量）；S0用legacyengine，一致率跟S1-S7不是同一个基准（legacy是阶段2/3的原始fp16engine，不是mixed精度），仅供参考不代表S0本身有精度问题",
+  "status": "OK"
+}
