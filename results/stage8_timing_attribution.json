@@ -1,6 +1,6 @@
 {
   "question": "results/stage5_deploy_opt.json 的不含IO总耗时282ms，与 results/stage7_final_e2e.json 里 S7 的331.7ms 是同一配置（同engine/同runner/同数据），为什么差约18%？",
-  "method": "控制变量：每组只改一个因素，固定用 e2e_scene_preprocessed.npz 缓存的真实数据（9645个valid HSI patch、1000个点的offsets），只测 hsi_infer/pc_infer/feature_grid_assemble 三段（GPU相关段），跳过IO/CPU前处理段（那部分差异已知：GDAL load_hsi 469ms vs np.fromfile 49ms，跟本疑点无关）。warmup2+repeat10，与两边原口径一致。",
+  "method": "控制变量：每组只改一个因素，固定用 e2e_scene_preprocessed.npz 缓存的真实数据（9645个valid HSI patch、1000个点的offsets），只测 hsi_infer/pc_infer/feature_grid_assemble 三段（GPU相关段），跳过IO/CPU前处理段（那部分差异已知：GDAL load_hsi 469ms vs np.fromfile 49ms，与本次归因无关）。warmup2+repeat10，与两边原口径一致。",
   "groups": {
     "a_hspc_preprocess_no_torch": {
       "env": "conda hspc-preprocess", "note": "复现 deploy_scene.py 的条件",

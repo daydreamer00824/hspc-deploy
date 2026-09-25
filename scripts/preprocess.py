@@ -59,7 +59,7 @@ def build_point_offsets(xyz: np.ndarray, point_indices, k: int = 15, balanced_tr
 def load_hsi(path, target_bands: int = 342):
     """读取高光谱影像文件 -> (raw, geotransform, projection)。
 
-    依赖 GDAL（`osgeo.gdal`），当前环境未安装，见 README「前处理」章节。
+    依赖 GDAL（`osgeo.gdal`）；环境与依赖说明见 `docs/environment.md`。
     """
     from pathlib import Path
     from osgeo import gdal
@@ -189,7 +189,7 @@ def map_to_canonical_pixel(gt, x, y):
 
 
 def project_xyz_to_canonical_pixels(x, y, source_crs, target_crs, gt, spatial_contract):
-    """LAS XY -> HSI canonical (row, col)。依赖 pyproj（当前环境未安装）。"""
+    """LAS XY -> HSI canonical (row, col)。依赖 pyproj；环境与依赖说明见 `docs/environment.md`。"""
     from pyproj import CRS, Transformer
 
     source = CRS.from_user_input(source_crs)
