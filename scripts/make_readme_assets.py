@@ -6,8 +6,7 @@
 输出：
     assets/e2e_latency.png    整景端到端耗时对比（stage7_final_e2e.json）
     assets/cpu_matching.png   CPU 匹配段优化前后（stage7_cpu_profile.json）
-    assets/results_table.md   结果总表 + 脚注（精度取 stage2_trt_accuracy.json，延迟/加速比取 stage3_benchmark.json；
-                              脚注另引用 stage7_mixed_precision.json 的稳定性验证与 hsi_qdq_check.json 的 QDQ 核查）
+    assets/results_table.md   结果总表（精度取 stage2_trt_accuracy.json，延迟/加速比取 stage3_benchmark.json）
 
 生成前会检查关键数字与 README.md 里已有的写法一致，不一致则报错退出，不写任何输出。
 运行结束打印 provenance 表：图表里出现的每个数字对应的 JSON 文件与字段路径。
@@ -33,8 +32,6 @@ F2 = "results/stage2_trt_accuracy.json"
 F3 = "results/stage3_benchmark.json"
 FE = "results/stage7_final_e2e.json"
 FC = "results/stage7_cpu_profile.json"
-F7 = "results/stage7_mixed_precision.json"
-FQ = "results/hsi_qdq_check.json"
 
 # 配色：reference palette 的 categorical slot 1 / 2（light 模式，色值不改）
 SURFACE, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e6e5e1"
@@ -63,8 +60,6 @@ s2 = load("stage2_trt_accuracy.json")
 s3 = load("stage3_benchmark.json")
 e2e = load("stage7_final_e2e.json")
 cpu = load("stage7_cpu_profile.json")
-s7 = load("stage7_mixed_precision.json")
-qc = load("hsi_qdq_check.json")
 
 # ---- 图1：整景端到端（forward 方向，与 README 的 714.7ms → 331.7ms 同口径）
 S0, S7 = "S0_stage4_original", "S7_final_ckdtree_unbalanced"
@@ -251,40 +246,7 @@ def bench_p50(model: str, backend: str, batch: int = 1):
     return None
 
 
-def fp16_stability_note(model: str, where: str) -> str:
-    """同配置多次独立构建的 cos_sim_min 范围（stage7 稳定性验证），补充说明正式 engine 之外的构建也稳定。"""
-    st = s7[model]["stability"]
-    lo, hi, n = min(st["cos_mins"]), max(st["cos_mins"]), st["n"]
-    fld = f"{model}.stability.cos_mins"
-    rec(f"{where} / stability n", str(n), F7, f"{model}.stability.n", n)
-    rec(f"{where} / stability min", f"{lo:.6f}", F7, fld, lo, derived="min of list")
-    rec(f"{where} / stability max", f"{hi:.6f}", F7, fld, hi, derived="max of list")
-    return f"；同配置另有 {n} 次独立构建的稳定性验证，cos_sim_min 为 {lo:.6f}–{hi:.6f}（`{F7}` → `{fld}`）"
-
-
-def qdq_note(where: str) -> str:
-    """HSI QDQ 精度偏低的成因：重建稳定 + 不经 TensorRT 的 ORT 直接运行同样偏低 → 量化误差本身。"""
-    rb = [r["cos_sim_min"] for r in qc["trt_rebuilds"]]
-    ort = [v["cos_sim_min"] for v in qc["ort_direct"].values()]
-    n = len(rb)
-    rec(f"{where} / rebuild n", str(n), FQ, "trt_rebuilds", n, derived="len of list")
-    rec(f"{where} / rebuild min", f"{min(rb):.4f}", FQ, "trt_rebuilds[*].cos_sim_min", min(rb), derived="min of list")
-    rec(f"{where} / rebuild max", f"{max(rb):.4f}", FQ, "trt_rebuilds[*].cos_sim_min", max(rb), derived="max of list")
-    rec(f"{where} / ORT min", f"{min(ort):.4f}", FQ, "ort_direct.*.cos_sim_min", min(ort), derived="min over providers")
-    rec(f"{where} / ORT max", f"{max(ort):.4f}", FQ, "ort_direct.*.cos_sim_min", max(ort), derived="max over providers")
-    return (f"。该路径构建稳定、但精度本身偏低：同一 QDQ 图经 TensorRT 独立重建 {n} 次，cos_sim_min 为 "
-            f"{min(rb):.4f}–{max(rb):.4f}；不经 TensorRT、直接用 ONNX Runtime 运行该 QDQ 模型，cos_sim_min 为 "
-            f"{min(ort):.4f}–{max(ort):.4f}，同样偏低（`{FQ}` → `trt_rebuilds[*].cos_sim_min`、`ort_direct.*.cos_sim_min`）。"
-            "因此这是 QDQ 量化误差本身较大，不是技术要点第 3 条中 PC 路径那种重建后输出数值异常的问题")
-
-
 def build_table() -> str:
-    notes: dict[str, str] = {}
-
-    def cell(text: str, fid: str, note: str) -> str:
-        notes[fid] = note
-        return f"{text}[^{fid}]"
-
     ns = {s2["results"][m][mode]["n"] for m in ROWS for _, _, _, mode in ROWS[m] if mode}
     if len(ns) != 1:
         sys.exit(f"stage2 各模式的样本数 n 不一致：{ns}")
@@ -299,7 +261,7 @@ def build_table() -> str:
         "分别排除样本自身后，PyTorch 与 TensorRT 在同模态样本中检索到同一个最近邻的比例；"
         "延迟为 batch=1 的 p50"
         f"（warmup {warmup} / measure {measure}，CUDA event 计时）。"
-        "表中 `[batch=1]` 表示列表里 `batch` 字段等于 1 的元素；每个单元格的来源见文末脚注。",
+        "表中 `[batch=1]` 表示列表里 `batch` 字段等于 1 的元素；字段级来源与补充验证信息见下方折叠 provenance。",
         "",
         "| Model | Backend | Precision | Accuracy (cos_sim_min / same-modal NN Top-1 agreement) | Latency (batch=1, p50, ms) | Speedup vs PyTorch FP32 |",
         "|---|---|---|---|---|---|",
@@ -307,7 +269,6 @@ def build_table() -> str:
     for model, rows in ROWS.items():
         name = model.upper()
         for backend, precision, bkey, mode in rows:
-            rid = f"{model}-{bkey}"
             where = f"Table / {name} {backend} {precision}"
             # 精度
             if mode is None:
@@ -321,13 +282,7 @@ def build_table() -> str:
                               f"results.{model}.{mode}.cos_sim_min", a["cos_sim_min"])
                     top1 = rec(f"{where} / top1", f"{a['top1_agreement'] * 100:.1f}%", F2,
                                f"results.{model}.{mode}.top1_agreement", a["top1_agreement"])
-                    note = (f"`{F2}` → `results.{model}.{mode}.cos_sim_min`, "
-                            f"`results.{model}.{mode}.top1_agreement`")
-                    if mode == "fp16":
-                        note += fp16_stability_note(model, where)
-                    if model == "hsi" and mode == "int8_qdq":
-                        note += qdq_note(where)
-                    acc = cell(f"{cos:.6f} / {top1 * 100:.1f}%", f"{rid}-acc", note)
+                    acc = f"{cos:.6f} / {top1 * 100:.1f}%"
             # 延迟 / 加速比
             p50 = bench_p50(model, bkey)
             base = bench_p50(model, "pytorch_fp32_gpu")
@@ -335,7 +290,7 @@ def build_table() -> str:
                 lat = spd = NOT_MEASURED
             else:
                 rec(f"{where} / p50", f"{p50:.3f}", F3, f"results.{model}.{bkey}[batch=1].p50_ms", p50)
-                lat = cell(f"{p50:.3f}", f"{rid}-lat", f"`{F3}` → `results.{model}.{bkey}[batch=1].p50_ms`")
+                lat = f"{p50:.3f}"
                 if base is None:
                     spd = NOT_MEASURED
                 else:
@@ -343,17 +298,14 @@ def build_table() -> str:
                     rec(f"{where} / speedup", f"{sp:.1f}x", F3,
                         f"results.{model}.pytorch_fp32_gpu[batch=1].p50_ms / results.{model}.{bkey}[batch=1].p50_ms",
                         sp, derived="pytorch p50 / row p50")
-                    spd = cell(f"{sp:.1f}x", f"{rid}-spd",
-                               f"`{F3}` → `results.{model}.pytorch_fp32_gpu[batch=1].p50_ms` ÷ "
-                               f"`results.{model}.{bkey}[batch=1].p50_ms`（由这两个字段相除得出）")
+                    spd = f"{sp:.1f}x"
             lines.append(f"| {name} | {backend} | {precision} | {acc} | {lat} | {spd} |")
 
     table_note = "PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。"
     if any(NOT_MEASURED in line for line in lines):
         table_note = (f"“{NOT_MEASURED}”表示 `stage2_trt_accuracy.json` / "
                       f"`stage3_benchmark.json` 中没有对应数值。{table_note}")
-    lines += ["", table_note, ""]
-    lines += [f"[^{fid}]: {text}" for fid, text in notes.items()]
+    lines += ["", table_note]
     return "\n".join(lines) + "\n"
 
 

@@ -1,9 +1,9 @@
 {
   "generated": "2026-09-23",
-  "scope": "外部审查疑点1/2/3 复核，仅诊断，未改模型结构/权重/超参数",
+  "scope": "engine 构建不确定性、计时分解与消融的复核诊断；仅诊断，未改模型结构/权重/超参数",
   "subtask1_deploy_engine_precision_flag": {
     "code_diff_at_14_11_54": {
-      "finding": "找到实际diff（Bash python3 heredoc字符串替换，非Edit工具）。只改了：硬编码PROFILE->按名字查的PROFILES字典、make_profile/build_engine穿透profile_name参数、非default时文件名加_deploy后缀、新增--profile CLI参数。config.clear_flag(TF32)/config.set_flag(FP16) 两行未改。",
+      "finding": "定位到该次构建脚本改动的实际diff。只改了：硬编码PROFILE->按名字查的PROFILES字典、make_profile/build_engine穿透profile_name参数、非default时文件名加_deploy后缀、新增--profile CLI参数。config.clear_flag(TF32)/config.set_flag(FP16) 两行未改。",
       "status": "confirmed"
     },
     "confound_2x2x2_experiment": {
@@ -437,7 +437,7 @@
       "status": "confirmed(nsys直接测得，CPU侧API调用耗时，非GPU执行时间)"
     },
     "serial_h2d_exec_d2h_hypothesis_verdict": {
-      "verdict": "定性成立但机制不同于原文档的解释。原文档349us的execute_async_v3是在不同步循环里测的、怀疑包含反压等待；本次分步测量显示：H2D copy_from中位122us、execute_async_v3中位249us、D2H copy_to中位306us，三者之和(677us)占单次infer()总耗时(756us)的90%，而末尾stream.synchronize()本身中位只有4.7us(nsys交叉验证：cudaStreamSynchronize中位2.1us，同量级)。也就是说等待不是集中在最后的synchronize()，而是分散在H2D/D2H/execute三个'enqueue'调用本身——这与h_in/h_out是pageable内存(见上)、导致memcpy退化为同步拷贝的代码证据一致，nsys测得cudaMemcpyAsync均值133.5us/中位71.2us(2009次调用)也支持这个解释。",
+      "verdict": "定性成立但机制不同于阶段5的原有解释。阶段5记录的349us的execute_async_v3是在不同步循环里测的、怀疑包含反压等待；本次分步测量显示：H2D copy_from中位122us、execute_async_v3中位249us、D2H copy_to中位306us，三者之和(677us)占单次infer()总耗时(756us)的90%，而末尾stream.synchronize()本身中位只有4.7us(nsys交叉验证：cudaStreamSynchronize中位2.1us，同量级)。也就是说等待不是集中在最后的synchronize()，而是分散在H2D/D2H/execute三个'enqueue'调用本身——这与h_in/h_out是pageable内存(见上)、导致memcpy退化为同步拷贝的代码证据一致，nsys测得cudaMemcpyAsync均值133.5us/中位71.2us(2009次调用)也支持这个解释。",
       "status": "confirmed（H2D/D2H事实上是阻塞的，等待不在synchronize；具体每部分里多少是真实GPU拷贝时间、多少是TRT python绑定的CPU端开销，因为没有GPU kernel级时间线，无法进一步拆分，标记为not_confirmed）"
     },
     "whole_scene_phase_breakdown_fp16": {

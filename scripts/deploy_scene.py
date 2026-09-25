@@ -4,8 +4,10 @@
 torch 张量逐点循环），实测有两处可优化的真实开销：
 1. TrtRunner 每次调用都重新分配 CUDA 显存 + 创建新的 torch tensor，阶段4实测端到端比
    纯kernel慢 2.0~2.2倍（见 results/stage4_e2e.json 的 runner_overhead_vs_stage3_kernel）
-2. torch 版 score_window_batch 的逐点循环里有大量 .clone()/张量创建/CPU开销，
-   实测2个variant合计369ms；本文件改用 numpy 翻译同一套逻辑，实测127ms（2.9x）
+2. torch 版 score_window_batch 的逐点循环里有大量 .clone()/张量创建/CPU开销；阶段5将其
+   重写为同一逻辑的 numpy 实现，早期 profiling 已观察到明显的 CPU 开销下降。阶段7在固定输入
+   特征的独立微基准中进一步验证最终 merged window scoring：169.8ms → 72.9ms（2.33x），
+   输出逐位一致（results/stage7_cpu_profile.json）。
 
 本文件只依赖 numpy/scipy/gdal/pyproj/laspy/tensorrt/polygraphy，不依赖 torch。
 运行环境：conda hspc-preprocess + PYTHONPATH=/usr/lib/python3.10/dist-packages（给 tensorrt
@@ -265,9 +267,10 @@ def numpy_score_window_multi(point_features, feature_grid, valid_mask, ref_rows,
     行列各自的一维数组广播（结果逐位相同，省掉 meshgrid/broadcast_arrays 的调用开销）。
 
     经验证：在真实场景数据上跟"对每个 variant 分别调用 numpy_score_window"逐位相同
-    （rows/cols/cosine/pixel_displacement 全部 array_equal），2 个 variant 合计耗时从
-    191ms 降到 84ms（2.3x），main() 已改用这个版本；`numpy_score_window` 单variant版本
-    保留供 scripts/stage6_ablation.py 等其他脚本引用。
+    （rows/cols/cosine/pixel_displacement 全部 array_equal），main() 已改用这个版本。阶段7
+    的固定输入特征独立微基准记录为 169.8ms → 72.9ms（2.33x，输出逐位一致），见
+    results/stage7_cpu_profile.json；`numpy_score_window` 单variant版本保留供
+    scripts/stage6_ablation.py 等其他脚本引用。
     """
     rows, cols, dim = feature_grid.shape
     grid_n = feature_grid / (np.linalg.norm(feature_grid, axis=-1, keepdims=True) + 1e-12)
