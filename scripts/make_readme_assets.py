@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import sys
+import textwrap
 from decimal import ROUND_FLOOR, Decimal, localcontext
 from pathlib import Path
 
@@ -488,8 +489,10 @@ F_LAS = ("crs_transformer_init", "projection", "mask_filter", "rng_sample", "ckd
 
 
 def fig_jetson_full() -> None:
-    fig = plt.figure(figsize=(11.5, 4.6), facecolor=SURFACE)
-    ax = fig.add_axes([0.30, 0.13, 0.66, 0.64])
+    # 比其余 Jetson 图更高：标题 + 多行图注 + 图例要放在坐标轴上方，图注文字长（尤其是下界口径
+    # 的解释），单行会在画布右侧被截断（旧版就是这样，见 archive 里改这段文字前的截图）。
+    fig = plt.figure(figsize=(11.5, 5.35), facecolor=SURFACE)
+    ax = fig.add_axes([0.30, 0.112, 0.66, 0.55])
     style_axes(ax)
     cfgs = list(FULL)
     xmax = max(FULL[c]["total_ms"] for c in cfgs)
@@ -511,28 +514,36 @@ def fig_jetson_full() -> None:
     ax.set_yticks(range(len(cfgs)), [F_LABELS[c] for c in cfgs])
     ax.invert_yaxis()
     ax.set_xlim(0, xmax * 1.15)
-    ax.set_xlabel("End-to-end latency from raw files on Jetson Orin Nano Super (ms; bars = per-segment median, "
-                  "label = median of 10 whole-scene runs)")
     ax.grid(axis="x", color=GRID, linewidth=1, zorder=0)
     for lab in ax.get_yticklabels():
         lab.set_color(INK); lab.set_fontsize(9)
     if a_lb:
+        # A 的 label 不是 whole-scene wall clock 的中位数（那样会与 B~E 的口径混同，正是这一轮要
+        # 消除的误读），必须单独措辞：A 是"顺序、互不重叠的分段计时之和"，逐次取值后再取中位数——
+        # 这是 A 真实整景墙钟的一个下界，不是墙钟本身。
+        ax.set_xlabel("End-to-end latency from raw files on Jetson Orin Nano Super "
+                      "(ms; bars = per-segment medians, labels = median of 10 per-run totals)")
         title_sp = f"(≥{lb_default}x, conservative lower bound)"
         caption = ("Scene 24data/10.6/1; each config in its own process; all match results bit-identical to the cached-input pipeline; "
                    "file cache warm; overlapped stages show CPU-side time; segment bars are per-segment medians and may not sum exactly "
-                   "to the printed total (median of whole-scene run totals). A's total is the sum of its (sequential, non-overlapping) "
-                   "segment timers per run, which is <= A's true whole-scene wall clock; B-E use the true whole-scene wall clock. "
+                   "to the printed per-run-total median. A uses the median of per-run sums of sequential, non-overlapping segment "
+                   "timers (a lower bound on A's true whole-scene wall clock); B-E use whole-scene wall-clock medians. "
                    "So A/E is only a conservative lower bound on the true speedup, truncated (not rounded) to 2 decimals.")
     else:
+        ax.set_xlabel("End-to-end latency from raw files on Jetson Orin Nano Super (ms; bars = per-segment median, "
+                      "label = median of 10 whole-scene runs)")
         title_sp = f"({full_sp[F_SC]:.1f}x)"
         caption = ("Scene 24data/10.6/1; each config in its own process; all match results bit-identical to the cached-input pipeline; "
                    "file cache warm; overlapped stages show CPU-side time; segment bars are per-segment medians and may not sum exactly "
                    "to the printed total (median of whole-scene run totals)")
-    fig.text(0.02, 0.93, f"Jetson, raw files → match results: {FULL['A']['total_ms']:.0f} ms → {FULL['E']['total_ms']:.0f} ms "
-             f"{title_sp}", color=INK, fontsize=14, weight="bold", ha="left")
-    fig.text(0.02, 0.87, caption, color=INK2, fontsize=9, ha="left")
+    # 标题和坐标轴下方的说明都可能很长（下界口径的解释尤其长），单行会在画布右侧被截断；
+    # 按字符宽度手动换行成多行，用 \n 交给 matplotlib 渲染（fig.text/xlabel 原生支持多行）。
+    ax.set_xlabel("\n".join(textwrap.wrap(ax.get_xlabel(), width=100)))
+    fig.text(0.02, 0.965, f"Jetson, raw files → match results: {FULL['A']['total_ms']:.0f} ms → {FULL['E']['total_ms']:.0f} ms "
+             f"{title_sp}", color=INK, fontsize=14, weight="bold", ha="left", va="top")
+    fig.text(0.02, 0.895, "\n".join(textwrap.wrap(caption, width=118)), color=INK2, fontsize=9, ha="left", va="top", linespacing=1.5)
     fig.legend(handles=[Patch(color=c, label=g) for g, _, c in groups], loc="upper left",
-               bbox_to_anchor=(0.015, 0.855), ncol=3, frameon=False, fontsize=9.5, labelcolor=INK2, handlelength=1.2)
+               bbox_to_anchor=(0.015, 0.70), ncol=3, frameon=False, fontsize=9.5, labelcolor=INK2, handlelength=1.2)
     fig.savefig(ASSETS / "jetson_full_e2e.png", dpi=200, facecolor=SURFACE)
     plt.close(fig)
 
