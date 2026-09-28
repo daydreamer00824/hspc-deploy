@@ -50,7 +50,6 @@ from __future__ import annotations
 import argparse
 import ctypes
 import json
-import os
 import sys
 import time
 from pathlib import Path
@@ -70,11 +69,9 @@ from preprocess import (  # noqa: E402
     valid_vegetation_mask,
 )
 from matching import VARIANTS, combine_score  # noqa: E402
+from scene_layout import DATA_ROOT, DEFAULT_HSI_PATH as HSI_PATH, DEFAULT_LAS_PATH as LAS_PATH  # noqa: E402
+from scene_layout import scene_paths  # noqa: E402,F401 (re-exported: deploy_jetson.py / cpp_guardrail.py import it from here)
 
-# 原始数据根目录，默认 <repo>/data，可用环境变量 HSPC_DATA_ROOT 覆盖
-DATA_ROOT = Path(os.environ.get("HSPC_DATA_ROOT", ROOT / "data"))
-HSI_PATH = DATA_ROOT / "hsi_spatial_spectral_resampled_common_342/24data/hsi/10.6/1_spec342.dat"
-LAS_PATH = DATA_ROOT / "lai_icp_registered_resampled_hsi/24data/10.6/rice_las/1_rice_icp.las"
 ENGINE_DIR = ROOT / "engines"
 
 CONTRACT = {
@@ -105,6 +102,8 @@ _TRT_TO_NP = {
 _CUDART = cuda.wrapper().handle  # 复用 polygraphy 已加载的同一个 libcudart.so，避免多份 CUDA 上下文/ABI 不一致
 _CUDART.cudaHostAlloc.argtypes = [ctypes.POINTER(ctypes.c_void_p), ctypes.c_size_t, ctypes.c_uint]
 _CUDART.cudaFreeHost.argtypes = [ctypes.c_void_p]
+_CUDART.cudaHostGetDevicePointer.argtypes = [ctypes.POINTER(ctypes.c_void_p), ctypes.c_void_p, ctypes.c_uint]
+_CUDA_HOST_ALLOC_MAPPED = 2
 
 
 class PinnedArray:
@@ -113,13 +112,22 @@ class PinnedArray:
     pinned 内存能让拷贝真正异步、和计算重叠。用完必须调用 free()，否则泄漏页锁定内存。
     """
 
-    def __init__(self, shape: tuple, dtype):
+    def __init__(self, shape: tuple, dtype, mapped: bool = False):
+        """mapped=True：cudaHostAllocMapped，GPU 可直接按 dev_ptr 读写这块 host 内存（Jetson 统一内存下零拷贝）。"""
         self.nbytes = int(np.prod(shape)) * np.dtype(dtype).itemsize
         ptr = ctypes.c_void_p()
-        err = _CUDART.cudaHostAlloc(ctypes.byref(ptr), ctypes.c_size_t(self.nbytes), ctypes.c_uint(0))
+        flags = _CUDA_HOST_ALLOC_MAPPED if mapped else 0
+        err = _CUDART.cudaHostAlloc(ctypes.byref(ptr), ctypes.c_size_t(self.nbytes), ctypes.c_uint(flags))
         if err != 0:
             raise RuntimeError(f"cudaHostAlloc failed, code={err}")
         self._ptr = ptr
+        self.dev_ptr = None
+        if mapped:
+            dptr = ctypes.c_void_p()
+            err = _CUDART.cudaHostGetDevicePointer(ctypes.byref(dptr), ptr, ctypes.c_uint(0))
+            if err != 0:
+                raise RuntimeError(f"cudaHostGetDevicePointer failed, code={err}")
+            self.dev_ptr = dptr.value
         buf = (ctypes.c_byte * self.nbytes).from_address(ptr.value)
         self.array = np.frombuffer(buf, dtype=dtype).reshape(shape)
 
@@ -203,6 +211,28 @@ class LiteTrtRunner:
         self.d_out.copy_to(self.h_out[:n], self.stream)
         self.stream.synchronize()
         return self.h_out[:n].astype(np.float32, copy=True)
+
+    def infer_ptrs(self, in_ptr: int, out_ptr: int, n: int, stream_ptr: int | None = None) -> None:
+        """在任意设备可访问地址上整批推理（映射 host 内存、torch 设备张量都行），没有任何 cudaMemcpy；
+        按 max_batch 分块只是移动地址偏移。输入/输出 dtype 必须等于引擎输入/输出 dtype。
+        stream_ptr=None：用 runner 自己的 stream 并在末尾同步；否则在调用方给的 stream 上下发，不同步（由调用方负责）。"""
+        in_row = int(np.prod(self.input_dims)) * np.dtype(self.in_dtype).itemsize
+        out_row = self.output_dim * np.dtype(self.out_dtype).itemsize
+        sp = self.stream.ptr if stream_ptr is None else stream_ptr
+        for off in range(0, n, self.max_batch):
+            m = min(self.max_batch, n - off)
+            self.context.set_input_shape(self.input_name, (m, *self.input_dims))
+            self.context.set_tensor_address(self.input_name, in_ptr + off * in_row)
+            self.context.set_tensor_address(self.output_name, out_ptr + off * out_row)
+            if not self.context.execute_async_v3(sp):
+                raise RuntimeError("execute_async_v3 failed")
+        if stream_ptr is None:
+            self.stream.synchronize()
+
+    def infer_all_zero_copy(self, x_map: PinnedArray, n: int, y_map: PinnedArray) -> None:
+        """零拷贝整景推理（Jetson 统一内存）：输入/输出都是 PinnedArray(mapped=True)。x_map 的形状为
+        (>=n, *input_dims)，y_map 为 (>=n, output_dim)。"""
+        self.infer_ptrs(x_map.dev_ptr, y_map.dev_ptr, n)
 
     def infer_all(self, x: np.ndarray) -> np.ndarray:
         """按 max_batch 分块跑完整个数组，buffer 全程复用。"""
@@ -335,10 +365,14 @@ def timed(fn, warmup=WARMUP, repeat=REPEAT):
 
 def run_las_pipeline(las_path: Path, point_cloud_crs: str, target_proj_wkt: str, gt,
                       spatial_contract: dict, valid_mask: np.ndarray, rows: int, cols: int,
-                      k_neighbors: int, samples_per_scene: int, seed: int, balanced_tree: bool = False):
+                      k_neighbors: int, samples_per_scene: int, seed: int, balanced_tree: bool = False,
+                      query_workers: int = 1, parallel_tree_build: bool = False):
     """LAS 全流程，细分计时（阶段7步骤4在 stage7_cpu_profile.py 里验证过跟
     preprocess.py:project_xyz_to_canonical_pixels + build_point_offsets 逐位相同后，
     移到这里作为正式实现）。
+
+    query_workers / parallel_tree_build（Jetson 用，默认值即原行为）：kNN 查询用多线程；kd 树构建放到后台线程，与 CRS 初始化、
+    投影、掩膜过滤、采样并行（两者只依赖原始坐标，互不依赖；pyproj 与 cKDTree 构建都会释放 GIL）。两项都不改变任何结果。
 
     crs_transformer_init 每次调用都重新构造 Transformer（不做跨调用缓存）——这跟生产环境
     "一个进程处理一景"的语义一致；如果以后要做多景批处理，跨景复用同一个 Transformer 对象能
@@ -354,6 +388,12 @@ def run_las_pipeline(las_path: Path, point_cloud_crs: str, target_proj_wkt: str,
     las = laspy.read(las_path)
     xyz = np.column_stack([las.x, las.y, las.z]).astype(np.float64)
     t["laspy_read_io"] = time.perf_counter() - t0
+
+    tree_future = None
+    if parallel_tree_build:
+        from concurrent.futures import ThreadPoolExecutor
+        pool = ThreadPoolExecutor(max_workers=1)
+        tree_future = pool.submit(cKDTree, xyz, balanced_tree=balanced_tree)
 
     t0 = time.perf_counter()
     source = CRS.from_user_input(point_cloud_crs)
@@ -384,12 +424,17 @@ def run_las_pipeline(las_path: Path, point_cloud_crs: str, target_proj_wkt: str,
     t["rng_sample"] = time.perf_counter() - t0
 
     t0 = time.perf_counter()
-    tree = cKDTree(xyz, balanced_tree=balanced_tree)  # 阶段7优化A（默认False），见 preprocess.py:build_point_offsets
-    t["ckdtree_build"] = time.perf_counter() - t0
+    if tree_future is not None:  # 并行构建：这里只剩等待时间（记为 ckdtree_build_wait）
+        tree = tree_future.result()
+        pool.shutdown()
+        t["ckdtree_build_wait"] = time.perf_counter() - t0
+    else:
+        tree = cKDTree(xyz, balanced_tree=balanced_tree)  # 阶段7优化A（默认False），见 preprocess.py:build_point_offsets
+        t["ckdtree_build"] = time.perf_counter() - t0
 
     t0 = time.perf_counter()
     query_k = min(k_neighbors + 1, len(xyz))
-    _, neighbors = tree.query(xyz[eligible], k=query_k)
+    _, neighbors = tree.query(xyz[eligible], k=query_k, workers=query_workers)
     neighbors = np.atleast_2d(neighbors).astype(np.int64)
     offsets = np.empty((len(eligible), k_neighbors, 3), dtype=np.float32)
     for j, point_index in enumerate(eligible):
@@ -472,17 +517,25 @@ def run_scene_once(hsi_runner: LiteTrtRunner, pc_runner: LiteTrtRunner):
 
 
 def main():
+    global HSI_PATH, LAS_PATH
     ap = argparse.ArgumentParser()
     ap.add_argument("--precision", choices=["fp16", "int8"], default="fp16")
     ap.add_argument("--engine-tier", choices=["scene", "batch64"], default="scene",
                      help="scene: engines/*_fp16_scene.plan（min1/opt2048/max2048，整景批量推理默认，"
                           "阶段7实测比batch64快2.1~2.5x）；batch64: engines/*_fp16.plan（低延迟单点/"
                           "小批场景）。int8精度目前只有batch64一档（int8无速度/精度收益，非推荐路径）。")
+    # 以下可选参数用于在其他平台/场景上原样运行这条链路（如 Jetson 上作为对照组），不传时用默认场景和引擎
+    ap.add_argument("--scene", default="24data/10.6/1", help="批次/日期/样地号")
+    ap.add_argument("--engine-suffix", default=None, help="scene 档位引擎的文件名后缀（默认 _scene）")
+    ap.add_argument("--max-batch", type=int, default=None, help="scene 档位引擎的 profile max（默认 2048）")
+    ap.add_argument("--out", default=None, help="结果 JSON 路径（默认 results/stage5_deploy_opt.json）")
     args = ap.parse_args()
+    if args.scene != "24data/10.6/1":
+        HSI_PATH, LAS_PATH = scene_paths(args.scene)
     mode = {"fp16": "fp16", "int8": "int8_implicit"}[args.precision]
     tier = args.engine_tier if args.precision == "fp16" else "batch64"
-    suffix = "_scene" if tier == "scene" else ""
-    engine_max_batch = 2048 if tier == "scene" else ENGINE_MAX_BATCH
+    suffix = (args.engine_suffix or "_scene") if tier == "scene" else ""
+    engine_max_batch = (args.max_batch or 2048) if tier == "scene" else ENGINE_MAX_BATCH
 
     t0 = time.perf_counter()
     hsi_runner = LiteTrtRunner(ENGINE_DIR / f"hsi_{mode}{suffix}.plan", input_dims=(342, 3, 3),
@@ -526,7 +579,8 @@ def main():
     }
 
     fp32_match_path = ROOT / "results/stage4_fp32_match.npz"
-    fp32_ref = np.load(fp32_match_path) if fp32_match_path.exists() else None
+    # 这份 FP32 基准只对应默认景
+    fp32_ref = np.load(fp32_match_path) if fp32_match_path.exists() and args.scene == "24data/10.6/1" else None
     variants_report = {}
     for vname in VARIANTS:
         m = last_outputs["match_result"][vname]
@@ -539,7 +593,8 @@ def main():
         variants_report[vname] = entry
 
     report = {
-        "scene": "24data/10.6/1", "precision": args.precision, "engine_tier": tier,
+        "scene": args.scene, "precision": args.precision, "engine_tier": tier,
+        "engine_suffix": suffix, "engine_max_batch": engine_max_batch,
         "n_grid_patches_full": last_outputs["n_grid_patches_full"],
         "n_grid_patches_valid_only": last_outputs["n_grid_patches_valid_only"],
         "n_points": last_outputs["n_points"],
@@ -559,9 +614,12 @@ def main():
         },
         "determinism": determinism,
         "variants": variants_report,
+        # 匹配行列原样保存，供跨实现逐位核对
+        "match_rowcols": {v: {"rows": last_outputs["match_result"][v]["rows"].tolist(),
+                              "cols": last_outputs["match_result"][v]["cols"].tolist()} for v in VARIANTS},
     }
 
-    out = ROOT / "results/stage5_deploy_opt.json"
+    out = Path(args.out) if args.out else ROOT / "results/stage5_deploy_opt.json"
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2))
     print(json.dumps({k: v for k, v in report.items() if k != "warm"} | {
         "warm": {"note": report["warm"]["note"],

@@ -1,0 +1,24 @@
+/usr/local/lib/python3.10/dist-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+[pc] pytorch_fp32_gpu done
+[pc] ort_cuda_fp32 skipped: CUDAExecutionProvider unavailable
+[pc] trt_fp32_notf32 done: batch1 mean=0.761ms batch64 mean=4.452ms
+[pc] trt_fp32_tf32 done: batch1 mean=0.540ms batch64 mean=2.813ms
+[pc] trt_fp16 done: batch1 mean=0.328ms batch64 mean=1.173ms
+[pc] engine fp16_legacy missing, skip
+[pc] engine fp16_scene missing, skip
+[pc] engine int8_implicit missing, skip
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+[hsi] pytorch_fp32_gpu done
+[hsi] ort_cuda_fp32 skipped: CUDAExecutionProvider unavailable
+[hsi] trt_fp32_notf32 done: batch1 mean=0.719ms batch64 mean=3.402ms
+[hsi] trt_fp32_tf32 done: batch1 mean=0.542ms batch64 mean=2.108ms
+[hsi] trt_fp16 done: batch1 mean=0.355ms batch64 mean=0.968ms
+[hsi] trt_fp16_legacy done: batch1 mean=0.324ms batch64 mean=0.939ms
+[hsi] engine fp16_scene missing, skip
+[hsi] engine int8_implicit missing, skip
+[hsi] trt_int8_qdq done: batch1 mean=0.354ms batch64 mean=0.916ms
+
+written -> results/stage3_benchmark.json
+benchmark rc=0

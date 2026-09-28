@@ -1,0 +1,8 @@
+  hsi build0 vs fp32           cos_mean=0.999939 cos_min=0.990481 max_abs=3.057e-01 top1=0.975 top5=1.000
+  hsi build1 vs fp32           cos_mean=0.999968 cos_min=0.996175 max_abs=1.919e-01 top1=0.980 top5=1.000
+  hsi build2 vs fp32           cos_mean=0.999968 cos_min=0.996175 max_abs=1.919e-01 top1=0.980 top5=1.000
+hsi pairwise max_abs {'0-1': 0.11376953125, '0-2': 0.11376953125, '1-2': 0.0}
+  pc build0 vs fp32            cos_mean=0.999998 cos_min=0.999993 max_abs=2.926e-02 top1=1.000 top5=1.000
+  pc build1 vs fp32            cos_mean=0.999998 cos_min=0.999993 max_abs=2.926e-02 top1=1.000 top5=1.000
+  pc build2 vs fp32            cos_mean=0.999998 cos_min=0.999993 max_abs=2.926e-02 top1=1.000 top5=1.000
+pc pairwise max_abs {'0-1': 0.0, '0-2': 0.0, '1-2': 0.0}

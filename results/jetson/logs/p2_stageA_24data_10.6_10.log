@@ -1,0 +1,28 @@
+/home/jetson/miniforge3/envs/hspc-jetson/lib/python3.10/site-packages/osgeo/gdal.py:330: FutureWarning: Neither gdal.UseExceptions() nor gdal.DontUseExceptions() has been explicitly called. In GDAL 4.0, exceptions will be enabled by default.
+  warnings.warn(
+[1/6] load_hsi: /home/jetson/hspc_jetson/data/hsi_spatial_spectral_resampled_common_342/24data/hsi/10.6/10_spec342.dat
+  shape=(342, 110, 168) gt=(120.75875994, 4.8823050566e-07, -0.0, 32.26726529, -0.0, -4.1481996351e-07)
+[2/6] standardize + full patch grid
+  patches: (18480, 342, 3, 3)
+[3/6] valid_vegetation_mask
+  valid pixels: 7404/18480
+[4/6] load LAS: /home/jetson/hspc_jetson/data/lai_icp_registered_resampled_hsi/24data/10.6/rice_las/10_rice_icp.las
+  points: 213564
+[5/6] project xyz -> canonical pixels
+  in_bounds=213564 eligible(valid)=143967
+  sampled eligible: 1000
+[6/6] build_point_offsets for eligible points
+{
+  "hsi_path": "/home/jetson/hspc_jetson/data/hsi_spatial_spectral_resampled_common_342/24data/hsi/10.6/10_spec342.dat",
+  "las_path": "/home/jetson/hspc_jetson/data/lai_icp_registered_resampled_hsi/24data/10.6/rice_las/10_rice_icp.las",
+  "hsi_shape": [
+    342,
+    110,
+    168
+  ],
+  "n_las_points": 213564,
+  "n_eligible_total_before_sample": 143967,
+  "n_sampled": 1000,
+  "n_grid_patches": 18480
+}
+written /home/jetson/hspc_jetson/results/scenes/24data_10.6_10_preprocessed.npz

@@ -1,0 +1,42 @@
+{
+  "pc_x86cpu_vs_jetson_cpu": {
+    "n": 200,
+    "cos_sim_mean": 1.0,
+    "cos_sim_min": 0.9999997615814209,
+    "max_abs_err": 5.245208740234375e-06,
+    "mean_abs_err": 3.347603296788293e-07,
+    "rel_l2": 3.552190435129887e-07,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  },
+  "pc_x86cpu_vs_jetson_cuda": {
+    "n": 200,
+    "cos_sim_mean": 1.0,
+    "cos_sim_min": 0.9999997615814209,
+    "max_abs_err": 1.0728836059570312e-05,
+    "mean_abs_err": 6.893484396641725e-07,
+    "rel_l2": 7.871260550018633e-07,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  },
+  "hsi_x86cpu_vs_jetson_cpu": {
+    "n": 200,
+    "cos_sim_mean": 1.0,
+    "cos_sim_min": 0.9999997615814209,
+    "max_abs_err": 4.5418739318847656e-05,
+    "mean_abs_err": 8.457693638774799e-07,
+    "rel_l2": 1.5784959259690368e-06,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  },
+  "hsi_x86cpu_vs_jetson_cuda": {
+    "n": 200,
+    "cos_sim_mean": 1.0,
+    "cos_sim_min": 0.9999997615814209,
+    "max_abs_err": 6.592273712158203e-05,
+    "mean_abs_err": 1.001476562123571e-06,
+    "rel_l2": 2.0347483769000974e-06,
+    "top1_agreement": 1.0,
+    "top5_agreement": 1.0
+  }
+}

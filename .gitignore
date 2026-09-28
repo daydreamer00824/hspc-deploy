@@ -5,6 +5,7 @@ hspc_encoder/
 onnx/
 engines/*.plan
 engines/*.calib
+scratch/
 *.pt
 *.onnx
 *.plan
@@ -30,3 +31,27 @@ scripts/matching.py
 __pycache__/
 *.pyc
 *:Zone.Identifier
+
+# Jetson 板上结果：真实样本的参考特征与场景匹配输出（与上面 results/ref/、stage4_fp32_match.npz 同规则）
+results/jetson/ref/
+results/jetson/*.npz
+results/jetson/logs/nsys/*.nsys-rep
+results/jetson/logs/nsys/*.sqlite
+# 多场景验证的缓存输入（含原始 HSI 波段值与点云坐标，同上）
+results/scenes/*.npz
+# Jetson 完整端到端每次运行的原始 JSON（含每个点的匹配行列，同上面"匹配输出仅保留本地"）；公开的是汇总 e2e_full_summary.json / e2e_las_summary.json
+results/jetson/e2e_full/
+# 同上：控制台日志里打印了整份结果 JSON（含每个点的匹配行列）
+results/jetson/logs/p5_A_*.log
+
+# TensorRT 逐层导出会暴露未公开模型的层名和张量维度
+results/jetson/logs/int8diag/*_layers.json
+
+# C++ 部署：不入库的私有匹配规则头文件与构建目录
+cpp/src/matching_rule.cuh
+cpp/build/
+# C++ 部署每次运行的原始 JSON（含每个点的匹配行列，同 e2e_full/）；公开的是汇总 cpp_e2e_summary.json
+results/jetson/cpp_e2e/
+results/jetson/cpp_power/energy_*.json
+results/jetson/cpp_power/cold_*.log
+results/jetson/cpp_power/energy_*.log

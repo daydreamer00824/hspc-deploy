@@ -1,0 +1,28 @@
+/usr/local/lib/python3.10/dist-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+[forward] S10: total 170.2 ms  pc_infer=0.9  prep=33.2  patch_build=12.4  hsi_infer=82.4  assemble=0.4  match=40.7
+[forward] S11: total 150.2 ms  pc_infer=0.8  prep=12.6  patch_build=11.5  hsi_infer=84.3  assemble=0.4  match=40.1
+[forward] S11b: total 159.6 ms  pc_infer=0.7  prep=27.5  patch_build=7.8  hsi_infer=82.5  assemble=0.3  match=40.6
+[forward] S10T: total 169.1 ms  pc_infer=0.8  prep=33.0  patch_build=12.4  hsi_infer=81.5  assemble=0.4  match=40.7
+[reverse] S10T: total 169.0 ms  pc_infer=0.8  prep=32.9  patch_build=12.3  hsi_infer=81.5  assemble=0.4  match=40.7
+[reverse] S11b: total 159.5 ms  pc_infer=0.8  prep=27.3  patch_build=7.8  hsi_infer=82.2  assemble=0.4  match=40.7
+[reverse] S11: total 149.0 ms  pc_infer=0.7  prep=12.5  patch_build=11.6  hsi_infer=83.5  assemble=0.3  match=40.0
+[reverse] S10: total 169.8 ms  pc_infer=0.8  prep=32.9  patch_build=12.3  hsi_infer=82.3  assemble=0.4  match=40.6
+{
+  "forward": {
+    "S10": 1.0,
+    "S11": 1.1335952835862504,
+    "S11b": 1.06643090957315,
+    "S10T": 1.0064937195342993
+  },
+  "reverse": {
+    "S10": 1.0,
+    "S11": 1.1398112627374453,
+    "S11b": 1.0650920359915015,
+    "S10T": 1.0048414864845912
+  }
+}
+written -> results/opt_p25_24data_10.6_10.json
+rc=0

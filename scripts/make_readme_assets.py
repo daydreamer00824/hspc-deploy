@@ -32,10 +32,22 @@ F2 = "results/stage2_trt_accuracy.json"
 F3 = "results/stage3_benchmark.json"
 FE = "results/stage7_final_e2e.json"
 FC = "results/stage7_cpu_profile.json"
+FJ = "results/jetson/opt_final2_compare.json"
+FJE = "results/jetson/opt_final2_energy.json"
+FJB0 = "results/jetson/logs/nsys/o0_S0_gpu_busy.json"
+FJB1 = "results/jetson/logs/nsys/final_S11b_gpu_busy.json"
+FJM = "results/jetson/opt_final2_multiscene_{}.json"
+FJF = "results/jetson/e2e_full_summary.json"
+FJL = "results/jetson/e2e_las_summary.json"
+FX8 = "results/x86_int8_implicit_verification.json"
+FCE = "results/jetson/cpp_e2e_summary.json"
+FCL = "results/jetson/cpp_latency_summary.json"
+FCP = "results/jetson/cpp_power_summary.json"
 
 # 配色：reference palette 的 categorical slot 1 / 2（light 模式，色值不改）
 SURFACE, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e6e5e1"
 C_BEFORE, C_AFTER = "#2a78d6", "#eb6834"
+C_SLOT3 = "#1baf7a"  # categorical slot 3（aqua）；浅色底上对比度 <3:1，按规范所有段都直接标数值
 
 PROV: list[tuple] = []
 
@@ -91,8 +103,83 @@ for model, label in (("pc", "PC"), ("hsi", "HSI")):
     check_readme(readme, f"{label} 单样本加速比", f"{label} {b1 / t1:.1f}x")
 check_readme(readme, "整景耗时与加速比", f"{tot0:.1f}ms → {tot7:.1f}ms（**{speedup_e2e:.2f}x**）")
 check_readme(readme, "匹配段耗时与倍数", f"{b_med:.1f}ms → {a_med:.1f}ms（{b_med / a_med:.2f}x")
-check_readme(readme, "PC INT8 cos_sim_min",
-             f"cos_sim_min {s2['results']['pc']['int8_implicit']['cos_sim_min']:.6f}")
+# ---- x86 隐式 INT8 核实：所有构建都没有 Int8 层
+x8 = load("x86_int8_implicit_verification.json")
+n8 = [b["layers_with_int8"] for m in ("pc", "hsi") for b in x8[m]["int8_implicit"]]
+if any(n8):
+    sys.exit(f"x86_int8_implicit_verification.json 里出现了含 Int8 的层：{n8}，README 的更正说明需要重写")
+rec("Tech note 3 / Int8 layers in int8_implicit builds", "0", FX8, "<pc|hsi>.int8_implicit[*].layers_with_int8", max(n8))
+check_readme(readme, "隐式 INT8 更正说明", "逐层统计全部为 0 个 Int8 层")
+
+# ---- Jetson：累加对比、能效、GPU 忙碌率、多场景
+jc = json.loads((ROOT / FJ).read_text(encoding="utf-8"))
+jcf = jc["rounds"]["forward"]
+J_CFGS = list(jcf)
+J0, JN = J_CFGS[0], J_CFGS[-1]
+j_tot0, j_totn = jcf[J0]["total_ms_median"], jcf[JN]["total_ms_median"]
+j_sp = jc["speedup_total"]["forward"][JN]
+je = json.loads((ROOT / FJE).read_text(encoding="utf-8"))
+jb0 = json.loads((ROOT / FJB0).read_text(encoding="utf-8"))["scene_S0"]
+jb1 = json.loads((ROOT / FJB1).read_text(encoding="utf-8"))[f"scene_{JN}"]
+busy0 = jb0["gpu_busy_ms"] / jb0["wall_ms"] * 100
+busy1 = jb1["gpu_busy_ms"] / jb1["wall_ms"] * 100
+for n, a in jc["accuracy_vs_fp32"].items():
+    if not all(v["all_near_ties"] for v in a["match"].values()):
+        sys.exit(f"Jetson {n}：存在非近平局的不一致点，不能标注“精度不变”")
+if not all(jc["frontend_guardrail"].values()):
+    sys.exit("Jetson 前处理护栏未通过")
+J_SCENES = ["24data_10.6_1", "24data_10.6_10", "25data_8.4_1", "25data_10.22_1"]
+jm = {sc: json.loads((ROOT / FJM.format(sc)).read_text(encoding="utf-8")) for sc in J_SCENES}
+j_ms_sp = [jm[sc]["speedup_total"]["forward"][JN] for sc in J_SCENES]
+check_readme(readme, "Jetson 整景耗时与加速比", f"{j_tot0:.1f}ms → {j_totn:.1f}ms（**{j_sp:.2f}x**）")
+check_readme(readme, "Jetson 多场景加速比范围", f"{min(j_ms_sp):.1f}～{max(j_ms_sp):.1f}x")
+check_readme(readme, "Jetson GPU 忙碌率", f"{busy0:.1f}% → {busy1:.1f}%")
+check_readme(readme, "Jetson 每景能耗",
+             f"{je[J0]['energy_per_scene_j_total_board']:.1f}J → {je[JN]['energy_per_scene_j_total_board']:.1f}J")
+if not all(v for sc in J_SCENES for v in jm[sc].get("valid_mask_identical_to_cache", {}).values()):
+    sys.exit("Jetson 多场景：掩膜护栏未通过")
+
+# ---- Jetson 完整端到端（含文件读取与 LAS）：A=x86 最终链路原样，B..E=Jetson 链路逐步优化；每个 JSON 都已核对匹配行列与缓存 S11b 逐位相同
+jf = json.loads((ROOT / FJF).read_text(encoding="utf-8"))["scenes"]
+jl = json.loads((ROOT / FJL).read_text(encoding="utf-8"))["scenes"]
+for summ in (jf, jl):
+    for sc, ent in summ.items():
+        for c, rounds in ent.items():
+            for rnd, r in rounds.items():
+                if not all(r["match_rowcols_identical_to_cached_S11b"].values()):
+                    sys.exit(f"完整端到端 {sc} {c} {rnd}：匹配行列与缓存 S11b 不一致")
+                if r["preprocess_guardrail_vs_cache"] is not None and not all(r["preprocess_guardrail_vs_cache"].values()):
+                    sys.exit(f"完整端到端 {sc} {c} {rnd}：前处理护栏未通过")
+F_SC = "24data/10.6/1"
+FULL = {"A": jf[F_SC]["A"]["fwd"], "B": jf[F_SC]["B"]["fwd"], "C": jf[F_SC]["C"]["fwd"],
+        "D": jl[F_SC]["D"]["fwd"], "E": jl[F_SC]["E"]["fwd"]}
+full_sp = {sc: jf[sc]["A"]["fwd"]["total_ms"] / jl[sc]["E"]["fwd"]["total_ms"] for sc in jf}
+check_readme(readme, "Jetson 完整端到端（默认景）",
+             f"{FULL['A']['total_ms']:.1f}ms → {FULL['E']['total_ms']:.1f}ms（{full_sp[F_SC]:.2f}x）")
+check_readme(readme, "Jetson 完整端到端 4 景范围", f"{min(full_sp.values()):.1f}～{max(full_sp.values()):.1f}x")
+
+# ---- Jetson C++ 部署：P=Python 最终配置 E，K0..K5 为 C++ 的累加配置；每个 JSON 都已核对匹配行列与同景 P 逐位相同
+ce = json.loads((ROOT / FCE).read_text(encoding="utf-8"))["scenes"]
+for sc, ent in ce.items():
+    for c, rounds in ent.items():
+        for rnd, r in rounds.items():
+            if not all(r["match_rowcols_identical_to_P"].values()) or r["deterministic"] is False:
+                sys.exit(f"C++ 完整端到端 {sc} {c} {rnd}：匹配行列与 Python 版不一致或不确定")
+CE_SC = "24data/10.6/1"
+CE_CFGS = ["P", "K0", "K1", "K2", "K3", "K4", "K5"]
+CE = {c: ce[CE_SC][c]["fwd"] for c in CE_CFGS}
+ce_sp = {sc: ce[sc]["P"]["fwd"]["total_ms"] / ce[sc]["K4"]["fwd"]["total_ms"] for sc in ce}
+check_readme(readme, "C++ 完整端到端（默认景）", f"{CE['P']['total_ms']:.1f}ms → {CE['K4']['total_ms']:.1f}ms（{ce_sp[CE_SC]:.2f}x）")
+check_readme(readme, "C++ 完整端到端 4 景范围", f"{min(ce_sp.values()):.1f}～{max(ce_sp.values()):.1f}x")
+cl = json.loads((ROOT / FCL).read_text(encoding="utf-8"))
+cp = json.loads((ROOT / FCP).read_text(encoding="utf-8"))
+CL_KEYS = ["pc_b1", "pc_b8", "hsi_b1", "hsi_b8"]
+_lat = lambda k, lang, mode: cl["models"][k]["mean_of_rounds"][lang][mode]["request"]  # noqa: E731
+check_readme(readme, "C++ 单样本请求延迟（PC/HSI, batch=1）",
+             f"PC {_lat('pc_b1', 'python', 'graph'):.3f} → {_lat('pc_b1', 'cpp', 'graph'):.3f}ms、HSI {_lat('hsi_b1', 'python', 'graph'):.3f} → {_lat('hsi_b1', 'cpp', 'graph'):.3f}ms")
+_c = cp["cold_start"]
+check_readme(readme, "C++ 进程冷启动", f"{_c['P']['process_wall_s']['median']:.2f}s → {_c['K4']['process_wall_s']['median']:.2f}s")
+check_readme(readme, "C++ 每景能耗", f"{cp['energy']['by_config']['P']['energy_per_scene_j_total_board']:.2f}J → {cp['energy']['by_config']['K4']['energy_per_scene_j_total_board']:.2f}J")
 
 
 # ------------------------------------------------------------------ 绘图
@@ -222,18 +309,224 @@ def fig_cpu() -> None:
     plt.close(fig)
 
 
+J_LABELS = {
+    "S0": "S0  baseline (validation-tool pipeline)",
+    "S1": "S1  + infer valid pixels only",
+    "S2": "S2  + merged NumPy matching",
+    "S3": "S3  + buffer-reusing TRT runner",
+    "S4": "S4  + large-batch scene engine (1024)",
+    "S5": "S5  + unified-memory zero-copy",
+    "S6": "S6  + matching on GPU",
+    "S7": "S7  + HSI patch gather on GPU",
+    "S8": "S8  + features stay on GPU",
+    "S9": "S9  + PC inference on 2nd stream",
+    "S10": "S10 + single-shot matching",
+    "S11b": "S11b + element-wise standardize on GPU",
+}
+J_GROUPS = [("CPU / data prep", ("prep", "patch_build", "assemble"), C_BEFORE),
+            ("TensorRT inference", ("hsi_infer", "pc_infer"), C_AFTER),
+            ("Cross-modal matching", ("match",), C_SLOT3)]
+
+
+def fig_jetson_chain() -> None:
+    fig = plt.figure(figsize=(11.5, 6.4), facecolor=SURFACE)
+    ax = fig.add_axes([0.30, 0.09, 0.66, 0.70])
+    style_axes(ax)
+    xmax = max(jcf[c]["total_ms_median"] for c in J_CFGS)
+    for i, c in enumerate(J_CFGS):
+        seg = jcf[c]["segments_ms_median"]
+        left = 0.0
+        for gname, keys, color in J_GROUPS:
+            v = sum(seg[k] for k in keys)
+            rec(f"FigJ1 / {c} / {gname}", f"{v:.1f}", FJ, f"rounds.forward.{c}.segments_ms_median.{'+'.join(keys)}", v)
+            ax.barh(i, v, left=left, height=0.62, color=color, edgecolor=SURFACE, linewidth=2, zorder=3)
+            left += v
+        tot = rec(f"FigJ1 / {c} / total", f"{jcf[c]['total_ms_median']:.1f} ms", FJ,
+                  f"rounds.forward.{c}.total_ms_median", jcf[c]["total_ms_median"])
+        sp = rec(f"FigJ1 / {c} / speedup", f"{jc['speedup_total']['forward'][c]:.2f}x", FJ,
+                 f"speedup_total.forward.{c}", jc["speedup_total"]["forward"][c])
+        ax.text(max(left, tot) + xmax * 0.012, i, f"{tot:.0f} ms  ·  {sp:.1f}x", va="center", ha="left",
+                color=INK if c in (J0, JN) else INK2, fontsize=9, weight="bold" if c in (J0, JN) else "normal")
+    ax.set_yticks(range(len(J_CFGS)), [J_LABELS.get(c, c) for c in J_CFGS])
+    ax.invert_yaxis()
+    ax.set_xlim(0, xmax * 1.22)
+    ax.set_xlabel("Whole-scene latency on Jetson Orin Nano Super (ms, median of 10 runs, forward round)")
+    ax.grid(axis="x", color=GRID, linewidth=1, zorder=0)
+    for lab in ax.get_yticklabels():
+        lab.set_color(INK); lab.set_fontsize(9)
+    fig.text(0.02, 0.945, f"Jetson whole-scene pipeline: {j_tot0:.0f} ms → {j_totn:.0f} ms ({j_sp:.1f}x)",
+             color=INK, fontsize=14, weight="bold", ha="left")
+    fig.text(0.02, 0.905, "Cumulative single-variable steps in one process; each step bit-identical to the previous one "
+             "except the engine switch (S4); all mismatches vs PyTorch FP32 are near-ties",
+             color=INK2, fontsize=9, ha="left")
+    fig.text(0.02, 0.873, "Scene 24data/10.6/1 (9,645 valid HSI patches, 1,000 points); from cached raw HSI, excluding file IO / LAS; "
+             "stacked bars = segment medians, label = total median",
+             color=INK2, fontsize=9, ha="left")
+    fig.legend(handles=[Patch(color=c, label=g) for g, _, c in J_GROUPS], loc="upper left",
+               bbox_to_anchor=(0.015, 0.855), ncol=3, frameon=False, fontsize=9.5, labelcolor=INK2, handlelength=1.2)
+    fig.savefig(ASSETS / "jetson_opt_chain.png", dpi=200, facecolor=SURFACE)
+    plt.close(fig)
+
+
+def fig_jetson_gpu_energy() -> None:
+    b0 = rec("FigJ2 left / S0 GPU busy", f"{busy0:.1f}%", FJB0, "scene_S0.gpu_busy_ms / scene_S0.wall_ms", busy0,
+             derived="nsys kernel+memcpy union / NVTX range wall")
+    b1 = rec(f"FigJ2 left / {JN} GPU busy", f"{busy1:.1f}%", FJB1, f"scene_{JN}.gpu_busy_ms / scene_{JN}.wall_ms", busy1,
+             derived="nsys kernel+memcpy union / NVTX range wall")
+    e0 = rec("FigJ2 right / S0 J per scene", f"{je[J0]['energy_per_scene_j_total_board']:.1f} J", FJE,
+             f"{J0}.energy_per_scene_j_total_board", je[J0]["energy_per_scene_j_total_board"])
+    e1 = rec(f"FigJ2 right / {JN} J per scene", f"{je[JN]['energy_per_scene_j_total_board']:.1f} J", FJE,
+             f"{JN}.energy_per_scene_j_total_board", je[JN]["energy_per_scene_j_total_board"])
+    w0, w1 = je[J0]["vdd_in_mean_mw"] / 1000, je[JN]["vdd_in_mean_mw"] / 1000
+    rec("FigJ2 right / S0 mean power", f"{w0:.1f} W", FJE, f"{J0}.vdd_in_mean_mw", je[J0]["vdd_in_mean_mw"])
+    rec(f"FigJ2 right / {JN} mean power", f"{w1:.1f} W", FJE, f"{JN}.vdd_in_mean_mw", je[JN]["vdd_in_mean_mw"])
+
+    fig = plt.figure(figsize=(10.5, 4.4), facecolor=SURFACE)
+    for k, (vals, ylabel, fmt, sub, pos) in enumerate((
+            ((b0, b1), "GPU busy during one scene (%)", "{:.1f}%", "nsys: kernel + memcpy time / wall time", [0.07, 0.12, 0.38, 0.66]),
+            ((e0, e1), "Energy per scene, whole board (J)", "{:.1f} J", f"mean board power {w0:.1f} W → {w1:.1f} W (idle {je['_idle_mean_mw'] / 1000:.1f} W)",
+             [0.58, 0.12, 0.38, 0.66]))):
+        ax = fig.add_axes(pos)
+        style_axes(ax)
+        ax.bar([0, 1], vals, width=0.46, color=[C_BEFORE, C_AFTER], zorder=3)
+        ymax = max(vals) * 1.2
+        ax.set_ylim(0, ymax)
+        ax.set_xlim(-0.6, 1.6)
+        ax.set_xticks([0, 1], [f"{J0} baseline", f"{JN} optimized"])
+        ax.set_ylabel(ylabel)
+        ax.grid(axis="y", color=GRID, linewidth=1, zorder=0)
+        for x, v in enumerate(vals):
+            ax.text(x, v + ymax * 0.015, fmt.format(v), ha="center", va="bottom", color=INK, fontsize=10)
+        ax.text(0.5, 1.04, sub, transform=ax.transAxes, ha="center", va="bottom", color=INK2, fontsize=8.8)
+    fig.text(0.02, 0.93, "Jetson: the GPU is kept busy, and each scene costs less energy", color=INK, fontsize=13,
+             weight="bold", ha="left")
+    fig.savefig(ASSETS / "jetson_gpu_energy.png", dpi=200, facecolor=SURFACE)
+    plt.close(fig)
+
+
+F_LABELS = {"A": "A  x86 final pipeline, ported as-is", "B": "B  Jetson pipeline, sequential",
+            "C": "C  + LAS overlapped with GPU inference", "D": "D  + multi-core kNN query",
+            "E": "E  + kd-tree build parallel to projection"}
+F_IO = ("load_hsi_io", "laspy_read_io")
+F_LAS = ("crs_transformer_init", "projection", "mask_filter", "rng_sample", "ckdtree_build", "ckdtree_build_wait",
+         "ckdtree_query_offsets")
+
+
+def fig_jetson_full() -> None:
+    fig = plt.figure(figsize=(11.5, 4.6), facecolor=SURFACE)
+    ax = fig.add_axes([0.30, 0.13, 0.66, 0.64])
+    style_axes(ax)
+    cfgs = list(FULL)
+    xmax = max(FULL[c]["total_ms"] for c in cfgs)
+    groups = [("File IO (HSI + LAS read)", F_IO, C_BEFORE), ("LAS: projection + kNN", F_LAS, C_AFTER),
+              ("HSI prep, inference, matching", None, C_SLOT3)]
+    for i, c in enumerate(cfgs):
+        seg = FULL[c]["segments_ms"]
+        src = FJF if c in "ABC" else FJL
+        left = 0.0
+        for gname, keys, color in groups:
+            v = sum(seg.get(k, 0.0) for k in keys) if keys else sum(val for k, val in seg.items() if k not in F_IO + F_LAS)
+            rec(f"FigJ3 / {c} / {gname}", f"{v:.1f}", src, f"scenes.{F_SC}.{c}.fwd.segments_ms", v)
+            ax.barh(i, v, left=left, height=0.6, color=color, edgecolor=SURFACE, linewidth=2, zorder=3)
+            left += v
+        tot = rec(f"FigJ3 / {c} / total", f"{FULL[c]['total_ms']:.1f} ms", src, f"scenes.{F_SC}.{c}.fwd.total_ms",
+                  FULL[c]["total_ms"])
+        ax.text(max(left, tot) + xmax * 0.012, i, f"{tot:.0f} ms", va="center", ha="left",
+                color=INK if c in ("A", "E") else INK2, fontsize=9, weight="bold" if c in ("A", "E") else "normal")
+    ax.set_yticks(range(len(cfgs)), [F_LABELS[c] for c in cfgs])
+    ax.invert_yaxis()
+    ax.set_xlim(0, xmax * 1.15)
+    ax.set_xlabel("End-to-end latency from raw files on Jetson Orin Nano Super (ms, median of 10 runs)")
+    ax.grid(axis="x", color=GRID, linewidth=1, zorder=0)
+    for lab in ax.get_yticklabels():
+        lab.set_color(INK); lab.set_fontsize(9)
+    fig.text(0.02, 0.93, f"Jetson, raw files → match results: {FULL['A']['total_ms']:.0f} ms → {FULL['E']['total_ms']:.0f} ms "
+             f"({full_sp[F_SC]:.1f}x)", color=INK, fontsize=14, weight="bold", ha="left")
+    fig.text(0.02, 0.87, "Scene 24data/10.6/1; each config in its own process; all match results bit-identical to the cached-input pipeline; "
+             "file cache warm; overlapped stages show CPU-side time",
+             color=INK2, fontsize=9, ha="left")
+    fig.legend(handles=[Patch(color=c, label=g) for g, _, c in groups], loc="upper left",
+               bbox_to_anchor=(0.015, 0.855), ncol=3, frameon=False, fontsize=9.5, labelcolor=INK2, handlelength=1.2)
+    fig.savefig(ASSETS / "jetson_full_e2e.png", dpi=200, facecolor=SURFACE)
+    plt.close(fig)
+
+
+CE_LABELS = {"P": "P  Python, final config (E)", "K0": "K0  C++, same schedule as E", "K1": "K1  + multi-thread mask / stats",
+             "K2": "K2  + multi-thread projection", "K3": "K3  + bulk read of the HSI file", "K4": "K4  + cached PROJ transformer",
+             "K5": "K5  + LAS overlapped with HSI read (rejected)"}
+
+
+def fig_cpp_e2e() -> None:
+    fig = plt.figure(figsize=(11.5, 4.9), facecolor=SURFACE)
+    ax = fig.add_axes([0.30, 0.12, 0.66, 0.62])
+    style_axes(ax)
+    xmax = max(CE[c]["total_ms"] for c in CE_CFGS)
+    for i, c in enumerate(CE_CFGS):
+        tot = rec(f"FigC1 / {c} / total", f"{CE[c]['total_ms']:.1f} ms", FCE, f"scenes.{CE_SC}.{c}.fwd.total_ms", CE[c]["total_ms"])
+        color = C_BEFORE if c == "P" else ("#9b9a96" if c == "K5" else C_AFTER)
+        ax.barh(i, tot, height=0.6, color=color, edgecolor=SURFACE, linewidth=2, zorder=3)
+        sp = CE["P"]["total_ms"] / tot
+        ax.text(tot + xmax * 0.012, i, f"{tot:.0f} ms" + (f"  ·  {sp:.2f}x" if c != "P" else ""), va="center", ha="left",
+                color=INK if c in ("P", "K4") else INK2, fontsize=9, weight="bold" if c in ("P", "K4") else "normal")
+    gpu = rec("FigC1 / GPU chain (K4)", f"{CE['K4']['segments_ms']['gpu_hsi_upload_patch_infer']:.0f} ms", FCE,
+              f"scenes.{CE_SC}.K4.fwd.segments_ms.gpu_hsi_upload_patch_infer", CE["K4"]["segments_ms"]["gpu_hsi_upload_patch_infer"])
+    ax.axvline(gpu, color=INK2, linewidth=1, linestyle=(0, (4, 3)), zorder=2)
+    ax.text(gpu + xmax * 0.008, -0.62, f"GPU chain (HSI upload + patch + inference): {gpu:.0f} ms", ha="left", va="bottom",
+            color=INK2, fontsize=8.5)
+    ax.set_yticks(range(len(CE_CFGS)), [CE_LABELS[c] for c in CE_CFGS])
+    ax.invert_yaxis()
+    ax.set_xlim(0, xmax * 1.2)
+    ax.set_ylim(len(CE_CFGS) - 0.5, -0.75)
+    ax.set_xlabel("End-to-end latency from raw files on Jetson Orin Nano Super (ms, median of 10 runs, forward round)")
+    ax.grid(axis="x", color=GRID, linewidth=1, zorder=0)
+    for lab in ax.get_yticklabels():
+        lab.set_color(INK); lab.set_fontsize(9)
+    fig.text(0.02, 0.93, f"Jetson, raw files → match results, C++ vs Python: {CE['P']['total_ms']:.0f} ms → {CE['K4']['total_ms']:.0f} ms "
+             f"({ce_sp[CE_SC]:.2f}x)", color=INK, fontsize=14, weight="bold", ha="left")
+    fig.text(0.02, 0.875, "Scene 24data/10.6/1; each config in its own process; match rows/cols bit-identical to the Python pipeline in every run "
+             "(4 scenes, both rounds); file cache warm", color=INK2, fontsize=9, ha="left")
+    fig.savefig(ASSETS / "jetson_cpp_e2e.png", dpi=200, facecolor=SURFACE)
+    plt.close(fig)
+
+
+def fig_cpp_latency() -> None:
+    fig = plt.figure(figsize=(11.5, 4.6), facecolor=SURFACE)
+    ax = fig.add_axes([0.07, 0.12, 0.90, 0.58])
+    style_axes(ax)
+    series = [("python", "eager", C_BEFORE, 0.45), ("python", "graph", C_BEFORE, 1.0), ("cpp", "eager", C_AFTER, 0.45), ("cpp", "graph", C_AFTER, 1.0)]
+    w = 0.19
+    ymax = max(_lat(k, "python", "eager") for k in CL_KEYS)
+    for gi, k in enumerate(CL_KEYS):
+        for si, (lang, mode, color, alpha) in enumerate(series):
+            v = rec(f"FigC2 / {k} / {lang} {mode}", f"{_lat(k, lang, mode):.3f} ms", FCL,
+                    f"models.{k}.mean_of_rounds.{lang}.{mode}.request.median_ms(两轮均值)", _lat(k, lang, mode))
+            x = gi + (si - 1.5) * w
+            ax.bar(x, v, width=w * 0.92, color=color, alpha=alpha, edgecolor=SURFACE, linewidth=1.5, zorder=3)
+            ax.text(x, v + ymax * 0.015, f"{v:.3f}", ha="center", va="bottom", color=INK, fontsize=8.5)
+    ax.set_xticks(range(len(CL_KEYS)), [k.replace("_b", "  batch ").replace("pc", "PC").replace("hsi", "HSI") for k in CL_KEYS])
+    ax.set_ylim(0, ymax * 1.16)
+    ax.set_ylabel("Request latency (ms)")
+    ax.grid(axis="y", color=GRID, linewidth=1, zorder=0)
+    fig.text(0.02, 0.93, "Single-sample request latency on Jetson: Python vs C++ (TensorRT FP16 engines)", color=INK, fontsize=14, weight="bold", ha="left")
+    fig.text(0.02, 0.895, "Request = H2D + inference + D2H + sync (median). Same engines and inputs, outputs bit-identical across all four modes;"
+             "\nGPU kernel time is the same, C++ removes the per-call dispatch overhead", color=INK2, fontsize=9, ha="left", va="top")
+    fig.legend(handles=[Patch(color=C_BEFORE, alpha=0.45, label="Python eager"), Patch(color=C_BEFORE, label="Python + CUDA Graph"),
+                        Patch(color=C_AFTER, alpha=0.45, label="C++ eager"), Patch(color=C_AFTER, label="C++ + CUDA Graph")],
+               loc="upper left", bbox_to_anchor=(0.015, 0.825), ncol=4, frameon=False, fontsize=9.5, labelcolor=INK2, handlelength=1.2)
+    fig.savefig(ASSETS / "jetson_cpp_latency.png", dpi=200, facecolor=SURFACE)
+    plt.close(fig)
+
+
 # ------------------------------------------------------------------ 结果总表
 ROWS = {
     "pc": [("PyTorch", "FP32", "pytorch_fp32_gpu", None),
            ("TensorRT", "FP32 (TF32 off)", "trt_fp32_notf32", "fp32_notf32"),
            ("TensorRT", "FP32 (TF32 on)", "trt_fp32_tf32", "fp32_tf32"),
-           ("TensorRT", "FP16 mixed", "trt_fp16", "fp16"),
-           ("TensorRT", "INT8 (implicit calibration)", "trt_int8_implicit", "int8_implicit")],
+           ("TensorRT", "FP16 mixed", "trt_fp16", "fp16")],
     "hsi": [("PyTorch", "FP32", "pytorch_fp32_gpu", None),
             ("TensorRT", "FP32 (TF32 off)", "trt_fp32_notf32", "fp32_notf32"),
             ("TensorRT", "FP32 (TF32 on)", "trt_fp32_tf32", "fp32_tf32"),
             ("TensorRT", "FP16 mixed", "trt_fp16", "fp16"),
-            ("TensorRT", "INT8 (implicit calibration)", "trt_int8_implicit", "int8_implicit"),
             ("TensorRT", "INT8 (QDQ)", "trt_int8_qdq", "int8_qdq")],
 }
 NOT_MEASURED = "未测量"
@@ -301,7 +594,8 @@ def build_table() -> str:
                     spd = f"{sp:.1f}x"
             lines.append(f"| {name} | {backend} | {precision} | {acc} | {lat} | {spd} |")
 
-    table_note = "PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。"
+    table_note = ("PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。原表中的两行 “INT8 (implicit calibration)” 已删除："
+                  "逐层核查显示这类引擎中没有任何 Int8 层，数值行为与 FP16(auto) 构建一致，不是 INT8 结果（见「技术要点」第 3 条）。")
     if any(NOT_MEASURED in line for line in lines):
         table_note = (f"“{NOT_MEASURED}”表示 `stage2_trt_accuracy.json` / "
                       f"`stage3_benchmark.json` 中没有对应数值。{table_note}")
@@ -314,6 +608,11 @@ def main() -> None:
     ASSETS.mkdir(exist_ok=True)
     fig_e2e()
     fig_cpu()
+    fig_jetson_chain()
+    fig_jetson_gpu_energy()
+    fig_jetson_full()
+    fig_cpp_e2e()
+    fig_cpp_latency()
     (ASSETS / "results_table.md").write_text(build_table(), encoding="utf-8")
 
     print("| Where | Shown | File | Field | Raw value | Derived |")

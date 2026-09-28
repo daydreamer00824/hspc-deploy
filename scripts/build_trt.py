@@ -179,12 +179,13 @@ def make_profile(builder: trt.Builder, which: str, profile_name: str = "default"
 
 def build_engine(which: str, mode: str, onnx_path: Path | None = None, profile_name: str = "default",
                  precision_policy: str = "auto", fp32_groups=(), out_path: Path | None = None,
-                 policy_info: dict | None = None) -> Path:
+                 policy_info: dict | None = None, allow_tf32: bool = False) -> Path:
     """mode: fp32_notf32 | fp32_tf32 | fp16 | int8_implicit | int8_qdq
 
     precision_policy（仅 mode=fp16 有效）：auto = TRT 自选精度（阶段2~6 的行为）；
     mixed = OBEY_PRECISION_CONSTRAINTS，fp32_groups 内的层 FLOAT、其余算术层 HALF。
     policy_info 若传入 dict，会被填入 apply_mixed_policy 的结果（FP32 层列表等）。
+    allow_tf32（默认 False）：非 fp32_tf32 模式下也保留 TF32 标志，让保留为 FLOAT 的层可用 TF32 kernel（Jetson S12 用）。
     """
     if onnx_path is None:
         src_name = f"{which}_qdq.onnx" if mode == "int8_qdq" else f"{which}_encoder.onnx"
@@ -197,15 +198,18 @@ def build_engine(which: str, mode: str, onnx_path: Path | None = None, profile_n
         raise ValueError("mixed 精度策略只用于 fp16 模式")
     if out_path is None:
         suffix = "" if profile_name == "default" else f"_{profile_name}"
-        out_path = ENGINE_DIR / f"{which}_{mode}{suffix}.plan"
+        # allow_tf32 在非 fp32_tf32 模式下会改变构建结果（保留为 FLOAT 的层可能用 TF32 kernel），
+        # 默认文件名必须区分开，否则会覆盖标准的 *_fp16.plan / *_fp32_notf32.plan
+        tf32_tag = "_tf32" if (allow_tf32 and mode != "fp32_tf32") else ""
+        out_path = ENGINE_DIR / f"{which}_{mode}{tf32_tag}{suffix}.plan"
 
     builder = trt.Builder(TRT_LOGGER)
     network = build_network_from_onnx(builder, onnx_path)
     config = builder.create_builder_config()
     config.add_optimization_profile(make_profile(builder, which, profile_name))
 
-    # TF32 默认是开启的，除 fp32_tf32 模式外一律显式关闭
-    if mode != "fp32_tf32":
+    # TF32 默认是开启的，除 fp32_tf32 模式（或显式 allow_tf32）外一律显式关闭
+    if mode != "fp32_tf32" and not allow_tf32:
         config.clear_flag(trt.BuilderFlag.TF32)
     else:
         config.set_flag(trt.BuilderFlag.TF32)
@@ -254,12 +258,14 @@ def main():
     ap.add_argument("--profile", choices=list(PROFILES), default="default")
     ap.add_argument("--precision-policy", choices=["auto", "mixed"], default="auto")
     ap.add_argument("--fp32-groups", nargs="*", default=[], choices=LAYER_GROUPS)
+    ap.add_argument("--allow-tf32", action="store_true", help="保留为 FLOAT 的层允许用 TF32（默认关闭）")
     args = ap.parse_args()
 
     for which in args.which:
         for mode in args.modes:
             build_engine(which, mode, profile_name=args.profile,
-                         precision_policy=args.precision_policy, fp32_groups=args.fp32_groups)
+                         precision_policy=args.precision_policy, fp32_groups=args.fp32_groups,
+                         allow_tf32=args.allow_tf32)
 
 
 if __name__ == "__main__":

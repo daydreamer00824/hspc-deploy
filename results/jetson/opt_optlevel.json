@@ -1,0 +1,45 @@
+{
+  "tier": 1024,
+  "level": 5,
+  "l3_first": {
+    "max_batch": 1024,
+    "n_calls": 10,
+    "device_memory_size_bytes": 46661632,
+    "wall_ms_median": 156.94423000059032,
+    "wall_ms_min": 156.54733900009887,
+    "gpu_event_ms_median": 107.66867160797119,
+    "plan": "/home/jetson/hspc_jetson/engines/hsi_fp16_scene1024.plan",
+    "plan_size_kb": 7205.60546875
+  },
+  "build_seconds": 256.9352629184723,
+  "lN": {
+    "max_batch": 1024,
+    "n_calls": 10,
+    "device_memory_size_bytes": 46661632,
+    "wall_ms_median": 151.94520850127446,
+    "wall_ms_min": 150.7274680006958,
+    "gpu_event_ms_median": 108.00057601928711,
+    "plan": "/home/jetson/hspc_jetson/engines/hsi_fp16_scene1024_opt5.plan",
+    "plan_size_kb": 7205.74609375
+  },
+  "lN_val_accuracy": {
+    "n": 200,
+    "cos_sim_mean": 0.9999938011169434,
+    "cos_sim_min": 0.99970543384552,
+    "max_abs_err": 0.0619044303894043,
+    "mean_abs_err": 0.00207761162891984,
+    "rel_l2": 0.0032221756409853697,
+    "top1_agreement": 0.9900000095367432,
+    "top5_agreement": 1.0
+  },
+  "l3_second": {
+    "max_batch": 1024,
+    "n_calls": 10,
+    "device_memory_size_bytes": 46661632,
+    "wall_ms_median": 152.46160300193878,
+    "wall_ms_min": 151.20552699954715,
+    "gpu_event_ms_median": 108.08145570755005,
+    "plan": "/home/jetson/hspc_jetson/engines/hsi_fp16_scene1024.plan",
+    "plan_size_kb": 7205.60546875
+  }
+}

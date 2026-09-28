@@ -1,0 +1,155 @@
+{
+  "24data_10.6_1": {
+    "all_identical": true,
+    "arrays": {
+      "hsi_grid_patches": {
+        "identical": true
+      },
+      "hsi_raw": {
+        "identical": true
+      },
+      "hsi_rows": {
+        "identical": true
+      },
+      "hsi_cols": {
+        "identical": true
+      },
+      "valid_mask": {
+        "identical": true
+      },
+      "point_offsets": {
+        "identical": true
+      },
+      "ref_rows": {
+        "identical": true
+      },
+      "ref_cols": {
+        "identical": true
+      },
+      "truth_spectra": {
+        "identical": true
+      },
+      "eligible_point_indices": {
+        "identical": true
+      },
+      "n_las_points": {
+        "identical": true
+      }
+    }
+  },
+  "24data_10.6_10": {
+    "all_identical": true,
+    "arrays": {
+      "hsi_grid_patches": {
+        "identical": true
+      },
+      "hsi_raw": {
+        "identical": true
+      },
+      "hsi_rows": {
+        "identical": true
+      },
+      "hsi_cols": {
+        "identical": true
+      },
+      "valid_mask": {
+        "identical": true
+      },
+      "point_offsets": {
+        "identical": true
+      },
+      "ref_rows": {
+        "identical": true
+      },
+      "ref_cols": {
+        "identical": true
+      },
+      "truth_spectra": {
+        "identical": true
+      },
+      "eligible_point_indices": {
+        "identical": true
+      },
+      "n_las_points": {
+        "identical": true
+      }
+    }
+  },
+  "25data_8.4_1": {
+    "all_identical": true,
+    "arrays": {
+      "hsi_grid_patches": {
+        "identical": true
+      },
+      "hsi_raw": {
+        "identical": true
+      },
+      "hsi_rows": {
+        "identical": true
+      },
+      "hsi_cols": {
+        "identical": true
+      },
+      "valid_mask": {
+        "identical": true
+      },
+      "point_offsets": {
+        "identical": true
+      },
+      "ref_rows": {
+        "identical": true
+      },
+      "ref_cols": {
+        "identical": true
+      },
+      "truth_spectra": {
+        "identical": true
+      },
+      "eligible_point_indices": {
+        "identical": true
+      },
+      "n_las_points": {
+        "identical": true
+      }
+    }
+  },
+  "25data_10.22_1": {
+    "all_identical": true,
+    "arrays": {
+      "hsi_grid_patches": {
+        "identical": true
+      },
+      "hsi_raw": {
+        "identical": true
+      },
+      "hsi_rows": {
+        "identical": true
+      },
+      "hsi_cols": {
+        "identical": true
+      },
+      "valid_mask": {
+        "identical": true
+      },
+      "point_offsets": {
+        "identical": true
+      },
+      "ref_rows": {
+        "identical": true
+      },
+      "ref_cols": {
+        "identical": true
+      },
+      "truth_spectra": {
+        "identical": true
+      },
+      "eligible_point_indices": {
+        "identical": true
+      },
+      "n_las_points": {
+        "identical": true
+      }
+    }
+  },
+  "_note": "x86（hspc-preprocess 环境，numpy 2.2.6）与 Jetson（hspc-jetson 环境，numpy 1.26.4）各自从原始文件生成的场景缓存，逐数组比较"
+}

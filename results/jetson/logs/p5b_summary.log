@@ -1,0 +1,29 @@
+24data_10.6_1 C2 fwd total 290.3 ms (w/o IO 230.7) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_1 C2 rev total 288.9 ms (w/o IO 230.3) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_1 D fwd total 285.4 ms (w/o IO 225.9) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_1 D rev total 285.4 ms (w/o IO 225.2) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_1 E fwd total 256.7 ms (w/o IO 191.4) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_1 E rev total 254.8 ms (w/o IO 195.9) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 C2 fwd total 325.0 ms (w/o IO 259.5) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 C2 rev total 326.6 ms (w/o IO 260.6) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 D fwd total 322.2 ms (w/o IO 252.1) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 D rev total 320.6 ms (w/o IO 253.5) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 E fwd total 266.1 ms (w/o IO 199.7) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 E rev total 267.8 ms (w/o IO 199.1) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 C2 fwd total 239.8 ms (w/o IO 180.2) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 C2 rev total 239.6 ms (w/o IO 180.6) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 D fwd total 238.7 ms (w/o IO 180.2) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 D rev total 238.6 ms (w/o IO 177.6) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 E fwd total 213.5 ms (w/o IO 157.7) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 E rev total 216.9 ms (w/o IO 153.4) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+NvMapMemAllocInternalTagged: 1075072515 error 12
+NvMapMemHandleAlloc: error 0
+NvMapMemAllocInternalTagged: 1075072515 error 12
+NvMapMemHandleAlloc: error 0
+25data_10.22_1 C2 fwd total 252.8 ms (w/o IO 196.2) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_10.22_1 C2 rev total 251.5 ms (w/o IO 196.6) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_10.22_1 D fwd total 247.2 ms (w/o IO 188.1) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_10.22_1 D rev total 247.3 ms (w/o IO 189.9) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_10.22_1 E fwd total 229.2 ms (w/o IO 173.2) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_10.22_1 E rev total 231.6 ms (w/o IO 172.9) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+written -> results/e2e_las_summary.json

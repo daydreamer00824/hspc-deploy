@@ -1,0 +1,114 @@
+{
+  "tiers": [
+    1024
+  ],
+  "groups": {
+    "hsi": [
+      "stem"
+    ],
+    "pc": []
+  },
+  "repeat_builds": 3,
+  "engines": {
+    "hsi": {
+      "1024": {
+        "max_batch": 1024,
+        "n_calls": 10,
+        "device_memory_size_bytes": 46661632,
+        "wall_ms_median": 150.13251999880595,
+        "wall_ms_min": 147.90608700059238,
+        "gpu_event_ms_median": 106.51760005950928,
+        "plan": "/home/jetson/hspc_jetson/engines/hsi_fp16_scene1024.plan",
+        "plan_size_kb": 7205.60546875,
+        "val_accuracy": [
+          {
+            "n": 200,
+            "cos_sim_mean": 0.9999938011169434,
+            "cos_sim_min": 0.99970543384552,
+            "max_abs_err": 0.0619044303894043,
+            "mean_abs_err": 0.00207761162891984,
+            "rel_l2": 0.0032221756409853697,
+            "top1_agreement": 0.9900000095367432,
+            "top5_agreement": 1.0
+          },
+          {
+            "n": 200,
+            "cos_sim_mean": 0.9999938011169434,
+            "cos_sim_min": 0.99970543384552,
+            "max_abs_err": 0.0619044303894043,
+            "mean_abs_err": 0.00207761162891984,
+            "rel_l2": 0.0032221756409853697,
+            "top1_agreement": 0.9900000095367432,
+            "top5_agreement": 1.0
+          },
+          {
+            "n": 200,
+            "cos_sim_mean": 0.9999938011169434,
+            "cos_sim_min": 0.99970543384552,
+            "max_abs_err": 0.0619044303894043,
+            "mean_abs_err": 0.00207761162891984,
+            "rel_l2": 0.0032221756409853697,
+            "top1_agreement": 0.9900000095367432,
+            "top5_agreement": 1.0
+          }
+        ],
+        "build_pairwise_max_abs": {
+          "0-1": 0.0,
+          "0-2": 0.0,
+          "1-2": 0.0
+        },
+        "precision_policy": "mixed"
+      }
+    },
+    "pc": {
+      "1024": {
+        "max_batch": 1024,
+        "n_calls": 1,
+        "device_memory_size_bytes": 77721600,
+        "wall_ms_median": 17.595248500583693,
+        "wall_ms_min": 17.5478090022807,
+        "gpu_event_ms_median": 15.913727760314941,
+        "plan": "/home/jetson/hspc_jetson/engines/pc_fp16_scene1024.plan",
+        "plan_size_kb": 6899.99609375,
+        "val_accuracy": [
+          {
+            "n": 200,
+            "cos_sim_mean": 0.999997615814209,
+            "cos_sim_min": 0.9999926686286926,
+            "max_abs_err": 0.02926015853881836,
+            "mean_abs_err": 0.0019885783549398184,
+            "rel_l2": 0.0021998172160238028,
+            "top1_agreement": 1.0,
+            "top5_agreement": 1.0
+          },
+          {
+            "n": 200,
+            "cos_sim_mean": 0.999997615814209,
+            "cos_sim_min": 0.9999926686286926,
+            "max_abs_err": 0.02926015853881836,
+            "mean_abs_err": 0.0019885783549398184,
+            "rel_l2": 0.0021998172160238028,
+            "top1_agreement": 1.0,
+            "top5_agreement": 1.0
+          },
+          {
+            "n": 200,
+            "cos_sim_mean": 0.999997615814209,
+            "cos_sim_min": 0.9999926686286926,
+            "max_abs_err": 0.02926015853881836,
+            "mean_abs_err": 0.0019885783549398184,
+            "rel_l2": 0.0021998172160238028,
+            "top1_agreement": 1.0,
+            "top5_agreement": 1.0
+          }
+        ],
+        "build_pairwise_max_abs": {
+          "0-1": 0.0,
+          "0-2": 0.0,
+          "1-2": 0.0
+        },
+        "precision_policy": "auto"
+      }
+    }
+  }
+}

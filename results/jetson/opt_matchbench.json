@@ -1,0 +1,54 @@
+{
+  "warmup": 3,
+  "repeat": 20,
+  "variants": {
+    "chunk128_single0": {
+      "median_ms": 58.59180900006322,
+      "min_ms": 58.26954399526585,
+      "identical_to_default": true,
+      "peak_mem_mb": 631.462890625
+    },
+    "chunk128_single1": {
+      "median_ms": 58.630641498893965,
+      "min_ms": 58.481068997934926,
+      "identical_to_default": true,
+      "peak_mem_mb": 342.99951171875
+    },
+    "chunk256_single0": {
+      "median_ms": 46.46513700208743,
+      "min_ms": 46.246842000982724,
+      "identical_to_default": true,
+      "peak_mem_mb": 465.39306640625
+    },
+    "chunk256_single1": {
+      "median_ms": 46.34407649791683,
+      "min_ms": 46.262650001153816,
+      "identical_to_default": true,
+      "peak_mem_mb": 465.39306640625
+    },
+    "chunk512_single0": {
+      "median_ms": 40.11200000240933,
+      "min_ms": 39.89660200022627,
+      "identical_to_default": true,
+      "peak_mem_mb": 694.78857421875
+    },
+    "chunk512_single1": {
+      "median_ms": 40.05371000312152,
+      "min_ms": 39.876536997326184,
+      "identical_to_default": true,
+      "peak_mem_mb": 694.78857421875
+    },
+    "chunk1000_single0": {
+      "median_ms": 36.86054100035108,
+      "min_ms": 36.70152799895732,
+      "identical_to_default": true,
+      "peak_mem_mb": 695.41748046875
+    },
+    "chunk1000_single1": {
+      "median_ms": 36.77460200196947,
+      "min_ms": 36.65314300451428,
+      "identical_to_default": true,
+      "peak_mem_mb": 695.41748046875
+    }
+  }
+}

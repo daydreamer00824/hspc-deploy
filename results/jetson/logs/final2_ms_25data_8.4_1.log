@@ -1,0 +1,20 @@
+/usr/local/lib/python3.10/dist-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+[forward] S0: total 2213.3 ms  prep=21.8  patch_build=352.2  hsi_infer=348.7  pc_infer=29.6  assemble=0.0  match=1460.3
+[forward] S11b: total 144.1 ms  pc_infer=0.8  prep=21.6  patch_build=7.0  hsi_infer=75.5  assemble=0.5  match=38.4
+[reverse] S11b: total 144.8 ms  pc_infer=0.8  prep=21.8  patch_build=7.0  hsi_infer=76.1  assemble=0.5  match=38.5
+[reverse] S0: total 2212.7 ms  prep=21.9  patch_build=352.4  hsi_infer=412.8  pc_infer=36.0  assemble=0.0  match=1383.6
+{
+  "forward": {
+    "S0": 1.0,
+    "S11b": 15.360730598051783
+  },
+  "reverse": {
+    "S0": 1.0,
+    "S11b": 15.276409183034644
+  }
+}
+written -> results/opt_final2_multiscene_25data_8.4_1.json
+rc=0

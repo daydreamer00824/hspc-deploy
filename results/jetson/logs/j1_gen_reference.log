@@ -1,0 +1,13 @@
+devices: ['cpu', 'cuda']
+[pc] val=(200, 15, 3) calib=(400, 15, 3)
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+  saved results/ref/pc_fp32_cpu.npy (200, 1024)
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+  saved results/ref/pc_fp32_cuda.npy (200, 1024)
+  pc cpu-vs-cuda               cos_mean=1.000000 cos_min=1.000000 max_abs=1.025e-05 top1=1.000 top5=1.000
+[hsi] val=(200, 342, 3, 3) calib=(400, 342, 3, 3)
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+  saved results/ref/hsi_fp32_cpu.npy (200, 1024)
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+  saved results/ref/hsi_fp32_cuda.npy (200, 1024)
+  hsi cpu-vs-cuda              cos_mean=1.000000 cos_min=1.000000 max_abs=8.166e-05 top1=1.000 top5=1.000

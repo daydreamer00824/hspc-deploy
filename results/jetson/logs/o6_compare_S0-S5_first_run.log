@@ -1,0 +1,36 @@
+/usr/local/lib/python3.10/dist-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+[forward] S0: total 2194.0 ms  prep=24.7  patch_build=437.2  hsi_infer=432.2  pc_infer=32.1  assemble=9.9  match=1222.1
+[forward] S1: total 1831.5 ms  prep=24.7  patch_build=239.2  hsi_infer=286.3  pc_infer=35.0  assemble=19.9  match=1225.6
+[forward] S2: total 799.2 ms  prep=24.7  patch_build=237.3  hsi_infer=242.7  pc_infer=29.2  assemble=19.8  match=242.8
+[forward] S3: total 816.3 ms  prep=24.7  patch_build=237.7  hsi_infer=257.6  pc_infer=29.4  assemble=19.7  match=244.1
+[forward] S4: total 720.3 ms  prep=24.6  patch_build=244.9  hsi_infer=161.7  pc_infer=18.0  assemble=19.6  match=249.9
+[forward] S5: total 628.0 ms  prep=24.4  patch_build=207.6  hsi_infer=107.1  pc_infer=16.6  assemble=20.2  match=249.8
+[reverse] S5: total 630.4 ms  prep=24.3  patch_build=207.9  hsi_infer=107.2  pc_infer=16.6  assemble=20.2  match=254.3
+[reverse] S4: total 722.3 ms  prep=24.3  patch_build=246.4  hsi_infer=161.6  pc_infer=17.9  assemble=19.5  match=250.4
+[reverse] S3: total 827.4 ms  prep=24.3  patch_build=245.8  hsi_infer=256.7  pc_infer=29.2  assemble=19.6  match=249.2
+[reverse] S2: total 812.9 ms  prep=24.2  patch_build=245.4  hsi_infer=242.5  pc_infer=29.2  assemble=19.7  match=250.2
+[reverse] S1: total 1808.3 ms  prep=24.4  patch_build=244.9  hsi_infer=244.9  pc_infer=29.2  assemble=19.8  match=1214.5
+[reverse] S0: total 2135.9 ms  prep=24.3  patch_build=446.3  hsi_infer=405.1  pc_infer=29.5  assemble=6.6  match=1214.1
+{
+  "forward": {
+    "S0": 1.0,
+    "S1": 1.1979075961117174,
+    "S2": 2.7453091233978557,
+    "S3": 2.6877726410381886,
+    "S4": 3.0460621376843564,
+    "S5": 3.493690118294265
+  },
+  "reverse": {
+    "S0": 1.0,
+    "S1": 1.181116427189716,
+    "S2": 2.6274493650098916,
+    "S3": 2.5812667346209164,
+    "S4": 2.9570640259896295,
+    "S5": 3.387985912830829
+  }
+}
+written -> results/opt_o6_compare.json
+rc=0

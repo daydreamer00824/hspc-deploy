@@ -1,0 +1,8 @@
+chunk128_single0 58.59 ms identical: True
+chunk128_single1 58.63 ms identical: True
+chunk256_single0 46.47 ms identical: True
+chunk256_single1 46.34 ms identical: True
+chunk512_single0 40.11 ms identical: True
+chunk512_single1 40.05 ms identical: True
+chunk1000_single0 36.86 ms identical: True
+chunk1000_single1 36.77 ms identical: True

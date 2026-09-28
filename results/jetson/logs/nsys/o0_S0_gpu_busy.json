@@ -1,0 +1,51 @@
+{
+  "scene_S0": {
+    "wall_ms": 2702.300096,
+    "kernel_busy_ms": 246.422048,
+    "memcpy_busy_ms": 12.396,
+    "gpu_busy_ms": 258.818048,
+    "n_kernels": 9504
+  },
+  "prep": {
+    "wall_ms": 25.435264,
+    "kernel_busy_ms": 0.0,
+    "memcpy_busy_ms": 0.0,
+    "gpu_busy_ms": 0.0,
+    "n_kernels": 0
+  },
+  "patch_build": {
+    "wall_ms": 431.274752,
+    "kernel_busy_ms": 0.0,
+    "memcpy_busy_ms": 0.0,
+    "gpu_busy_ms": 0.0,
+    "n_kernels": 0
+  },
+  "hsi_infer": {
+    "wall_ms": 531.642784,
+    "kernel_busy_ms": 228.252192,
+    "memcpy_busy_ms": 12.220288,
+    "gpu_busy_ms": 240.47248,
+    "n_kernels": 8928
+  },
+  "pc_infer": {
+    "wall_ms": 38.747616,
+    "kernel_busy_ms": 18.169856,
+    "memcpy_busy_ms": 0.175712,
+    "gpu_busy_ms": 18.345568,
+    "n_kernels": 576
+  },
+  "assemble": {
+    "wall_ms": 9.628384,
+    "kernel_busy_ms": 0.0,
+    "memcpy_busy_ms": 0.0,
+    "gpu_busy_ms": 0.0,
+    "n_kernels": 0
+  },
+  "match": {
+    "wall_ms": 1663.564608,
+    "kernel_busy_ms": 0.0,
+    "memcpy_busy_ms": 0.0,
+    "gpu_busy_ms": 0.0,
+    "n_kernels": 0
+  }
+}

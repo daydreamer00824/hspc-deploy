@@ -1,0 +1,56 @@
+/usr/local/lib/python3.10/dist-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+[forward] S0: total 2190.2 ms  prep=24.1  patch_build=429.4  hsi_infer=396.6  pc_infer=29.4  assemble=0.0  match=1281.2
+[forward] S1: total 1934.1 ms  prep=24.1  patch_build=230.7  hsi_infer=286.5  pc_infer=35.3  assemble=11.1  match=1344.5
+[forward] S2: total 785.1 ms  prep=24.0  patch_build=234.7  hsi_infer=242.3  pc_infer=29.3  assemble=11.1  match=241.1
+[forward] S3: total 798.4 ms  prep=24.1  patch_build=232.7  hsi_infer=257.0  pc_infer=29.4  assemble=11.1  match=242.5
+[forward] S4: total 699.1 ms  prep=23.9  patch_build=230.4  hsi_infer=162.1  pc_infer=18.1  assemble=11.0  match=251.9
+[forward] S5: total 602.4 ms  prep=24.1  patch_build=191.1  hsi_infer=107.0  pc_infer=16.6  assemble=11.2  match=251.5
+[forward] S6: total 409.3 ms  prep=24.1  patch_build=191.6  hsi_infer=107.4  pc_infer=16.6  assemble=11.3  match=57.0
+[forward] S7: total 230.4 ms  prep=24.1  patch_build=13.8  hsi_infer=107.2  pc_infer=16.6  assemble=11.1  match=56.8
+[forward] S8: total 211.5 ms  prep=24.0  patch_build=13.8  hsi_infer=107.2  pc_infer=16.1  assemble=0.4  match=49.6
+[forward] S9: total 201.0 ms  pc_infer=0.9  prep=28.4  patch_build=13.9  hsi_infer=107.5  assemble=0.4  match=49.5
+[forward] S10: total 191.0 ms  pc_infer=0.9  prep=28.4  patch_build=13.8  hsi_infer=107.5  assemble=0.5  match=39.5
+[reverse] S10: total 191.0 ms  pc_infer=0.8  prep=28.2  patch_build=13.9  hsi_infer=107.4  assemble=0.4  match=39.6
+[reverse] S9: total 201.2 ms  pc_infer=0.8  prep=28.3  patch_build=13.8  hsi_infer=107.7  assemble=0.4  match=49.6
+[reverse] S8: total 212.4 ms  prep=24.0  patch_build=13.8  hsi_infer=107.8  pc_infer=16.1  assemble=0.4  match=49.7
+[reverse] S7: total 230.9 ms  prep=24.0  patch_build=13.8  hsi_infer=107.4  pc_infer=16.7  assemble=11.1  match=57.0
+[reverse] S6: total 411.6 ms  prep=24.1  patch_build=193.6  hsi_infer=107.5  pc_infer=16.7  assemble=11.3  match=57.1
+[reverse] S5: total 595.8 ms  prep=24.2  patch_build=190.5  hsi_infer=107.3  pc_infer=16.6  assemble=11.4  match=243.6
+[reverse] S4: total 696.2 ms  prep=24.0  patch_build=235.1  hsi_infer=162.8  pc_infer=18.0  assemble=10.9  match=243.5
+[reverse] S3: total 800.8 ms  prep=24.1  patch_build=235.8  hsi_infer=255.6  pc_infer=29.3  assemble=11.2  match=242.1
+[reverse] S2: total 787.7 ms  prep=24.2  patch_build=233.6  hsi_infer=244.1  pc_infer=29.5  assemble=11.1  match=242.7
+[reverse] S1: total 1885.9 ms  prep=24.2  patch_build=232.2  hsi_infer=286.7  pc_infer=35.5  assemble=11.2  match=1291.5
+[reverse] S0: total 2405.6 ms  prep=27.1  patch_build=424.5  hsi_infer=469.7  pc_infer=35.8  assemble=0.0  match=1435.4
+{
+  "forward": {
+    "S0": 1.0,
+    "S1": 1.1324151974092413,
+    "S2": 2.7897218152086465,
+    "S3": 2.743366208235885,
+    "S4": 3.132899941399097,
+    "S5": 3.635825876343032,
+    "S6": 5.350979096087041,
+    "S7": 9.507486375550004,
+    "S8": 10.353207595981612,
+    "S9": 10.895033914258693,
+    "S10": 11.467351395065021
+  },
+  "reverse": {
+    "S0": 1.0,
+    "S1": 1.2756169648369067,
+    "S2": 3.0539334678519383,
+    "S3": 3.003926824213347,
+    "S4": 3.455322260532971,
+    "S5": 4.037557764718612,
+    "S6": 5.844083725385483,
+    "S7": 10.419601082262318,
+    "S8": 11.326466094447808,
+    "S9": 11.959040336169652,
+    "S10": 12.597847853436956
+  }
+}
+written -> results/opt_final_compare.json
+rc=0

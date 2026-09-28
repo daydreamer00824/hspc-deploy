@@ -2,28 +2,39 @@
 
 本仓库是我基于自己的硕士课题（HSI-LiDAR 点云与高光谱跨模态特征匹配）独立完成的端侧推理部署改造项目。
 我将课题中已训练完成的两个 Transformer 编码器（点云 PC / 高光谱 HSI）导出为 ONNX，构建
-TensorRT FP32、FP16 和 INT8 推理引擎，以 PyTorch FP32 为基线完成精度验证与 benchmark，
-并优化了不依赖 torch 的整景批量推理链路。所有实测数据在 NVIDIA RTX 3060 12GB（WSL2）上取得。
+TensorRT FP32、FP16 推理引擎，以 PyTorch FP32 为基线完成精度验证与 benchmark，
+并优化了不依赖 torch 的整景批量推理链路；随后把整条流程移植到 **NVIDIA Jetson Orin Nano Super** 开发板，
+在板上重建引擎、验证精度，并针对端侧的统一内存架构做了整景推理加速；最后按实际端侧部署的形态，用 **C++（TensorRT C++ API + 自定义 CUDA kernel）**
+重写了从原始文件到匹配结果的整条链路，并与 Python 版逐位对照（见[「Jetson Orin Nano 端侧部署」](#jetson-orin-nano-端侧部署)）。
 
-环境：TensorRT 10.13.3.9（CUDA 12.9）｜PyTorch 2.13.0（CUDA 13.0，FP32 基线）｜Python 3.10｜
-ONNX opset 17｜RTX 3060 12GB（SM 8.6，WSL2）。
+两个平台的数据分开记录，互不代替：
+
+- x86：TensorRT 10.13.3.9（CUDA 12.9）｜PyTorch 2.13.0（CUDA 13.0，FP32 基线）｜Python 3.10｜ONNX opset 17｜
+  RTX 3060 12GB（SM 8.6，WSL2）。结果在 `results/*.json`。
+- Jetson：Orin Nano Engineering Reference Developer Kit Super（SM 8.7，8 个 SM，与 CPU 共享 7.4 GiB 内存）｜
+  L4T R36.4.7 / JetPack 6｜TensorRT 10.7.0｜CUDA 12.6｜PyTorch 2.5.0（NVIDIA Jetson 版，FP32 基线）｜MAXN_SUPER。
+  **所有端侧数字都在板上实测**，结果在 `results/jetson/`，完整报告见 [docs/jetson.md](docs/jetson.md)。
 
 公开脚本的软件依赖与系统前提见 [docs/environment.md](docs/environment.md)。
 
 ## 公开范围
 
 本仓库不含：模型结构定义、训练权重、原始/校准样本数据（均属于未发表的硕士课题内容），
-以及跨模态匹配打分规则（`scripts/matching.py`，课题方法本身）。
+以及跨模态匹配打分规则（`scripts/matching.py` 与 `cpp/src/matching_rule.cuh`，课题方法本身）。
 
 本仓库包含：除课题私有模型定义、训练权重和跨模态匹配规则外的部署工程代码，包括 ONNX 导出、
 TensorRT 构建、精度验证、benchmark 和整景推理链路优化，以及对应实验结果 JSON。由于模型结构、
 训练权重及跨模态匹配规则未公开，本仓库无法独立完成端到端复现；公开内容用于展示部署工程实现、
 实验方法与结果证据。
 
+公开版本缺少 `cpp/src/matching_rule.cuh` 时，CMake 会跳过依赖私有匹配规则的 `hspc_deploy`；
+不依赖该规则的 `hspc_latency` 和 `hspc_prep_check` 仍可构建。
+
 ## 使用与授权
 
 本仓库仅供成果展示与技术审阅，保留一切权利。除 GitHub 服务条款允许的平台内使用、查看和 fork 外，未经作者事先
-书面许可，不得复制、修改、再发布、商业使用或创作衍生作品。详见 [LICENSE](LICENSE)。
+书面许可，不得复制、修改、再发布、商业使用或创作衍生作品。第三方组件不受上述限制，按各自目录中附带的许可证授权。
+详见 [LICENSE](LICENSE)。
 
 ## 结果速览
 
@@ -33,6 +44,14 @@ TensorRT 构建、精度验证、benchmark 和整景推理链路优化，以及�
 | 单样本推理加速比（batch=1，p50，vs PyTorch FP32-GPU） | PC 5.8x　HSI 7.3x | `results/stage3_benchmark.json` |
 | 整景端到端耗时（不含IO，同进程对比） | 714.7ms → 331.7ms（**2.15x**），基线为未优化的原始推理链路 | `results/stage7_final_e2e.json`（`overall_speedup_without_io`） |
 | 跨模态匹配任务一致率（最终混合精度部署版 vs PyTorch FP32，1000点/景） | DTP 99.7%　DTP+Spatial 99.5% | `results/stage7_mixed_precision.json` |
+| **Jetson** 单样本推理加速比（batch=1，p50，vs 板上 PyTorch FP32-GPU） | PC 14.2x（0.328ms）　HSI 14.8x（0.355ms） | `results/jetson/stage3_benchmark.json` |
+| **Jetson** 从原始文件到匹配结果（含 HSI/LAS 读取、投影、kNN，4 景） | 920.9ms → 256.7ms（3.59x）；4 个场景 3.2～3.6x | `results/jetson/e2e_full_summary.json`、`e2e_las_summary.json` |
+| **Jetson C++** 从原始文件到匹配结果（vs 上一行的 Python 最终配置，同板同场次，4 景） | 254.8ms → 148.7ms（1.71x）；4 个场景 1.7～2.1x；匹配行列与 Python 版逐位相同 | `results/jetson/cpp_e2e_summary.json` |
+| **Jetson C++** 单样本请求延迟（batch=1，含拷贝与同步，vs Python + CUDA Graph） | PC 0.419 → 0.254ms、HSI 0.452 → 0.282ms；输出逐位相同 | `results/jetson/cpp_latency_summary.json` |
+| **Jetson C++** 进程冷启动 / 每景能耗（整板）/ 进程内存峰值（vs Python） | 4.50s → 0.65s　/　4.60J → 3.20J　/　2,132 MB → 746 MB | `results/jetson/cpp_power_summary.json` |
+| **Jetson** 整景推理链路（缓存的原始 HSI 起算，同进程累加对比） | 2280.0ms → 181.8ms（**12.54x**）；4 个场景 12.0～15.4x | `results/jetson/opt_final2_compare.json`、`opt_final2_multiscene_*.json` |
+| **Jetson** GPU 忙碌率 / 每景能耗（整板） | 9.6% → 91.4%　/　24.8J → 3.8J | `results/jetson/logs/nsys/*_gpu_busy.json`、`results/jetson/opt_final2_energy.json` |
+| **Jetson** 跨模态匹配任务一致率（vs 板上 PyTorch FP32，4 景） | 99.2%～99.8%，不一致点全部为近平局翻转 | `results/jetson/opt_final2_multiscene_*.json` |
 
 ## 整景耗时与 CPU 段优化
 
@@ -49,6 +68,74 @@ Original 为原始整景验证链路，Optimized 为最终整景链路；取 `fo
 逐位一致（`results/stage7_cpu_profile.json` 的 `optimization_b_merged_score_window`）。因此图中的 72.9 ms 不能与
 上一图整景流水线中的 92.9 ms 直接比较。
 
+## Jetson Orin Nano 端侧部署
+
+把同一份 ONNX 在板上重新构建引擎（`.plan` 与 GPU 架构、TRT 版本绑定，不能从 x86 拷过去），按原流程重做精度验证和 benchmark，
+再针对端侧做整景推理加速，最后给出从原始文件到匹配结果的完整端到端数字。所有数字都在板上实测（MAXN_SUPER，时钟锁定）；
+x86 数字只作为不同平台的对照，不混入端侧结果。完整过程见 [docs/jetson.md](docs/jetson.md)。
+
+**精度与单样本延迟**（`results/jetson/`）：FP32(TF32 off) 闸门通过（PC max_abs 1.0e-5、HSI 1.0e-4）；FP16 下 PC 用默认精度即达标
+（cos_sim_min 0.999993，3 次构建逐位相同），HSI 默认精度在板上同样复现了 x86 上的构建不稳定（3 次构建 cos_sim_min 0.990～0.996），
+按 x86 选定的方案只把 `stem` 组保留 FP32 后达标且可复现（0.999705）。batch=1 延迟 PC 0.328ms / HSI 0.355ms，
+比板上 PyTorch FP32 快 14.2x / 14.8x；再用 CUDA Graph 捕获固定形状的推理，GPU 段快约 30%，含下发、同步和拷贝的请求端到端快 11%～17%，
+输出与不用 Graph 逐位相同（`opt_o4_latency.json`）。
+
+**从原始文件到匹配结果**：部署入口 `scripts/deploy_jetson.py` 读取原始 HSI（GDAL）与 LAS 点云，完成前处理、两个编码器推理与跨模态匹配。
+与"把 x86 最终链路（`deploy_scene.py`）原样搬到板上"相比，默认景 920.9ms → 256.7ms（3.59x），4 个场景 3.2～3.6x；
+每种配置的匹配结果都与缓存输入链路逐位相同，板上从原始文件算出的前处理产物也与 x86 逐位相同（`preprocess_guardrail.json`）。
+
+![Jetson 从原始文件到匹配结果](assets/jetson_full_e2e.png)
+
+**C++ 部署**：实际端侧部署一般是不带 Python 和 torch 的 C++ 可执行文件，所以 `cpp/` 下用 C++ 把整条链路重做了一遍，并与 Python 版对照：
+TensorRT C++ 运行时（同一批 `.plan` 引擎，含 CUDA Graph）、自定义 CUDA kernel（标准化与 patch 提取融合、融合窗口匹配）、GDAL/PROJ C API，
+以及直接编入的 SciPy kd 树内核（PC 编码器的输入对近邻顺序敏感，某个场景里 939/1000 个点的 16 近邻有距离并列，必须与 Python 版的取舍一致）。
+Python 版保留为参考实现：C++ 的每个中间数组（掩膜、统计量、投影坐标、采样、近邻偏移、patch、特征）和最终匹配行列在 4 个场景上都与它**逐位相同**。
+同一块板、同一场次交替测量：默认景 254.8ms → 148.7ms（1.71x），4 个场景 1.7～2.1x；最大的一项收益是把 GDAL 逐行读文件（约 55ms）换成整块读（约 8ms），
+融合匹配 kernel 把匹配段从 40ms 降到 4.7ms；此时整条 GPU 链路（上传、patch 生成、HSI 推理）约 133ms，
+其中 HSI 推理约 107ms（与 Python 版是同一个引擎）。
+单样本请求延迟（含拷贝与同步）PC 0.419 → 0.254ms、HSI 0.452 → 0.282ms（相对 Python + CUDA Graph，GPU 段耗时相同，差在每次调用的下发开销）；
+进程从启动到出第一个结果 4.50s → 0.65s，进程内存峰值 2,132 MB → 746 MB，每景整板能耗 4.60J → 3.20J。没有采纳的尝试（多线程前处理无稳定收益、LAS 与 HSI 读取同时开始反而慢约 5ms 等）见 [docs/jetson.md](docs/jetson.md) 第 5 节。
+
+![Jetson C++ 与 Python 的整景对比](assets/jetson_cpp_e2e.png)
+
+![Jetson 单样本请求延迟：Python vs C++](assets/jetson_cpp_latency.png)
+
+**整景推理链路的逐步优化**：只看推理相关的部分（从缓存的原始 HSI 立方体起算，排除文件读取与 LAS 段），从验证工具式的写法（S0）出发，
+每步只改一处、在同一进程里累加对比，2280.0ms → 181.8ms（**12.54x**）；另外 3 个未参与默认景优化调参的场景为 12.8～15.4x（正反两轮取正向）。
+
+![Jetson 整景推理累加优化](assets/jetson_opt_chain.png)
+
+主要贡献来自这几项（累加对比的拆分依赖顺序，只列来源、不报百分比）：
+
+- **把整条数据链路留在 GPU 上**：HSI patch 改为在 GPU 上一次 gather 生成、直接作为 TensorRT 的输入地址（原来是 CPU 单线程 Python 循环，
+  6 核只用了 1 核），推理输出不回 host，直接在 GPU 上拼网格、做跨模态匹配，最后只取回 1000 个点的结果。
+- **统一内存零拷贝**：Jetson 的 CPU 与 GPU 共用同一块物理内存，用 `cudaHostAllocMapped` 分配的 host 内存让 TensorRT 直接读写，
+  消掉了 H2D/D2H 拷贝和一次 118MB 的 host 端整理拷贝（`scripts/deploy_scene.py` 的 `PinnedArray(mapped=True)`、`LiteTrtRunner.infer_ptrs`）。
+- **匹配搬到 GPU**：11×11 搜索窗口固定形状后按点批量 gather + bmm，与逐点循环的 NumPy 版输出逐位相同。
+- **大 batch 引擎**：板上重新扫描 profile 档位，选 1024（2048 只快 3%，显存翻倍，在 7.4 GiB 共享内存上构建还出现过一次 OOM）。
+- **CPU 与 GPU 重叠**：点云推理放到第二个 stream 与 CPU 标准化并行；完整链路里 HSI 推理异步发射后立即做 LAS 段，kd 树构建再放到后台线程与投影并行，
+  HSI 推理大部分藏在 CPU 工作后面（默认景剩约 29ms 要等 GPU，此时关键路径已是 GPU 推理本身）。
+
+每一步都有护栏：除换引擎那一步外，每步的特征与匹配结果都与上一步**逐位相同**；每个配置与板上 PyTorch FP32 的不一致点
+全部是 FP32 判别裕度内的近平局翻转。nsys 时间线显示，一次整景里 GPU 忙碌的时间占比 9.6% → 91.4%；HSI 推理窗口内
+GPU 忙碌率为 99%，HSI 推理本身约 107ms，是 FP16 下的下限。
+
+![GPU 忙碌率与每景能耗](assets/jetson_gpu_energy.png)
+
+**能效**（tegrastats 整板输入功率，空闲 7.5W）：优化后功率升高（10.3W → 20.7W，GPU 更忙），但每景能耗 24.8J → 3.8J，
+每瓦吞吐提高 6.6 倍。
+
+**尝试过但未采纳的**：标准化和掩膜整体搬到 GPU（快 16ms，但归约顺序不同，4 景里 3 景的匹配结果变了，只采纳了保持逐位相同的逐元素部分）、
+stem 卷积用 TF32（推理只快 0.3%，重复构建不稳定）、`builderOptimizationLevel=5`（GPU 时间不变，构建 47s → 257s）、
+kNN 查询改多核（只快 1～5ms：时间主要花在逐点组装偏移的 Python 循环上）、INT8（见下一段）。
+
+**INT8**：TensorRT 原生隐式校准在板上构建出的引擎，逐层统计全部为 0 个 Int8 层（`results/jetson/int8_implicit_layer_check.json`；Transformer 主体由 Myelin 执行，不使用隐式 scale），
+实际就是 FP16；显式 QDQ 是真 INT8（3 次构建中 HSI 均有 30 个 Int8 层、总层数为 41～42，PC 均为 32/41，见 `results/jetson/j2_qdq_stability.json`），但 HSI 的 cos_sim_min 只有 0.755，PC 输出数值错误，与 x86 表现一致，问题在 QDQ 图本身。
+板上没有可交付的 INT8，而且即使是真 INT8，batch=64 时也只比 FP16 快约 5%（`results/jetson/stage3_benchmark.json`；[docs/jetson.md](docs/jetson.md) 第 2 节）。
+
+**冷启动**（Python 部署入口；MAXN_SUPER、时钟锁定；新进程，页缓存未清；C++ 版见上）：部署入口加载两个引擎并分配 buffer 约 0.25s，第 1 次完整整景 0.69～0.77s
+（含 CUDA/PROJ 的首次初始化），之后稳态 0.21～0.27s（4 景，`results/jetson/e2e_las_summary.json` 中 E 的 `cold_start_sec` / `engine_load_sec`）。
+
 ## 结果总表
 
 <!-- results-table:start -->
@@ -60,15 +147,13 @@ Original 为原始整景验证链路，Optimized 为最终整景链路；取 `fo
 | PC | TensorRT | FP32 (TF32 off) | 1.000000 / 100.0% | 0.397 | 4.0x |
 | PC | TensorRT | FP32 (TF32 on) | 1.000000 / 100.0% | 0.353 | 4.5x |
 | PC | TensorRT | FP16 mixed | 0.999998 / 99.5% | 0.273 | 5.8x |
-| PC | TensorRT | INT8 (implicit calibration) | 0.999994 / 100.0% | 0.292 | 5.4x |
 | HSI | PyTorch | FP32 | reference | 1.820 | 1.0x |
 | HSI | TensorRT | FP32 (TF32 off) | 1.000000 / 100.0% | 0.420 | 4.3x |
 | HSI | TensorRT | FP32 (TF32 on) | 0.999997 / 100.0% | 0.353 | 5.2x |
 | HSI | TensorRT | FP16 mixed | 0.999847 / 99.0% | 0.248 | 7.3x |
-| HSI | TensorRT | INT8 (implicit calibration) | 0.991568 / 98.0% | 0.263 | 6.9x |
 | HSI | TensorRT | INT8 (QDQ) | 0.754749 / 91.0% | 0.301 | 6.0x |
 
-PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。
+PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。表中不含 “INT8 (implicit calibration)”：逐层核查显示这类引擎中没有任何 Int8 层，数值行为与 FP16(auto) 构建一致，不是 INT8 结果（见「技术要点」第 3 条）。
 
 <!-- results-table:end -->
 
@@ -97,9 +182,6 @@ PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。
 - TensorRT FP16 accuracy：`results/stage2_trt_accuracy.json` → `results.pc.fp16.cos_sim_min`, `results.pc.fp16.top1_agreement`；同配置另有 5 次独立构建的稳定性验证，cos_sim_min 为 0.999995–0.999998（`results/stage7_mixed_precision.json` → `pc.stability.cos_mins`）
 - TensorRT FP16 latency：`results/stage3_benchmark.json` → `results.pc.trt_fp16[batch=1].p50_ms`
 - TensorRT FP16 speedup：`results.pc.pytorch_fp32_gpu[batch=1].p50_ms / results.pc.trt_fp16[batch=1].p50_ms`
-- TensorRT INT8 implicit accuracy：`results/stage2_trt_accuracy.json` → `results.pc.int8_implicit.cos_sim_min`, `results.pc.int8_implicit.top1_agreement`
-- TensorRT INT8 implicit latency：`results/stage3_benchmark.json` → `results.pc.trt_int8_implicit[batch=1].p50_ms`
-- TensorRT INT8 implicit speedup：`results.pc.pytorch_fp32_gpu[batch=1].p50_ms / results.pc.trt_int8_implicit[batch=1].p50_ms`
 
 ### HSI
 
@@ -114,9 +196,6 @@ PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。
 - TensorRT FP16 accuracy：`results/stage2_trt_accuracy.json` → `results.hsi.fp16.cos_sim_min`, `results.hsi.fp16.top1_agreement`；同配置另有 5 次独立构建的稳定性验证，cos_sim_min 为 0.999784–0.999801（`results/stage7_mixed_precision.json` → `hsi.stability.cos_mins`）
 - TensorRT FP16 latency：`results/stage3_benchmark.json` → `results.hsi.trt_fp16[batch=1].p50_ms`
 - TensorRT FP16 speedup：`results.hsi.pytorch_fp32_gpu[batch=1].p50_ms / results.hsi.trt_fp16[batch=1].p50_ms`
-- TensorRT INT8 implicit accuracy：`results/stage2_trt_accuracy.json` → `results.hsi.int8_implicit.cos_sim_min`, `results.hsi.int8_implicit.top1_agreement`
-- TensorRT INT8 implicit latency：`results/stage3_benchmark.json` → `results.hsi.trt_int8_implicit[batch=1].p50_ms`
-- TensorRT INT8 implicit speedup：`results.hsi.pytorch_fp32_gpu[batch=1].p50_ms / results.hsi.trt_int8_implicit[batch=1].p50_ms`
 - TensorRT INT8 QDQ accuracy：`results/stage2_trt_accuracy.json` → `results.hsi.int8_qdq.cos_sim_min`, `results.hsi.int8_qdq.top1_agreement`
 - TensorRT INT8 QDQ 补充核查：同一 QDQ 图经 TensorRT 独立重建 3 次，cos_sim_min 为 0.7474–0.7547；不经 TensorRT、直接用 ONNX Runtime 运行该 QDQ 模型，cos_sim_min 为 0.7858–0.8582，同样偏低（`results/hsi_qdq_check.json` → `trt_rebuilds[*].cos_sim_min`、`ort_direct.*.cos_sim_min`）。因此这是 QDQ 量化误差本身较大，不是 PC 路径那种 TensorRT 重建后输出数值异常的问题。
 - TensorRT INT8 QDQ latency：`results/stage3_benchmark.json` → `results.hsi.trt_int8_qdq[batch=1].p50_ms`
@@ -183,10 +262,12 @@ python scripts/deploy_scene.py --precision fp16 --engine-tier scene
    （`results/followup_stage6_verification.json`）；实测当前写法下 pinned 内存无稳定收益，
    推断需配合数据直写与双缓冲流水线（未实现）。
 
-3. **INT8 路径选择**：PC 模型走显式 QDQ 量化时，TensorRT 用相同输入独立构建多次，部分构建
-   产出数值异常的输出，且不报错、无法通过常规校验检测；诊断过程未随仓库公开。改用 TensorRT
-   原生隐式校准路径后精度正常（cos_sim_min 0.999994，`results/stage2_trt_accuracy.json`）；
-   多次重复构建的稳定性验证过程同样未随仓库公开。
+3. **INT8 路径**：PC 模型走显式 QDQ 量化时，TensorRT 用相同输入独立构建多次，部分构建产出数值
+   异常的输出，且不报错、无法通过常规校验检测；诊断过程未随仓库公开。TensorRT 原生隐式校准路径
+   经逐层核查（x86 用同一脚本重建 3 次、开启逐层信息核查），逐层统计全部为 0 个 Int8 层，精度指标
+   也与一次 FP16(auto) 构建完全相同（cos_sim_min 0.991568 / max_abs 0.2871，`results/x86_int8_implicit_verification.json`）：
+   Transformer 主体由 TensorRT 的 Myelin 后端执行，不使用隐式校准的 scale，做 INT8 需要显式 QDQ。
+   因此结果总表不含 “INT8 (implicit calibration)”（早期版本曾列出这两行，已删除）；真正的 INT8 只有 HSI 的 QDQ 一行，精度不达标，默认部署采用 FP16。
 
 4. **计时方法**：逐次 CUDA 同步会在两次 kernel 之间引入同步气泡，使测量的延迟偏高、制造
    假的长尾。改为用 CUDA event 批量记录、末尾统一同步，并与 `trtexec` 交叉验证：偏差
@@ -194,15 +275,13 @@ python scripts/deploy_scene.py --precision fp16 --engine-tier scene
 
 ## 已知限制
 
-- 所有实测均在 RTX 3060（WSL2）上完成，`.plan` 引擎文件不能跨平台，Jetson 等边缘设备需要
-  在目标硬件上用相同配置重新构建
-- 只在单一场景上做过端到端验证，跨场景的稳健性未知
-- INT8（隐式校准）相对 FP16 无稳定延迟收益：batch=1 下慢约 6%–7%，batch 8–64 下差异的绝对值不超过
-  约 8.3%，且方向不一致；引擎体积也与 FP16 相当（PC 7183 vs 6988 KB，HSI 7078 vs 7133 KB，见
-  `results/stage3_benchmark.json` 的 `size_kb`）。两次基准测试会话中的 INT8 记录具有相同的引擎体积；其
-  batch=1 的 p50 相差 2.7%–4.4%（见 `results/stage3_benchmark_legacy_20260923.json` 与
-  `results/stage3_benchmark.json`），与上述差异属于同一数量级，不宜解释为稳定的性能差异；同时 HSI 精度下降
-  更明显，故默认部署采用 FP16
+- `.plan` 引擎文件不能跨平台，x86 与 Jetson 各自在本机构建（Jetson 的构建配置与 sha256 见
+  `results/jetson/engine_manifest.json`）；两个平台的 TensorRT 版本不同（10.13 / 10.7），数字不是同口径
+- x86 上的端到端验证只做了单一场景；Jetson 上做了 4 个场景（`results/jetson/opt_final2_multiscene_*.json`、`e2e_full_summary.json`）
+- 没有可交付的 INT8：隐式校准路径实际没有量化（见技术要点第 3 条，`results/stage3_benchmark.json` 里的
+  `trt_int8_implicit` 行因此不代表 INT8 性能）；显式 QDQ 是真 INT8 但精度不达标，需要重新做 PTQ，未做
+- Jetson 上的文件读取是页缓存命中时的数字（没有清缓存）；所有端侧数字都在 MAXN_SUPER、时钟锁定下测得，其他功耗模式未测
+- C++ 部署只支持未压缩 LAS（不支持 LAZ）；HSI 整块读只在 ENVI BSQ float32 小端时启用（否则走 GDAL）；GDAL/PROJ 用 conda 环境里的库；没有 INT8
 
 ## 目录结构
 
@@ -220,8 +299,16 @@ scripts/deploy_scene.py      部署入口：不依赖 torch 的整景推理链�
 scripts/e2e_stage_a_preprocess.py / e2e_stage_b_infer.py   端到端场景验证（前处理 / 推理+匹配）
 scripts/stage6_*.py          精度稳定性复核、engine 构建不确定性诊断
 scripts/stage7_*.py          混合精度搜索、scene engine 扫描、CPU 段优化、最终整景对比
+scripts/deploy_jetson.py     Jetson 部署入口：从原始 HSI/LAS 到匹配结果的完整链路（最终配置）
+scripts/jetson_scene_opt.py  Jetson 整景加速实验：累加对比、档位扫描、CUDA Graph 延迟、能效、冷启动
+scripts/cpp_guardrail.py     C++ 部署的逐位护栏：C++ 导出的中间数组与 Python 参考链路逐数组比较，以及 kNN 并列、窗口覆盖统计
+scripts/cpp_*_run.sh、cpp_*_summarize.py   C++ 与 Python 的板上对比（延迟、整景、冷启动/内存/能效）的运行与汇总脚本
 scripts/make_readme_assets.py  生成 README 的图表与结果总表（数据全部读自 results/*.json）
+cpp/                         C++ 部署（TensorRT C++ 运行时、CUDA kernel、GDAL/PROJ 前处理、整景程序 hspc_deploy）；CMake 构建，见 docs/jetson.md 第 5 节
+cpp/third_party/scipy_ckdtree/  SciPy cKDTree 建树与 kNN 内核（BSD-3，保证并列近邻的取舍与 Python 版一致）
 assets/                      README 引用的结果图表
 engines/build_manifest.json  正式交付 engine 的构建配置、精度策略、sha256（不含 .plan 本身）
 results/                     各阶段精度 / 性能 JSON 结果，以及 trtexec 交叉验证日志
+results/jetson/              Jetson 板上实测的全部结果（精度、benchmark、优化对比、能效、nsys 统计）
+docs/jetson.md               Jetson 移植与优化的完整报告
 ```

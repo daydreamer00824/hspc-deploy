@@ -1,0 +1,8 @@
+range          wall_ms kernel_ms memcpy_ms gpu_busy_ms gpu_busy/wall n_kernels
+scene_S9         221.9     170.5       2.8       173.2         78.1%       698
+pc_infer           2.4       0.6       0.0         0.6         26.2%         3
+prep              29.1      15.4       0.0        15.4         52.8%        32
+patch_build       14.6       9.9       2.7        12.5         85.8%         9
+hsi_infer        109.4     107.9       0.0       107.9         98.7%       370
+assemble           8.0       2.6       0.0         2.6         32.6%         2
+match             57.9      34.0       0.1        34.1         58.9%       281

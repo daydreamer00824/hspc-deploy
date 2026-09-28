@@ -1,0 +1,77 @@
+/home/jetson/miniforge3/envs/hspc-jetson/lib/python3.10/site-packages/osgeo/gdal.py:330: FutureWarning: Neither gdal.UseExceptions() nor gdal.DontUseExceptions() has been explicitly called. In GDAL 4.0, exceptions will be enabled by default.
+  warnings.warn(
+{
+  "scene": "25data/10.22/1",
+  "overlap_las": true,
+  "las_workers": -1,
+  "las_parallel": false,
+  "hsi_engine": "engines/hsi_fp16_scene1024.plan",
+  "pc_engine": "engines/pc_fp16_scene1024.plan",
+  "max_batch": 1024,
+  "n_valid_pixels": 8077,
+  "n_points": 1000,
+  "warmup": 2,
+  "repeat": 10,
+  "engine_load_sec": 0.24932296499900986,
+  "cold_start": {
+    "note": "进程内首次整景（含 CUDA/PROJ 初始化）；页缓存未清",
+    "total_sec": 0.7250954010014539,
+    "segments_ms": {
+      "load_hsi_io": 150.2351200033445,
+      "standardize_and_mask": 32.13885000150185,
+      "hsi_patch_and_launch": 74.29645899537718,
+      "laspy_read_io": 9.69116399937775,
+      "crs_transformer_init": 6.035192993294913,
+      "projection": 36.7559749938664,
+      "mask_filter": 2.889256000344176,
+      "rng_sample": 0.5757649996667169,
+      "ckdtree_build": 30.65623599832179,
+      "ckdtree_query_offsets": 20.231895003234968,
+      "hsi_wait": 7.655091001652181,
+      "pc_infer_assemble_match": 276.2270020029973
+    }
+  },
+  "warm": {
+    "total_ms_median": 247.15235850089812,
+    "total_ms_all": [
+      252.46909300039988,
+      245.80043899914017,
+      246.63195599714527,
+      245.2811240000301,
+      248.2570710053551,
+      246.62011599866673,
+      245.78098200436216,
+      247.67276100465097,
+      249.0988599965931,
+      248.29137600318063
+    ],
+    "segments_ms_median": {
+      "load_hsi_io": 53.41143700206885,
+      "standardize_and_mask": 17.742988999088993,
+      "hsi_patch_and_launch": 7.894235503044911,
+      "laspy_read_io": 5.60757750281482,
+      "crs_transformer_init": 1.5526640017924365,
+      "projection": 43.419429999630665,
+      "mask_filter": 3.0085399994277395,
+      "rng_sample": 0.5597320050583221,
+      "ckdtree_build": 36.22338050263352,
+      "ckdtree_query_offsets": 20.785706001333892,
+      "hsi_wait": 1.310735497099813,
+      "pc_infer_assemble_match": 55.510328500531614
+    },
+    "io_ms_median_sum": 59.01901450488367,
+    "total_without_io_ms_median": 188.13334399601445
+  },
+  "determinism_match_rowcols_identical_across_reps": {
+    "DTP": true,
+    "DTP+Spatial": true
+  },
+  "guardrail_vs_cache": {
+    "valid_mask": true,
+    "point_offsets": true,
+    "ref_rows": true,
+    "ref_cols": true
+  }
+}
+written -> results/jetson_e2e/e2e_full_D_25data_10.22_1_fwd.json
+rc=0

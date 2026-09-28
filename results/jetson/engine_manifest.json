@@ -1,0 +1,15 @@
+{
+  "platform": "Jetson Orin Nano Engineering Reference Developer Kit Super (SM 8.7, 8 SM, 7.4 GiB shared memory), L4T R36.4.7 / JetPack 6, TensorRT 10.7.0, CUDA 12.6, MAXN_SUPER",
+  "note": "板上构建的引擎文件本身不入库（.plan 与 GPU 架构/TRT 版本绑定）；这里记录构建配置与 sha256，便于核对。",
+  "engines": {
+    "pc_fp16.plan": {"profile": {"min": 1, "opt": 8, "max": 64}, "precision_policy": "auto (fp16)", "fp32_groups": [], "use": "单样本/小批延迟、J2 精度验证、CUDA Graph 测量", "size_bytes": 6948412, "sha256": "cc1fb89ddae87823f56162aa84b32825000f818f97a0fe14417b396fc0894969"},
+    "hsi_fp16.plan": {"profile": {"min": 1, "opt": 8, "max": 64}, "precision_policy": "mixed", "fp32_groups": ["stem"], "use": "同上", "size_bytes": 7274036, "sha256": "43ee4c9e37edd954467d454638856ea5fb747200b8ef59d5cbb5d2d1f622b825"},
+    "pc_fp16_scene1024.plan": {"profile": {"min": 1, "opt": 1024, "max": 1024}, "precision_policy": "auto (fp16)", "fp32_groups": [], "use": "整景推理（S4 起）", "size_bytes": 7065596, "sha256": "75c7b348516c13a3902127adf3bfdcb90accb0ac6386dc1fda26c88607673038"},
+    "hsi_fp16_scene1024.plan": {"profile": {"min": 1, "opt": 1024, "max": 1024}, "precision_policy": "mixed", "fp32_groups": ["stem"], "use": "整景推理（S4 起）", "size_bytes": 7378540, "sha256": "a745ad164ebd6b64ee1c0c21f929a18b755b8870090e8483b7ca1f469849360d"}
+  },
+  "build_commands": {
+    "batch64": "python scripts/build_trt.py --which pc --modes fp16 ; python scripts/build_trt.py --which hsi --modes fp16 --precision-policy mixed --fp32-groups stem",
+    "scene1024": "python scripts/jetson_scene_opt.py sweep --tiers 1024 --repeat-builds 3"
+  },
+  "selection": "HSI 的 mixed(stem) 由 J2 触发（fp16 auto 三次构建 cos_min 0.990～0.996、构建间 max_abs 0.114）；PC 未触发，用 auto；scene 档位 1024 由 O2 扫描选定（results/jetson/opt_o2_sweep.json），3 次重复构建输出逐位相同（opt_o2_stability.json）。"
+}

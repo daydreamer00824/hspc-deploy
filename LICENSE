@@ -10,3 +10,8 @@ written permission of the copyright holder.
 The repository excludes the underlying research model definitions, trained
 weights, source data, calibration samples, and cross-modal matching method.
 Any rights in those materials are reserved separately.
+
+Third-party code: files under cpp/third_party/scipy_ckdtree/ are derived from
+SciPy 1.15.2 and remain under the BSD 3-Clause License (see
+cpp/third_party/scipy_ckdtree/LICENSE.scipy.txt). The restrictions above do not
+apply to those files.

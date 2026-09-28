@@ -1,0 +1,163 @@
+[09/26/2026-20:20:10] [TRT] [I] [MemUsageChange] Init CUDA: CPU +13, GPU +0, now: CPU 116, GPU 3185 (MiB)
+[09/26/2026-20:20:12] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU +981, GPU +799, now: CPU 1140, GPU 4030 (MiB)
+[09/26/2026-20:20:12] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:20:12] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_qdq.onnx
+[09/26/2026-20:20:12] [TRT] [I] ONNX IR version:  0.0.10
+[09/26/2026-20:20:12] [TRT] [I] Opset version:    19
+[09/26/2026-20:20:12] [TRT] [I] Producer name:    onnx.quantize
+[09/26/2026-20:20:12] [TRT] [I] Producer version: 0.1.0
+[09/26/2026-20:20:12] [TRT] [I] Domain:           
+[09/26/2026-20:20:12] [TRT] [I] Model version:    0
+[09/26/2026-20:20:12] [TRT] [I] Doc string:       
+[09/26/2026-20:20:12] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:20:12] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-20:20:12] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-20:20:13] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-20:21:34] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-20:21:34] [TRT] [I] Total Host Persistent Memory: 5216 bytes
+[09/26/2026-20:21:34] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-20:21:34] [TRT] [I] Max Scratch Memory: 2462720 bytes
+[09/26/2026-20:21:34] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 5 steps to complete.
+[09/26/2026-20:21:34] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.032129ms to assign 3 blocks to 5 nodes requiring 2758144 bytes.
+[09/26/2026-20:21:34] [TRT] [I] Total Activation Memory: 2757632 bytes
+[09/26/2026-20:21:34] [TRT] [I] Total Weights Memory: 4354948 bytes
+[09/26/2026-20:21:34] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-20:21:34] [TRT] [I] Engine generation completed in 82.1817 seconds.
+[09/26/2026-20:21:34] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 11 MiB, GPU 20 MiB
+[09/26/2026-20:21:36] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -978, GPU +134, now: CPU 2828, GPU 5064 (MiB)
+[09/26/2026-20:21:36] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:21:36] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_qdq.onnx
+[09/26/2026-20:21:36] [TRT] [I] ONNX IR version:  0.0.10
+[09/26/2026-20:21:36] [TRT] [I] Opset version:    19
+[09/26/2026-20:21:36] [TRT] [I] Producer name:    onnx.quantize
+[09/26/2026-20:21:36] [TRT] [I] Producer version: 0.1.0
+[09/26/2026-20:21:36] [TRT] [I] Domain:           
+[09/26/2026-20:21:36] [TRT] [I] Model version:    0
+[09/26/2026-20:21:36] [TRT] [I] Doc string:       
+[09/26/2026-20:21:36] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:21:37] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-20:21:37] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-20:21:37] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-20:22:41] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-20:22:41] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-20:22:41] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-20:22:41] [TRT] [I] Max Scratch Memory: 3153920 bytes
+[09/26/2026-20:22:41] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-20:22:41] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.025665ms to assign 3 blocks to 3 nodes requiring 3285504 bytes.
+[09/26/2026-20:22:41] [TRT] [I] Total Activation Memory: 3284992 bytes
+[09/26/2026-20:22:41] [TRT] [I] Total Weights Memory: 4273670 bytes
+[09/26/2026-20:22:41] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-20:22:41] [TRT] [I] Engine generation completed in 64.6527 seconds.
+[09/26/2026-20:22:41] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 11 MiB, GPU 22 MiB
+[09/26/2026-20:22:43] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -978, GPU +6, now: CPU 2967, GPU 5136 (MiB)
+[09/26/2026-20:22:43] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:22:43] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_qdq.onnx
+[09/26/2026-20:22:43] [TRT] [I] ONNX IR version:  0.0.10
+[09/26/2026-20:22:43] [TRT] [I] Opset version:    19
+[09/26/2026-20:22:43] [TRT] [I] Producer name:    onnx.quantize
+[09/26/2026-20:22:43] [TRT] [I] Producer version: 0.1.0
+[09/26/2026-20:22:43] [TRT] [I] Domain:           
+[09/26/2026-20:22:43] [TRT] [I] Model version:    0
+[09/26/2026-20:22:43] [TRT] [I] Doc string:       
+[09/26/2026-20:22:43] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:22:43] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-20:22:43] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-20:22:44] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-20:24:04] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-20:24:04] [TRT] [I] Total Host Persistent Memory: 5216 bytes
+[09/26/2026-20:24:04] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-20:24:04] [TRT] [I] Max Scratch Memory: 2462720 bytes
+[09/26/2026-20:24:04] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 5 steps to complete.
+[09/26/2026-20:24:04] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.036737ms to assign 3 blocks to 5 nodes requiring 2758144 bytes.
+[09/26/2026-20:24:04] [TRT] [I] Total Activation Memory: 2757632 bytes
+[09/26/2026-20:24:04] [TRT] [I] Total Weights Memory: 4354948 bytes
+[09/26/2026-20:24:04] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-20:24:04] [TRT] [I] Engine generation completed in 80.3577 seconds.
+[09/26/2026-20:24:04] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 11 MiB, GPU 22 MiB
+[09/26/2026-20:24:06] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -978, GPU -14, now: CPU 3003, GPU 5150 (MiB)
+[09/26/2026-20:24:06] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:24:06] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_qdq.onnx
+[09/26/2026-20:24:06] [TRT] [I] ONNX IR version:  0.0.10
+[09/26/2026-20:24:06] [TRT] [I] Opset version:    19
+[09/26/2026-20:24:06] [TRT] [I] Producer name:    onnx.quantize
+[09/26/2026-20:24:06] [TRT] [I] Producer version: 0.1.0
+[09/26/2026-20:24:06] [TRT] [I] Domain:           
+[09/26/2026-20:24:06] [TRT] [I] Model version:    0
+[09/26/2026-20:24:06] [TRT] [I] Doc string:       
+[09/26/2026-20:24:06] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:24:06] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-20:24:06] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-20:24:06] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-20:25:10] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-20:25:10] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-20:25:10] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-20:25:10] [TRT] [I] Max Scratch Memory: 3153920 bytes
+[09/26/2026-20:25:10] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-20:25:10] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.026336ms to assign 3 blocks to 3 nodes requiring 3285504 bytes.
+[09/26/2026-20:25:10] [TRT] [I] Total Activation Memory: 3284992 bytes
+[09/26/2026-20:25:10] [TRT] [I] Total Weights Memory: 4273670 bytes
+[09/26/2026-20:25:10] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-20:25:10] [TRT] [I] Engine generation completed in 64.3578 seconds.
+[09/26/2026-20:25:10] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 11 MiB, GPU 22 MiB
+[09/26/2026-20:25:12] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +3, now: CPU 2995, GPU 5154 (MiB)
+[09/26/2026-20:25:12] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:25:12] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_qdq.onnx
+[09/26/2026-20:25:12] [TRT] [I] ONNX IR version:  0.0.10
+[09/26/2026-20:25:12] [TRT] [I] Opset version:    19
+[09/26/2026-20:25:12] [TRT] [I] Producer name:    onnx.quantize
+[09/26/2026-20:25:12] [TRT] [I] Producer version: 0.1.0
+[09/26/2026-20:25:12] [TRT] [I] Domain:           
+[09/26/2026-20:25:12] [TRT] [I] Model version:    0
+[09/26/2026-20:25:12] [TRT] [I] Doc string:       
+[09/26/2026-20:25:12] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:25:12] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-20:25:13] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-20:25:13] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-20:26:32] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-20:26:32] [TRT] [I] Total Host Persistent Memory: 5216 bytes
+[09/26/2026-20:26:32] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-20:26:32] [TRT] [I] Max Scratch Memory: 2462720 bytes
+[09/26/2026-20:26:32] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 5 steps to complete.
+[09/26/2026-20:26:32] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.034465ms to assign 3 blocks to 5 nodes requiring 2758144 bytes.
+[09/26/2026-20:26:32] [TRT] [I] Total Activation Memory: 2757632 bytes
+[09/26/2026-20:26:32] [TRT] [I] Total Weights Memory: 4350852 bytes
+[09/26/2026-20:26:32] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-20:26:32] [TRT] [I] Engine generation completed in 79.7883 seconds.
+[09/26/2026-20:26:32] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 11 MiB, GPU 22 MiB
+[09/26/2026-20:26:34] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -978, GPU -1, now: CPU 3033, GPU 5189 (MiB)
+[09/26/2026-20:26:34] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:26:34] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_qdq.onnx
+[09/26/2026-20:26:34] [TRT] [I] ONNX IR version:  0.0.10
+[09/26/2026-20:26:34] [TRT] [I] Opset version:    19
+[09/26/2026-20:26:34] [TRT] [I] Producer name:    onnx.quantize
+[09/26/2026-20:26:34] [TRT] [I] Producer version: 0.1.0
+[09/26/2026-20:26:34] [TRT] [I] Domain:           
+[09/26/2026-20:26:34] [TRT] [I] Model version:    0
+[09/26/2026-20:26:34] [TRT] [I] Doc string:       
+[09/26/2026-20:26:34] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:26:35] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-20:26:35] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-20:26:35] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-20:27:39] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-20:27:39] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-20:27:39] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-20:27:39] [TRT] [I] Max Scratch Memory: 3153920 bytes
+[09/26/2026-20:27:39] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-20:27:39] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.027009ms to assign 3 blocks to 3 nodes requiring 3285504 bytes.
+[09/26/2026-20:27:39] [TRT] [I] Total Activation Memory: 3284992 bytes
+[09/26/2026-20:27:39] [TRT] [I] Total Weights Memory: 4273670 bytes
+[09/26/2026-20:27:39] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-20:27:39] [TRT] [I] Engine generation completed in 64.6976 seconds.
+[09/26/2026-20:27:39] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 11 MiB, GPU 22 MiB
+[hsi/int8_qdq/auto] building from hsi_qdq.onnx -> hsi_qdq_0.plan ...
+[hsi/int8_qdq] done in 82.3s, size=5519.5 KB
+[pc/int8_qdq/auto] building from pc_qdq.onnx -> pc_qdq_0.plan ...
+[pc/int8_qdq] done in 64.7s, size=5474.5 KB
+[hsi/int8_qdq/auto] building from hsi_qdq.onnx -> hsi_qdq_1.plan ...
+[hsi/int8_qdq] done in 80.4s, size=5520.1 KB
+[pc/int8_qdq/auto] building from pc_qdq.onnx -> pc_qdq_1.plan ...
+[pc/int8_qdq] done in 64.5s, size=5474.5 KB
+[hsi/int8_qdq/auto] building from hsi_qdq.onnx -> hsi_qdq_2.plan ...
+[hsi/int8_qdq] done in 79.9s, size=5589.1 KB
+[pc/int8_qdq/auto] building from pc_qdq.onnx -> pc_qdq_2.plan ...
+[pc/int8_qdq] done in 64.8s, size=5474.5 KB

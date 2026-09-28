@@ -120,9 +120,17 @@ def extract_patch(cube: np.ndarray, row: int, col: int, patch_size: int = 3) -> 
     return np.asarray(patch, dtype=np.float32)
 
 
-def build_hsi_patches(normalized: np.ndarray, rowcols, patch_size: int = 3) -> np.ndarray:
-    """批量提取 -> (N, bands, patch, patch)，可直接喂 HSI encoder。"""
-    return np.stack([extract_patch(normalized, r, c, patch_size) for r, c in rowcols])
+def build_hsi_patches(normalized: np.ndarray, rowcols, patch_size: int = 3, out: np.ndarray | None = None) -> np.ndarray:
+    """批量提取 -> (N, bands, patch, patch)，可直接喂 HSI encoder。
+
+    out 不为 None 时逐个 patch 直接写进调用方提供的数组（如 Jetson 上的映射内存，省掉 np.stack 再拷贝一次），
+    结果与默认路径逐位相同。
+    """
+    if out is None:
+        return np.stack([extract_patch(normalized, r, c, patch_size) for r, c in rowcols])
+    for i, (r, c) in enumerate(rowcols):
+        out[i] = extract_patch(normalized, r, c, patch_size)
+    return out
 
 
 def iter_hsi_patch_batches(normalized: np.ndarray, rowcols, batch: int, patch_size: int = 3):

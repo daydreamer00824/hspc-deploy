@@ -1,0 +1,354 @@
+[09/26/2026-19:32:11] [TRT] [I] [MemUsageChange] Init CUDA: CPU +13, GPU +0, now: CPU 116, GPU 2716 (MiB)
+[09/26/2026-19:32:14] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU +980, GPU +1119, now: CPU 1140, GPU 3880 (MiB)
+[09/26/2026-19:32:14] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:32:14] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_encoder.onnx
+[09/26/2026-19:32:14] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-19:32:14] [TRT] [I] Opset version:    17
+[09/26/2026-19:32:14] [TRT] [I] Producer name:    pytorch
+[09/26/2026-19:32:14] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-19:32:14] [TRT] [I] Domain:           
+[09/26/2026-19:32:14] [TRT] [I] Model version:    0
+[09/26/2026-19:32:14] [TRT] [I] Doc string:       
+[09/26/2026-19:32:14] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:32:14] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-19:32:14] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:32:14] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:32:20] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:32:20] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-19:32:20] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-19:32:20] [TRT] [I] Max Scratch Memory: 7348224 bytes
+[09/26/2026-19:32:20] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 1 steps to complete.
+[09/26/2026-19:32:20] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.020001ms to assign 1 blocks to 1 nodes requiring 7348224 bytes.
+[09/26/2026-19:32:20] [TRT] [I] Total Activation Memory: 7348224 bytes
+[09/26/2026-19:32:20] [TRT] [I] Total Weights Memory: 11640580 bytes
+[09/26/2026-19:32:20] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:32:20] [TRT] [I] Engine generation completed in 5.89115 seconds.
+[09/26/2026-19:32:20] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 0 MiB, GPU 18 MiB
+[09/26/2026-19:32:22] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +111, now: CPU 1398, GPU 4158 (MiB)
+[09/26/2026-19:32:22] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:32:22] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_encoder.onnx
+[09/26/2026-19:32:22] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-19:32:22] [TRT] [I] Opset version:    17
+[09/26/2026-19:32:22] [TRT] [I] Producer name:    pytorch
+[09/26/2026-19:32:22] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-19:32:22] [TRT] [I] Domain:           
+[09/26/2026-19:32:22] [TRT] [I] Model version:    0
+[09/26/2026-19:32:22] [TRT] [I] Doc string:       
+[09/26/2026-19:32:22] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:32:22] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-19:32:22] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:32:22] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:32:28] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:32:28] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-19:32:28] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-19:32:28] [TRT] [I] Max Scratch Memory: 7348224 bytes
+[09/26/2026-19:32:28] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 1 steps to complete.
+[09/26/2026-19:32:28] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.021058ms to assign 1 blocks to 1 nodes requiring 7348224 bytes.
+[09/26/2026-19:32:28] [TRT] [I] Total Activation Memory: 7348224 bytes
+[09/26/2026-19:32:28] [TRT] [I] Total Weights Memory: 11635460 bytes
+[09/26/2026-19:32:28] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:32:28] [TRT] [I] Engine generation completed in 6.21512 seconds.
+[09/26/2026-19:32:28] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 0 MiB, GPU 18 MiB
+[09/26/2026-19:32:30] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +16, now: CPU 1442, GPU 4237 (MiB)
+[09/26/2026-19:32:30] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:32:30] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_encoder.onnx
+[09/26/2026-19:32:30] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-19:32:30] [TRT] [I] Opset version:    17
+[09/26/2026-19:32:30] [TRT] [I] Producer name:    pytorch
+[09/26/2026-19:32:30] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-19:32:30] [TRT] [I] Domain:           
+[09/26/2026-19:32:30] [TRT] [I] Model version:    0
+[09/26/2026-19:32:30] [TRT] [I] Doc string:       
+[09/26/2026-19:32:30] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:32:30] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-19:32:30] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:32:30] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:33:16] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:33:16] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-19:33:16] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-19:33:16] [TRT] [I] Max Scratch Memory: 4726784 bytes
+[09/26/2026-19:33:16] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-19:33:16] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.025089ms to assign 3 blocks to 3 nodes requiring 4858368 bytes.
+[09/26/2026-19:33:16] [TRT] [I] Total Activation Memory: 4857856 bytes
+[09/26/2026-19:33:16] [TRT] [I] Total Weights Memory: 5822082 bytes
+[09/26/2026-19:33:16] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:33:16] [TRT] [I] Engine generation completed in 45.8778 seconds.
+[09/26/2026-19:33:16] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 18 MiB
+[09/26/2026-19:33:18] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -978, GPU -16, now: CPU 2890, GPU 5002 (MiB)
+[09/26/2026-19:33:18] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:33:18] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_encoder.onnx
+[09/26/2026-19:33:18] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-19:33:18] [TRT] [I] Opset version:    17
+[09/26/2026-19:33:18] [TRT] [I] Producer name:    pytorch
+[09/26/2026-19:33:18] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-19:33:18] [TRT] [I] Domain:           
+[09/26/2026-19:33:18] [TRT] [I] Model version:    0
+[09/26/2026-19:33:18] [TRT] [I] Doc string:       
+[09/26/2026-19:33:18] [TRT] [I] ----------------------------------------------------------------
+/home/jetson/hspc_jetson/scripts/build_trt.py:226: DeprecationWarning: Use Deprecated in TensorRT 10.1. Superseded by explicit quantization. instead.
+  config.int8_calibrator = calibrator
+[09/26/2026-19:33:18] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-19:33:18] [TRT] [I] Perform graph optimization on calibration graph.
+[09/26/2026-19:33:18] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:33:18] [TRT] [W] Calibration Profile is not defined. Calibrating with Profile 0
+[09/26/2026-19:33:18] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:33:22] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:33:23] [TRT] [I] Total Host Persistent Memory: 110512 bytes
+[09/26/2026-19:33:23] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-19:33:23] [TRT] [I] Max Scratch Memory: 0 bytes
+[09/26/2026-19:33:23] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 229 steps to complete.
+[09/26/2026-19:33:23] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 19.6545ms to assign 10 blocks to 229 nodes requiring 1970688 bytes.
+[09/26/2026-19:33:23] [TRT] [I] Total Activation Memory: 1970688 bytes
+[09/26/2026-19:33:23] [TRT] [I] Total Weights Memory: 11637760 bytes
+[09/26/2026-19:33:23] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:33:23] [TRT] [I] Engine generation completed in 4.61219 seconds.
+[09/26/2026-19:33:23] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +1, now: CPU 0, GPU 17 (MiB)
+[09/26/2026-19:33:23] [TRT] [I] Starting Calibration.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 0 in 0.043615 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 1 in 0.0374248 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 2 in 0.0368516 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 3 in 0.0372005 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 4 in 0.0371029 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 5 in 0.0372115 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 6 in 0.0371066 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 7 in 0.0370635 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 8 in 0.0371107 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 9 in 0.0369452 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 10 in 0.0371727 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 11 in 0.0371199 seconds.
+[09/26/2026-19:33:23] [TRT] [I]   Calibrated batch 12 in 0.0370169 seconds.
+[09/26/2026-19:33:59] [TRT] [I]   Post Processing Calibration data in 35.2584 seconds.
+[09/26/2026-19:33:59] [TRT] [I] Calibration completed in 40.5581 seconds.
+[09/26/2026-19:33:59] [TRT] [I] Writing Calibration Cache for calibrator: TRT-100700-EntropyCalibration2
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor input_proj.2.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor input_proj.2.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_15_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_17_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.1.norm1.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_218_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.0.norm1.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.0.norm1.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_33_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_35_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.1.norm2.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.1.norm2.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_381_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_castHelper_512_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor /transformer/layers.2/self_attn/Slice_3_output_0, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_196_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.0.norm2.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.2.norm1.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_403_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_198_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor out_head.0.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.1.norm1.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_589_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.0.norm2.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.2.norm2.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor /Gather_2_output_0, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_castHelper_583_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_383_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_castHelper_511_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.2.norm2.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor out_head.0.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_568_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_566_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.2.norm1.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_216_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_401_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_587_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:33:59] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:33:59] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:34:43] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:34:43] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-19:34:43] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-19:34:43] [TRT] [I] Max Scratch Memory: 4726784 bytes
+[09/26/2026-19:34:43] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-19:34:43] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.028417ms to assign 3 blocks to 3 nodes requiring 4858368 bytes.
+[09/26/2026-19:34:43] [TRT] [I] Total Activation Memory: 4857856 bytes
+[09/26/2026-19:34:43] [TRT] [I] Total Weights Memory: 5824646 bytes
+[09/26/2026-19:34:43] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:34:43] [TRT] [I] Engine generation completed in 44.3063 seconds.
+[09/26/2026-19:34:43] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 24 MiB
+[09/26/2026-19:34:45] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +2, now: CPU 2957, GPU 5106 (MiB)
+[09/26/2026-19:34:45] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:34:45] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_encoder.onnx
+[09/26/2026-19:34:45] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-19:34:45] [TRT] [I] Opset version:    17
+[09/26/2026-19:34:45] [TRT] [I] Producer name:    pytorch
+[09/26/2026-19:34:45] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-19:34:45] [TRT] [I] Domain:           
+[09/26/2026-19:34:45] [TRT] [I] Model version:    0
+[09/26/2026-19:34:45] [TRT] [I] Doc string:       
+[09/26/2026-19:34:45] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:34:45] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-19:34:45] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:34:46] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:34:52] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:34:52] [TRT] [I] Total Host Persistent Memory: 5792 bytes
+[09/26/2026-19:34:52] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-19:34:52] [TRT] [I] Max Scratch Memory: 4595200 bytes
+[09/26/2026-19:34:52] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 2 steps to complete.
+[09/26/2026-19:34:52] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.022818ms to assign 2 blocks to 2 nodes requiring 5185024 bytes.
+[09/26/2026-19:34:52] [TRT] [I] Total Activation Memory: 5185024 bytes
+[09/26/2026-19:34:52] [TRT] [I] Total Weights Memory: 11937536 bytes
+[09/26/2026-19:34:52] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:34:52] [TRT] [I] Engine generation completed in 7.14071 seconds.
+[09/26/2026-19:34:52] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 24 MiB
+[09/26/2026-19:34:54] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +0, now: CPU 2929, GPU 5116 (MiB)
+[09/26/2026-19:34:54] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:34:54] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_encoder.onnx
+[09/26/2026-19:34:54] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-19:34:54] [TRT] [I] Opset version:    17
+[09/26/2026-19:34:54] [TRT] [I] Producer name:    pytorch
+[09/26/2026-19:34:54] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-19:34:54] [TRT] [I] Domain:           
+[09/26/2026-19:34:54] [TRT] [I] Model version:    0
+[09/26/2026-19:34:54] [TRT] [I] Doc string:       
+[09/26/2026-19:34:54] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:34:54] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-19:34:54] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:34:56] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:35:02] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:35:03] [TRT] [I] Total Host Persistent Memory: 5792 bytes
+[09/26/2026-19:35:03] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-19:35:03] [TRT] [I] Max Scratch Memory: 4595200 bytes
+[09/26/2026-19:35:03] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-19:35:03] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.025601ms to assign 2 blocks to 3 nodes requiring 5185024 bytes.
+[09/26/2026-19:35:03] [TRT] [I] Total Activation Memory: 5185024 bytes
+[09/26/2026-19:35:03] [TRT] [I] Total Weights Memory: 11934464 bytes
+[09/26/2026-19:35:03] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:35:03] [TRT] [I] Engine generation completed in 8.07159 seconds.
+[09/26/2026-19:35:03] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 24 MiB
+[09/26/2026-19:35:05] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -978, GPU +0, now: CPU 2911, GPU 5125 (MiB)
+[09/26/2026-19:35:05] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:35:05] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_encoder.onnx
+[09/26/2026-19:35:05] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-19:35:05] [TRT] [I] Opset version:    17
+[09/26/2026-19:35:05] [TRT] [I] Producer name:    pytorch
+[09/26/2026-19:35:05] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-19:35:05] [TRT] [I] Domain:           
+[09/26/2026-19:35:05] [TRT] [I] Model version:    0
+[09/26/2026-19:35:05] [TRT] [I] Doc string:       
+[09/26/2026-19:35:05] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:35:05] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-19:35:05] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:35:06] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:36:02] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:36:02] [TRT] [I] Total Host Persistent Memory: 7728 bytes
+[09/26/2026-19:36:02] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-19:36:02] [TRT] [I] Max Scratch Memory: 2298880 bytes
+[09/26/2026-19:36:02] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-19:36:02] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.025089ms to assign 2 blocks to 3 nodes requiring 2593792 bytes.
+[09/26/2026-19:36:02] [TRT] [I] Total Activation Memory: 2593792 bytes
+[09/26/2026-19:36:02] [TRT] [I] Total Weights Memory: 5966848 bytes
+[09/26/2026-19:36:02] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:36:02] [TRT] [I] Engine generation completed in 57.4553 seconds.
+[09/26/2026-19:36:02] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 24 MiB
+[09/26/2026-19:36:04] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +0, now: CPU 3034, GPU 5213 (MiB)
+[09/26/2026-19:36:04] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:36:04] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_encoder.onnx
+[09/26/2026-19:36:04] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-19:36:04] [TRT] [I] Opset version:    17
+[09/26/2026-19:36:04] [TRT] [I] Producer name:    pytorch
+[09/26/2026-19:36:04] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-19:36:04] [TRT] [I] Domain:           
+[09/26/2026-19:36:04] [TRT] [I] Model version:    0
+[09/26/2026-19:36:04] [TRT] [I] Doc string:       
+[09/26/2026-19:36:04] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-19:36:04] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-19:36:04] [TRT] [I] Perform graph optimization on calibration graph.
+[09/26/2026-19:36:04] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:36:04] [TRT] [W] Calibration Profile is not defined. Calibrating with Profile 0
+[09/26/2026-19:36:04] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:36:07] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:36:08] [TRT] [I] Total Host Persistent Memory: 111600 bytes
+[09/26/2026-19:36:08] [TRT] [I] Total Device Persistent Memory: 512 bytes
+[09/26/2026-19:36:08] [TRT] [I] Max Scratch Memory: 0 bytes
+[09/26/2026-19:36:08] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 237 steps to complete.
+[09/26/2026-19:36:08] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 20.7704ms to assign 10 blocks to 237 nodes requiring 1729024 bytes.
+[09/26/2026-19:36:08] [TRT] [I] Total Activation Memory: 1729024 bytes
+[09/26/2026-19:36:08] [TRT] [I] Total Weights Memory: 11934208 bytes
+[09/26/2026-19:36:08] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:36:08] [TRT] [I] Engine generation completed in 3.34253 seconds.
+[09/26/2026-19:36:08] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +1, now: CPU 0, GPU 17 (MiB)
+[09/26/2026-19:36:08] [TRT] [I] Starting Calibration.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 0 in 0.0385422 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 1 in 0.0358077 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 2 in 0.0354625 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 3 in 0.0355264 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 4 in 0.0352066 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 5 in 0.0352625 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 6 in 0.0353774 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 7 in 0.0354025 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 8 in 0.0355728 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 9 in 0.0353912 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 10 in 0.0354549 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 11 in 0.0356287 seconds.
+[09/26/2026-19:36:08] [TRT] [I]   Calibrated batch 12 in 0.0356655 seconds.
+[09/26/2026-19:36:44] [TRT] [I]   Post Processing Calibration data in 35.9299 seconds.
+[09/26/2026-19:36:44] [TRT] [I] Calibration completed in 39.8074 seconds.
+[09/26/2026-19:36:44] [TRT] [I] Writing Calibration Cache for calibrator: TRT-100700-EntropyCalibration2
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_610_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.2.norm2.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_238_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor /Gather_4_output_0, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_260_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor out_head.0.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.0.norm2.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.1.norm1.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_629_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor onnx::Einsum_109_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.1.norm1.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_608_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.0.norm1.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.0.norm1.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_75_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_77_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.2.norm1.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_443_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.2.norm1.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_445_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor out_head.0.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.1.norm2.weight_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_258_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_423_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor /transformer/layers.2/self_attn/Slice_3_output_0, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.2.norm2.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_240_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_castHelper_553_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.0.norm2.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor transformer.layers.1.norm2.bias_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_425_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_castHelper_554_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_castHelper_625_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [W] Missing scale and zero-point for tensor ONNXTRT_Broadcast_631_output, expect fall back to non-int8 implementation for any layer consuming or producing given tensor
+[09/26/2026-19:36:44] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-19:36:46] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-19:37:42] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-19:37:43] [TRT] [I] Total Host Persistent Memory: 4592 bytes
+[09/26/2026-19:37:43] [TRT] [I] Total Device Persistent Memory: 1024 bytes
+[09/26/2026-19:37:43] [TRT] [I] Max Scratch Memory: 2298880 bytes
+[09/26/2026-19:37:43] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-19:37:43] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.024609ms to assign 2 blocks to 3 nodes requiring 2593792 bytes.
+[09/26/2026-19:37:43] [TRT] [I] Total Activation Memory: 2593792 bytes
+[09/26/2026-19:37:43] [TRT] [I] Total Weights Memory: 5976580 bytes
+[09/26/2026-19:37:43] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-19:37:43] [TRT] [I] Engine generation completed in 58.4262 seconds.
+[09/26/2026-19:37:43] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 24 MiB
+[pc/fp32_notf32/auto] building from pc_encoder.onnx -> pc_fp32_notf32.plan ...
+[pc/fp32_notf32] done in 5.9s, size=12062.1 KB
+[pc/fp32_tf32/auto] building from pc_encoder.onnx -> pc_fp32_tf32.plan ...
+[pc/fp32_tf32] done in 6.3s, size=12111.0 KB
+[pc/fp16/auto] building from pc_encoder.onnx -> pc_fp16.plan ...
+[pc/fp16] done in 45.9s, size=6785.6 KB
+[pc/int8_implicit/auto] building from pc_encoder.onnx -> pc_int8_implicit.plan ...
+[pc/int8_implicit] done in 85.0s, size=6789.1 KB
+[hsi/fp32_notf32/auto] building from hsi_encoder.onnx -> hsi_fp32_notf32.plan ...
+[hsi/fp32_notf32] done in 7.2s, size=12476.4 KB
+[hsi/fp32_tf32/auto] building from hsi_encoder.onnx -> hsi_fp32_tf32.plan ...
+[hsi/fp32_tf32] done in 8.1s, size=12438.1 KB
+[hsi/fp16/auto] building from hsi_encoder.onnx -> hsi_fp16.plan ...
+[hsi/fp16] done in 57.5s, size=6995.4 KB
+[hsi/int8_implicit/auto] building from hsi_encoder.onnx -> hsi_int8_implicit.plan ...
+[hsi/int8_implicit] done in 98.3s, size=7000.9 KB

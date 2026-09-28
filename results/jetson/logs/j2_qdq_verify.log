@@ -1,0 +1,14 @@
+  hsi qdq build0               cos_mean=0.997760 cos_min=0.755609 max_abs=1.700e+00 top1=0.905 top5=0.995
+    dtypes {'Float': 52, 'Int8': 52, 'Half': 104, 'other': 120} int8 layers 30 / 42
+  hsi qdq build1               cos_mean=0.997760 cos_min=0.755609 max_abs=1.700e+00 top1=0.905 top5=0.995
+    dtypes {'Float': 50, 'Int8': 52, 'Half': 106, 'other': 120} int8 layers 30 / 42
+  hsi qdq build2               cos_mean=0.997760 cos_min=0.755609 max_abs=1.700e+00 top1=0.905 top5=0.995
+    dtypes {'Float': 48, 'Int8': 52, 'Half': 104, 'other': 118} int8 layers 30 / 41
+hsi pairwise {'0-1': 0.0, '0-2': 0.0, '1-2': 0.0}
+  pc qdq build0                cos_mean=-0.089286 cos_min=-0.264098 max_abs=1.189e+01 top1=0.005 top5=0.015
+    dtypes {'Float': 54, 'Half': 100, 'other': 140, 'Int8': 63} int8 layers 32 / 41
+  pc qdq build1                cos_mean=-0.089286 cos_min=-0.264098 max_abs=1.189e+01 top1=0.005 top5=0.015
+    dtypes {'Float': 54, 'Half': 100, 'other': 140, 'Int8': 63} int8 layers 32 / 41
+  pc qdq build2                cos_mean=-0.089286 cos_min=-0.264098 max_abs=1.189e+01 top1=0.005 top5=0.015
+    dtypes {'Float': 54, 'Half': 100, 'other': 140, 'Int8': 63} int8 layers 32 / 41
+pc pairwise {'0-1': 0.0, '0-2': 0.0, '1-2': 0.0}

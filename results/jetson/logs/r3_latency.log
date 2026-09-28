@@ -1,0 +1,6 @@
+pc_b1 {'event': (0.328, 0.23), 'wall': (0.393, 0.34), 'request': (0.492, 0.41)} identical: True
+pc_b8 {'event': (0.359, 0.261), 'wall': (0.423, 0.367), 'request': (0.515, 0.444)} identical: True
+hsi_b1 {'event': (0.355, 0.257), 'wall': (0.409, 0.363), 'request': (0.5, 0.44)} identical: True
+hsi_b8 {'event': (0.372, 0.273), 'wall': (0.423, 0.377), 'request': (0.517, 0.459)} identical: True
+written -> results/opt_o4_latency.json
+rc=0

@@ -1,0 +1,749 @@
+{
+  "note": "A=deploy_scene.py（x86 最终链路原样）；B=deploy_jetson.py 顺序执行；C=B+LAS 与 GPU 推理重叠。各自独立进程，顺序 A→B→C（fwd）再 C→B→A（rev）；每个 JSON 内 warmup 2 + 重复 10 次取中位数。",
+  "scenes": {
+    "24data/10.6/1": {
+      "A": {
+        "fwd": {
+          "total_ms": 920.9481329853588,
+          "total_without_io_ms": 863.9558879876859,
+          "segments_ms": {
+            "load_hsi_io": 50.46375399979297,
+            "standardize_and_mask": 30.865367996739224,
+            "patch_build": 251.71237899849075,
+            "laspy_read_io": 6.528490997879999,
+            "crs_transformer_init": 1.2119799976062495,
+            "projection": 49.19841199807706,
+            "mask_filter": 3.4004584995273035,
+            "rng_sample": 0.5533475014090072,
+            "ckdtree_build": 41.710158497153316,
+            "ckdtree_query_offsets": 24.533875002816785,
+            "hsi_infer": 164.00256349879783,
+            "pc_infer": 18.16291000068304,
+            "feature_grid_assemble": 11.045421997550875,
+            "match": 267.5590139988344
+          },
+          "cold_start_sec": 1.1040845730094588,
+          "engine_load_sec": 0.21948867500032065,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": null,
+          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+        },
+        "rev": {
+          "total_ms": 921.8029785006365,
+          "total_without_io_ms": 864.9800365019473,
+          "segments_ms": {
+            "load_hsi_io": 50.40247099896078,
+            "standardize_and_mask": 30.822181495750556,
+            "patch_build": 251.0771030028991,
+            "laspy_read_io": 6.420470999728423,
+            "crs_transformer_init": 1.208794998092344,
+            "projection": 49.210332002985524,
+            "mask_filter": 3.4227790019940585,
+            "rng_sample": 0.5471875010698568,
+            "ckdtree_build": 41.796848498051986,
+            "ckdtree_query_offsets": 24.838766003085766,
+            "hsi_infer": 163.54017549747368,
+            "pc_infer": 18.298867500561755,
+            "feature_grid_assemble": 11.046558000089135,
+            "match": 269.17044299989357
+          },
+          "cold_start_sec": 1.096210798001266,
+          "engine_load_sec": 0.21697449999919627,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": null,
+          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+        }
+      },
+      "B": {
+        "fwd": {
+          "total_ms": 376.9061029997829,
+          "total_without_io_ms": 318.4659654980351,
+          "segments_ms": {
+            "load_hsi_io": 51.99772900232347,
+            "standardize_and_mask": 22.978315500949975,
+            "hsi_patch_and_infer": 115.779849995306,
+            "laspy_read_io": 6.442408499424346,
+            "crs_transformer_init": 1.218923494889168,
+            "projection": 49.236540999118006,
+            "mask_filter": 3.3447280002292246,
+            "rng_sample": 0.5384350006352179,
+            "ckdtree_build": 41.98061649731244,
+            "ckdtree_query_offsets": 25.43646800040733,
+            "pc_infer_assemble_match": 57.1773875017243
+          },
+          "cold_start_sec": 0.8610250920028193,
+          "engine_load_sec": 0.2505686410004273,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        },
+        "rev": {
+          "total_ms": 374.8561044994858,
+          "total_without_io_ms": 314.1482869978063,
+          "segments_ms": {
+            "load_hsi_io": 54.273729998385534,
+            "standardize_and_mask": 20.939218000421533,
+            "hsi_patch_and_infer": 115.72208649886306,
+            "laspy_read_io": 6.434087503293995,
+            "crs_transformer_init": 1.238220494997222,
+            "projection": 49.21343599926331,
+            "mask_filter": 3.321287498692982,
+            "rng_sample": 0.5490120020112954,
+            "ckdtree_build": 41.954103002353804,
+            "ckdtree_query_offsets": 24.97779549958068,
+            "pc_infer_assemble_match": 57.18793100459152
+          },
+          "cold_start_sec": 0.8417576369974995,
+          "engine_load_sec": 0.2487737260016729,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        }
+      },
+      "C": {
+        "fwd": {
+          "total_ms": 290.1945150006213,
+          "total_without_io_ms": 226.23768349876627,
+          "segments_ms": {
+            "load_hsi_io": 56.48819450289011,
+            "standardize_and_mask": 20.98366749851266,
+            "hsi_patch_and_launch": 8.526483503374038,
+            "laspy_read_io": 7.468636998964939,
+            "crs_transformer_init": 1.610649997019209,
+            "projection": 59.17176300135907,
+            "mask_filter": 4.4089264956710394,
+            "rng_sample": 0.6543595009134151,
+            "ckdtree_build": 50.501834997703554,
+            "ckdtree_query_offsets": 24.648775997775374,
+            "hsi_wait": 1.3683534998563118,
+            "pc_infer_assemble_match": 55.87689199819579
+          },
+          "cold_start_sec": 0.7616096369965817,
+          "engine_load_sec": 0.24996352999733062,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        },
+        "rev": {
+          "total_ms": 290.9213400016597,
+          "total_without_io_ms": 226.09210899827303,
+          "segments_ms": {
+            "load_hsi_io": 57.45858150476124,
+            "standardize_and_mask": 20.881024000118487,
+            "hsi_patch_and_launch": 8.510226496582618,
+            "laspy_read_io": 7.370649498625426,
+            "crs_transformer_init": 1.5564719979010988,
+            "projection": 58.88349599990761,
+            "mask_filter": 4.356860998086631,
+            "rng_sample": 0.7345390004047658,
+            "ckdtree_build": 50.60931050320505,
+            "ckdtree_query_offsets": 24.86713550024433,
+            "hsi_wait": 1.3900819976697676,
+            "pc_infer_assemble_match": 55.99897599677206
+          },
+          "cold_start_sec": 0.7605236739982502,
+          "engine_load_sec": 0.2488799700004165,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        }
+      }
+    },
+    "24data/10.6/10": {
+      "A": {
+        "fwd": {
+          "total_ms": 860.8675300019968,
+          "total_without_io_ms": 796.4034500000707,
+          "segments_ms": {
+            "load_hsi_io": 55.62753850244917,
+            "standardize_and_mask": 34.932425998704275,
+            "patch_build": 174.76829099905444,
+            "laspy_read_io": 8.83654149947688,
+            "crs_transformer_init": 1.2104429988539778,
+            "projection": 65.40189000224927,
+            "mask_filter": 4.867358999035787,
+            "rng_sample": 0.5697960004908964,
+            "ckdtree_build": 58.46455199935008,
+            "ckdtree_query_offsets": 26.72188949873089,
+            "hsi_infer": 124.55401950137457,
+            "pc_infer": 18.05000999956974,
+            "feature_grid_assemble": 10.846871002286207,
+            "match": 276.0159030003706
+          },
+          "cold_start_sec": 1.0419199080133694,
+          "engine_load_sec": 0.2177847679995466,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": null,
+          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+        },
+        "rev": {
+          "total_ms": 859.6910295018461,
+          "total_without_io_ms": 795.5891710043943,
+          "segments_ms": {
+            "load_hsi_io": 55.366712498653214,
+            "standardize_and_mask": 34.75697900285013,
+            "patch_build": 176.30626350000966,
+            "laspy_read_io": 8.735145998798544,
+            "crs_transformer_init": 1.2086674978490919,
+            "projection": 65.29703750129556,
+            "mask_filter": 4.84798250181484,
+            "rng_sample": 0.5645005003316328,
+            "ckdtree_build": 58.510409500740934,
+            "ckdtree_query_offsets": 26.478136500372784,
+            "hsi_infer": 124.12553849935648,
+            "pc_infer": 18.06621799914865,
+            "feature_grid_assemble": 10.849158497876488,
+            "match": 274.57827950274805
+          },
+          "cold_start_sec": 1.0432358410034794,
+          "engine_load_sec": 0.21771672999602742,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": null,
+          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+        }
+      },
+      "B": {
+        "fwd": {
+          "total_ms": 395.9919324988732,
+          "total_without_io_ms": 330.5579769985343,
+          "segments_ms": {
+            "load_hsi_io": 56.91516849765321,
+            "standardize_and_mask": 24.08774699870264,
+            "hsi_patch_and_infer": 90.06853800383396,
+            "laspy_read_io": 8.518787002685713,
+            "crs_transformer_init": 1.2581894952745643,
+            "projection": 65.38899399674847,
+            "mask_filter": 4.867599502176745,
+            "rng_sample": 0.5718445027014241,
+            "ckdtree_build": 58.63422249967698,
+            "ckdtree_query_offsets": 26.84462999968673,
+            "pc_infer_assemble_match": 58.04636150060105
+          },
+          "cold_start_sec": 0.879845686002227,
+          "engine_load_sec": 0.24884054100402864,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        },
+        "rev": {
+          "total_ms": 396.41426500020316,
+          "total_without_io_ms": 330.2600930001063,
+          "segments_ms": {
+            "load_hsi_io": 57.613784996647155,
+            "standardize_and_mask": 24.31100249668816,
+            "hsi_patch_and_infer": 89.70676399985678,
+            "laspy_read_io": 8.540387003449723,
+            "crs_transformer_init": 1.2484289982239716,
+            "projection": 65.32903900006204,
+            "mask_filter": 4.849038501561154,
+            "rng_sample": 0.574100500671193,
+            "ckdtree_build": 58.84032600079081,
+            "ckdtree_query_offsets": 26.719906003563665,
+            "pc_infer_assemble_match": 57.888306997483596
+          },
+          "cold_start_sec": 0.8842590200001723,
+          "engine_load_sec": 0.2500616390025243,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        }
+      },
+      "C": {
+        "fwd": {
+          "total_ms": 325.5794769975182,
+          "total_without_io_ms": 260.19611599622294,
+          "segments_ms": {
+            "load_hsi_io": 54.76993900083471,
+            "standardize_and_mask": 23.94692599773407,
+            "hsi_patch_and_launch": 8.087026999419322,
+            "laspy_read_io": 10.61342200046056,
+            "crs_transformer_init": 1.4168025008984841,
+            "projection": 76.95356949989218,
+            "mask_filter": 4.866879000474,
+            "rng_sample": 0.5695399995602202,
+            "ckdtree_build": 58.69547250040341,
+            "ckdtree_query_offsets": 26.84606999901007,
+            "hsi_wait": 1.352752500679344,
+            "pc_infer_assemble_match": 56.55481949725072
+          },
+          "cold_start_sec": 0.8178959979995852,
+          "engine_load_sec": 0.24806592000095407,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        },
+        "rev": {
+          "total_ms": 327.77654800156597,
+          "total_without_io_ms": 261.8009424986667,
+          "segments_ms": {
+            "load_hsi_io": 55.610192503081635,
+            "standardize_and_mask": 24.096034998365212,
+            "hsi_patch_and_launch": 8.136500502587296,
+            "laspy_read_io": 10.365412999817636,
+            "crs_transformer_init": 1.5947289975883905,
+            "projection": 77.74670199796674,
+            "mask_filter": 4.869615499046631,
+            "rng_sample": 0.571284497709712,
+            "ckdtree_build": 58.64948700036621,
+            "ckdtree_query_offsets": 26.82262899907073,
+            "hsi_wait": 1.3879059952159878,
+            "pc_infer_assemble_match": 56.94520099859801
+          },
+          "cold_start_sec": 0.8207513290035422,
+          "engine_load_sec": 0.24890454200067325,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        }
+      }
+    },
+    "25data/8.4/1": {
+      "A": {
+        "fwd": {
+          "total_ms": 742.2867499990389,
+          "total_without_io_ms": 685.2062169964483,
+          "segments_ms": {
+            "load_hsi_io": 52.35642750267289,
+            "standardize_and_mask": 27.96228599981987,
+            "patch_build": 164.13110500070616,
+            "laspy_read_io": 4.724105499917641,
+            "crs_transformer_init": 1.2932619974890258,
+            "projection": 31.604288498783717,
+            "mask_filter": 2.316723002877552,
+            "rng_sample": 0.48790500295581296,
+            "ckdtree_build": 26.951401494443417,
+            "ckdtree_query_offsets": 24.060001498583006,
+            "hsi_infer": 114.57276199871558,
+            "pc_infer": 19.200546499632765,
+            "feature_grid_assemble": 8.924752997700125,
+            "match": 263.7011830047413
+          },
+          "cold_start_sec": 0.8929442869921331,
+          "engine_load_sec": 0.2181349210004555,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": null,
+          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+        },
+        "rev": {
+          "total_ms": 734.910734998266,
+          "total_without_io_ms": 679.8569625025266,
+          "segments_ms": {
+            "load_hsi_io": 50.299793500016676,
+            "standardize_and_mask": 27.96353349913261,
+            "patch_build": 160.6308970003738,
+            "laspy_read_io": 4.7539789957227185,
+            "crs_transformer_init": 1.2588134995894507,
+            "projection": 31.87017050004215,
+            "mask_filter": 2.3079874990799,
+            "rng_sample": 0.4872010031249374,
+            "ckdtree_build": 26.738865501101827,
+            "ckdtree_query_offsets": 23.351719999482157,
+            "hsi_infer": 114.59484149963828,
+            "pc_infer": 19.024492001335602,
+            "feature_grid_assemble": 8.849133999319747,
+            "match": 262.7793065003061
+          },
+          "cold_start_sec": 0.8986560650228057,
+          "engine_load_sec": 0.21681675799482036,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": null,
+          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+        }
+      },
+      "B": {
+        "fwd": {
+          "total_ms": 299.87121950034634,
+          "total_without_io_ms": 241.69127049390227,
+          "segments_ms": {
+            "load_hsi_io": 53.41507350021857,
+            "standardize_and_mask": 16.505554001923883,
+            "hsi_patch_and_infer": 82.13026649900712,
+            "laspy_read_io": 4.764875506225508,
+            "crs_transformer_init": 1.199323498440208,
+            "projection": 31.878955000138376,
+            "mask_filter": 2.3176034992502537,
+            "rng_sample": 0.481312999909278,
+            "ckdtree_build": 26.861926497076638,
+            "ckdtree_query_offsets": 23.512542004027637,
+            "pc_infer_assemble_match": 56.02271950192517
+          },
+          "cold_start_sec": 0.7695530290002353,
+          "engine_load_sec": 0.24954625700047472,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        },
+        "rev": {
+          "total_ms": 303.2089049993374,
+          "total_without_io_ms": 245.8849079994252,
+          "segments_ms": {
+            "load_hsi_io": 52.67413450201275,
+            "standardize_and_mask": 20.35065199743258,
+            "hsi_patch_and_infer": 82.61450750069343,
+            "laspy_read_io": 4.6498624978994485,
+            "crs_transformer_init": 1.2283639989618678,
+            "projection": 31.85276200019871,
+            "mask_filter": 2.302883003721945,
+            "rng_sample": 0.4897299986623693,
+            "ckdtree_build": 26.709825000580167,
+            "ckdtree_query_offsets": 23.32421500250348,
+            "pc_infer_assemble_match": 56.420349501422606
+          },
+          "cold_start_sec": 0.7738774669996928,
+          "engine_load_sec": 0.24914032100059558,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        }
+      },
+      "C": {
+        "fwd": {
+          "total_ms": 239.0731115010567,
+          "total_without_io_ms": 180.524316510855,
+          "segments_ms": {
+            "load_hsi_io": 53.28361349529587,
+            "standardize_and_mask": 17.19607449922478,
+            "hsi_patch_and_launch": 7.608097497723065,
+            "laspy_read_io": 5.265181494905846,
+            "crs_transformer_init": 1.5654164963052608,
+            "projection": 38.412277499446645,
+            "mask_filter": 2.7720199977920856,
+            "rng_sample": 0.5173624995222781,
+            "ckdtree_build": 32.78143550414825,
+            "ckdtree_query_offsets": 23.553950999485096,
+            "hsi_wait": 1.3698089969693683,
+            "pc_infer_assemble_match": 54.70235149914515
+          },
+          "cold_start_sec": 0.7130267370012007,
+          "engine_load_sec": 0.24815241400210653,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        },
+        "rev": {
+          "total_ms": 242.47697750251973,
+          "total_without_io_ms": 182.94582800081116,
+          "segments_ms": {
+            "load_hsi_io": 54.26147149773897,
+            "standardize_and_mask": 19.344407501193928,
+            "hsi_patch_and_launch": 7.466700502845924,
+            "laspy_read_io": 5.269678003969602,
+            "crs_transformer_init": 1.5984894998837262,
+            "projection": 38.137083498440916,
+            "mask_filter": 3.0653899993922096,
+            "rng_sample": 0.4801614995812997,
+            "ckdtree_build": 33.02889950282406,
+            "ckdtree_query_offsets": 23.622690001502633,
+            "hsi_wait": 1.3192789992899634,
+            "pc_infer_assemble_match": 54.74617700019735
+          },
+          "cold_start_sec": 0.7213452750002034,
+          "engine_load_sec": 0.2493061199929798,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        }
+      }
+    },
+    "25data/10.22/1": {
+      "A": {
+        "fwd": {
+          "total_ms": 801.7791370075429,
+          "total_without_io_ms": 747.1016190102091,
+          "segments_ms": {
+            "load_hsi_io": 49.669770000036806,
+            "standardize_and_mask": 30.255696499807527,
+            "patch_build": 195.5427119974047,
+            "laspy_read_io": 5.007747997296974,
+            "crs_transformer_init": 1.2012755032628775,
+            "projection": 35.38269599812338,
+            "mask_filter": 2.4876735005818773,
+            "rng_sample": 0.4927380032313522,
+            "ckdtree_build": 29.231979002361186,
+            "ckdtree_query_offsets": 23.455515503883362,
+            "hsi_infer": 134.4509789996664,
+            "pc_infer": 18.38906150078401,
+            "feature_grid_assemble": 10.124731998075731,
+            "match": 266.0865605030267
+          },
+          "cold_start_sec": 0.967717614978028,
+          "engine_load_sec": 0.2178221369977109,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": null,
+          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+        },
+        "rev": {
+          "total_ms": 804.3978105015412,
+          "total_without_io_ms": 749.157953006943,
+          "segments_ms": {
+            "load_hsi_io": 50.111576998460805,
+            "standardize_and_mask": 30.439317499258323,
+            "patch_build": 195.41771250078455,
+            "laspy_read_io": 5.1282804961374495,
+            "crs_transformer_init": 1.2051470039295964,
+            "projection": 35.38578450024943,
+            "mask_filter": 2.505306496459525,
+            "rng_sample": 0.5105460004415363,
+            "ckdtree_build": 29.349278502195375,
+            "ckdtree_query_offsets": 23.76227800050401,
+            "hsi_infer": 134.79962949713808,
+            "pc_infer": 18.372756501776166,
+            "feature_grid_assemble": 9.891811503621284,
+            "match": 267.5183850005851
+          },
+          "cold_start_sec": 0.9736738860083278,
+          "engine_load_sec": 0.21660381900437642,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": null,
+          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+        }
+      },
+      "B": {
+        "fwd": {
+          "total_ms": 323.299704999954,
+          "total_without_io_ms": 265.5891499998688,
+          "segments_ms": {
+            "load_hsi_io": 52.86222049835487,
+            "standardize_and_mask": 17.985334499826422,
+            "hsi_patch_and_infer": 97.55006799605326,
+            "laspy_read_io": 4.848334501730278,
+            "crs_transformer_init": 1.2112590011383872,
+            "projection": 35.36203949988703,
+            "mask_filter": 2.4658479997015093,
+            "rng_sample": 0.48659350068192,
+            "ckdtree_build": 29.335470997466473,
+            "ckdtree_query_offsets": 23.38848900035373,
+            "pc_infer_assemble_match": 56.93390350279515
+          },
+          "cold_start_sec": 0.7891886020006496,
+          "engine_load_sec": 0.24920854499941925,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        },
+        "rev": {
+          "total_ms": 322.9050645022653,
+          "total_without_io_ms": 267.8985750062566,
+          "segments_ms": {
+            "load_hsi_io": 50.08584849565523,
+            "standardize_and_mask": 19.863433997670654,
+            "hsi_patch_and_infer": 97.57166750205215,
+            "laspy_read_io": 4.920641000353498,
+            "crs_transformer_init": 1.2119790044380352,
+            "projection": 35.35864700097591,
+            "mask_filter": 2.4893219997466076,
+            "rng_sample": 0.47502499728580005,
+            "ckdtree_build": 29.40281700284686,
+            "ckdtree_query_offsets": 23.956414002896054,
+            "pc_infer_assemble_match": 56.60547500156099
+          },
+          "cold_start_sec": 0.7980830930027878,
+          "engine_load_sec": 0.2476648079973529,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        }
+      },
+      "C": {
+        "fwd": {
+          "total_ms": 250.21643649961334,
+          "total_without_io_ms": 191.8326254999556,
+          "segments_ms": {
+            "load_hsi_io": 53.03089849985554,
+            "standardize_and_mask": 18.540634999226313,
+            "hsi_patch_and_launch": 7.913564499176573,
+            "laspy_read_io": 5.352912499802187,
+            "crs_transformer_init": 1.5386950035463087,
+            "projection": 42.95464849928976,
+            "mask_filter": 2.818661494529806,
+            "rng_sample": 0.5758770021202508,
+            "ckdtree_build": 36.38727650104556,
+            "ckdtree_query_offsets": 24.574963499617297,
+            "hsi_wait": 1.370673500787234,
+            "pc_infer_assemble_match": 55.73793999792542
+          },
+          "cold_start_sec": 0.7249215849951725,
+          "engine_load_sec": 0.24817804300255375,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        },
+        "rev": {
+          "total_ms": 249.14900600197143,
+          "total_without_io_ms": 195.54066199998488,
+          "segments_ms": {
+            "load_hsi_io": 48.2495745018241,
+            "standardize_and_mask": 21.52747799482313,
+            "hsi_patch_and_launch": 7.894011498137843,
+            "laspy_read_io": 5.3587695001624525,
+            "crs_transformer_init": 1.499414000136312,
+            "projection": 43.09386949898908,
+            "mask_filter": 2.9059759981464595,
+            "rng_sample": 0.5250590002106037,
+            "ckdtree_build": 36.40105299928109,
+            "ckdtree_query_offsets": 24.81412400084082,
+            "hsi_wait": 1.3843540000380017,
+            "pc_infer_assemble_match": 55.54719700012356
+          },
+          "cold_start_sec": 0.7231790890000411,
+          "engine_load_sec": 0.24792542600334855,
+          "match_rowcols_identical_to_cached_S11b": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "preprocess_guardrail_vs_cache": {
+            "valid_mask": true,
+            "point_offsets": true,
+            "ref_rows": true,
+            "ref_cols": true
+          },
+          "total_definition": "B/C 的总计为整景墙钟中位数"
+        }
+      }
+    }
+  }
+}

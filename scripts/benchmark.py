@@ -70,6 +70,11 @@ def bench_torch(model, which: str, batch: int) -> dict:
 
 def bench_ort_cuda(onnx_path: Path, which: str, batch: int) -> dict:
     sess = ort.InferenceSession(str(onnx_path), providers=[("CUDAExecutionProvider", {"use_tf32": "0"})])
+    # get_available_providers() 只说明这个 wheel 编译时带了 CUDA EP，不保证这次真的用上了：
+    # CUDA/cuDNN 版本不匹配时 ORT 会打印一条警告、静默退回 CPU，session 仍然创建成功。
+    actual = sess.get_providers()[0]
+    if actual != "CUDAExecutionProvider":
+        raise RuntimeError(f"session fell back to {actual} instead of CUDAExecutionProvider")
     x = hc.dummy_input(which, batch).numpy()
     # 注意：ORT 的 sess.run 是阻塞式 API，每次调用必然包含同步与 H2D/D2H，
     # 无法像 TRT/PyTorch 那样消除同步气泡，因此 ORT 一行与 TRT 行不完全同口径（偏保守）。
@@ -136,10 +141,20 @@ def main():
         results[which]["pytorch_fp32_gpu"] = [bench_torch(model, which, b) for b in BATCHES]
         print(f"[{which}] pytorch_fp32_gpu done")
 
-        results[which]["ort_cuda_fp32"] = [
-            bench_ort_cuda(ONNX_DIR / f"{which}_encoder.onnx", which, b) for b in BATCHES
-        ]
-        print(f"[{which}] ort_cuda_fp32 done")
+        # 无 CUDA EP 时（如 Jetson 上的 pip 版 onnxruntime）ORT 会静默退回 CPU，这一行不测，避免标签失真；
+        # CUDA EP 编译时可用但初始化失败（CUDA/cuDNN 版本不匹配）的静默退回由 bench_ort_cuda 自己检测并报错
+        if "CUDAExecutionProvider" in ort.get_available_providers():
+            try:
+                results[which]["ort_cuda_fp32"] = [
+                    bench_ort_cuda(ONNX_DIR / f"{which}_encoder.onnx", which, b) for b in BATCHES
+                ]
+                print(f"[{which}] ort_cuda_fp32 done")
+            except RuntimeError as e:
+                results[which]["ort_cuda_fp32"] = {"skipped": str(e)}
+                print(f"[{which}] ort_cuda_fp32 skipped: {e}")
+        else:
+            results[which]["ort_cuda_fp32"] = {"skipped": "CUDAExecutionProvider unavailable"}
+            print(f"[{which}] ort_cuda_fp32 skipped: CUDAExecutionProvider unavailable")
 
         for mode in TRT_MODES[which]:
             plan = ENGINE_DIR / f"{which}_{mode}.plan"

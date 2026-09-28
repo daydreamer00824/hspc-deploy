@@ -1,0 +1,5 @@
+pc_b1 {'event': (0.329, 0.23), 'wall': (0.401, 0.34), 'request': (0.496, 0.417)} identical: True
+pc_b8 {'event': (0.358, 0.261), 'wall': (0.425, 0.369), 'request': (0.517, 0.446)} identical: True
+hsi_b1 {'event': (0.356, 0.258), 'wall': (0.409, 0.373), 'request': (0.506, 0.453)} identical: True
+hsi_b8 {'event': (0.372, 0.273), 'wall': (0.423, 0.389), 'request': (0.524, 0.472)} identical: True
+written -> results/cpp_latency/py_rev.json

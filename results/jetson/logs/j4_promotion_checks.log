@@ -1,0 +1,23 @@
+/usr/local/lib/python3.10/dist-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+=== 计算 PyTorch FP32 基准（含每点margin）===
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+=== 任务2：3个独立稳定构建的任务级一致率 ===
+  stability_0 DTP: agreement=0.9950
+  stability_0 DTP+Spatial: agreement=0.9970
+  stability_1 DTP: agreement=0.9950
+  stability_1 DTP+Spatial: agreement=0.9970
+  stability_2 DTP: agreement=0.9950
+  stability_2 DTP+Spatial: agreement=0.9970
+
+=== 任务1：不一致点分析（stability_0 vs PyTorch FP32）===
+  DTP: 5/1000 不一致, margin范围=[0.00065, 0.00035, 0.00031, 7e-05, 3e-05]...
+  DTP+Spatial: 3/1000 不一致, margin范围=[0.00012, 4e-05, 0.0005]...
+
+=== 任务3：匹配光谱误差 / 像元位移对比 ===
+  DTP: mixed spec_err=0.0471 fp32 spec_err=0.0471
+  DTP+Spatial: mixed spec_err=0.0345 fp32 spec_err=0.0345
+
+written (merged into) /home/jetson/hspc_jetson/results/stage7_mixed_precision.json
+rc=0

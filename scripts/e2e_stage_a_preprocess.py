@@ -11,7 +11,6 @@
 from __future__ import annotations
 
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -29,11 +28,8 @@ from preprocess import (  # noqa: E402
     valid_vegetation_mask,
 )
 from matching import VARIANTS  # noqa: E402
-
-# 原始数据根目录，默认 <repo>/data，可用环境变量 HSPC_DATA_ROOT 覆盖
-DATA_ROOT = Path(os.environ.get("HSPC_DATA_ROOT", ROOT / "data"))
-HSI_PATH = DATA_ROOT / "hsi_spatial_spectral_resampled_common_342/24data/hsi/10.6/1_spec342.dat"
-LAS_PATH = DATA_ROOT / "lai_icp_registered_resampled_hsi/24data/10.6/rice_las/1_rice_icp.las"
+from scene_layout import DATA_ROOT, DEFAULT_HSI_PATH as HSI_PATH, DEFAULT_LAS_PATH as LAS_PATH  # noqa: E402
+from scene_layout import scene_paths  # noqa: E402,F401
 
 CONTRACT = {
     "target_bands": 342,
@@ -58,7 +54,22 @@ SEED = 20260617
 
 
 def main():
+    import argparse
+
     import laspy
+
+    global HSI_PATH, LAS_PATH
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--scene", help="批次/日期/样地号，如 25data/8.4/1；不传则为默认景 24data/10.6/1，输出路径也不变")
+    args = ap.parse_args()
+    out = ROOT / "results/e2e_scene_preprocessed.npz"
+    meta_out = ROOT / "results/e2e_scene_preprocessed_meta.json"
+    if args.scene:
+        HSI_PATH, LAS_PATH = scene_paths(args.scene)
+        tag = args.scene.replace("/", "_")
+        (ROOT / "results/scenes").mkdir(exist_ok=True)
+        out = ROOT / f"results/scenes/{tag}_preprocessed.npz"
+        meta_out = ROOT / f"results/scenes/{tag}_preprocessed_meta.json"
 
     print(f"[1/6] load_hsi: {HSI_PATH}")
     raw, gt, projection = load_hsi(HSI_PATH, CONTRACT["target_bands"])
@@ -106,7 +117,6 @@ def main():
     er, ec = ref_rows[eligible], ref_cols[eligible]
     truth = raw[:, er, ec].T.astype(np.float32)
 
-    out = ROOT / "results/e2e_scene_preprocessed.npz"
     np.savez_compressed(
         out,
         hsi_grid_patches=all_patches.astype(np.float32),
@@ -127,7 +137,7 @@ def main():
         "n_sampled": int(len(eligible)),
         "n_grid_patches": int(all_patches.shape[0]),
     }
-    (ROOT / "results/e2e_scene_preprocessed_meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2))
+    meta_out.write_text(json.dumps(meta, ensure_ascii=False, indent=2))
     print(json.dumps(meta, ensure_ascii=False, indent=2))
     print(f"written {out}")
 

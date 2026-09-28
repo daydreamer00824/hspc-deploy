@@ -1,0 +1,19 @@
+Capture range started in the application.
+Capture range ended in the application.
+Generating '/tmp/nsys-report-b085.qdstrm'
+[1/1] [0%                          ] final_S11b.nsys-repProcessing events...
+[1/1] [0%                          ] final_S11b.nsys-rep[1/1] [14%                         ] final_S11b.nsys-rep[1/1] [====25%                     ] final_S11b.nsys-rep[1/1] [===============67%          ] final_S11b.nsys-rep[1/1] [=================73%        ] final_S11b.nsys-rep[1/1] [=================74%        ] final_S11b.nsys-rep[1/1] [==================75%       ] final_S11b.nsys-rep[1/1] [==================76%       ] final_S11b.nsys-rep[1/1] [==================77%       ] final_S11b.nsys-rep[1/1] [========================100%] final_S11b.nsys-rep[1/1] [========================100%] final_S11b.nsys-rep
+{
+  "config": "S11b",
+  "segments_ms": {
+    "pc_infer": 2.181903000746388,
+    "prep": 24.15456900052959,
+    "patch_build": 10.027723001257982,
+    "hsi_infer": 108.22125500271795,
+    "assemble": 0.5298110045259818,
+    "match": 43.10882199933985
+  },
+  "n_patches": 9645
+}
+Generated:
+    /home/jetson/hspc_jetson/results/logs/nsys/final_S11b.nsys-rep

@@ -1,0 +1,12 @@
+  pc/fp32_notf32               cos_mean=1.000000 cos_min=1.000000 max_abs=1.025e-05 top1=1.000 top5=1.000
+  pc/fp32_tf32                 cos_mean=1.000000 cos_min=0.999999 max_abs=7.329e-03 top1=1.000 top5=1.000
+  pc/fp16                      cos_mean=0.999998 cos_min=0.999993 max_abs=2.926e-02 top1=1.000 top5=1.000
+  pc/int8_implicit             cos_mean=0.999998 cos_min=0.999993 max_abs=2.926e-02 top1=1.000 top5=1.000
+  hsi/fp32_notf32              cos_mean=1.000000 cos_min=1.000000 max_abs=1.022e-04 top1=1.000 top5=1.000
+  hsi/fp32_tf32                cos_mean=0.999999 cos_min=0.999945 max_abs=2.242e-02 top1=1.000 top5=1.000
+  hsi/fp16                     cos_mean=0.999939 cos_min=0.990481 max_abs=3.057e-01 top1=0.975 top5=1.000
+  hsi/int8_implicit            cos_mean=0.999968 cos_min=0.996175 max_abs=1.919e-01 top1=0.980 top5=1.000
+[hsi/int8_qdq] engine not found, skip
+
+written -> results/stage2_trt_accuracy.json
+GATE (fp32_notf32): PASS

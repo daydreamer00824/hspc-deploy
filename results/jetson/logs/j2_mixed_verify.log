@@ -1,0 +1,7 @@
+  hsi mixed(stem) build0 vs fp32 cos_mean=0.999994 cos_min=0.999705 max_abs=6.190e-02 top1=0.990 top5=1.000
+  hsi mixed(stem) build1 vs fp32 cos_mean=0.999994 cos_min=0.999705 max_abs=6.190e-02 top1=0.990 top5=1.000
+  hsi mixed(stem) build2 vs fp32 cos_mean=0.999994 cos_min=0.999705 max_abs=6.190e-02 top1=0.990 top5=1.000
+pairwise {'0-1': 0.015625, '0-2': 0.0, '1-2': 0.015625}
+Traceback (most recent call last):
+  File "<stdin>", line 21, in <module>
+AttributeError: 'str' object has no attribute 'get'

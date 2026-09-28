@@ -1,0 +1,40 @@
+/usr/local/lib/python3.10/dist-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+[forward] S0: total 2184.1 ms  prep=24.3  patch_build=427.6  hsi_infer=467.5  pc_infer=34.7  assemble=9.5  match=1221.7
+[forward] S1: total 1940.3 ms  prep=24.0  patch_build=232.7  hsi_infer=286.2  pc_infer=35.5  assemble=19.7  match=1364.2
+[forward] S2: total 794.4 ms  prep=24.0  patch_build=231.9  hsi_infer=243.0  pc_infer=29.3  assemble=19.7  match=244.0
+[forward] S3: total 817.2 ms  prep=24.0  patch_build=233.3  hsi_infer=255.5  pc_infer=29.3  assemble=19.7  match=250.9
+[forward] S4: total 704.3 ms  prep=23.9  patch_build=233.0  hsi_infer=162.5  pc_infer=17.9  assemble=19.8  match=242.7
+[forward] S5: total 609.2 ms  prep=24.1  patch_build=190.2  hsi_infer=107.0  pc_infer=16.6  assemble=19.6  match=249.8
+[forward] S6: total 417.0 ms  prep=24.4  patch_build=189.9  hsi_infer=107.0  pc_infer=16.6  assemble=19.6  match=57.6
+[reverse] S6: total 416.3 ms  prep=24.5  patch_build=189.1  hsi_infer=107.0  pc_infer=16.7  assemble=19.6  match=57.6
+[reverse] S5: total 615.0 ms  prep=24.2  patch_build=189.4  hsi_infer=107.5  pc_infer=16.6  assemble=19.5  match=255.1
+[reverse] S4: total 711.1 ms  prep=24.3  patch_build=232.1  hsi_infer=161.8  pc_infer=18.2  assemble=19.6  match=252.5
+[reverse] S3: total 814.2 ms  prep=24.1  patch_build=232.3  hsi_infer=255.1  pc_infer=29.3  assemble=19.6  match=251.4
+[reverse] S2: total 800.8 ms  prep=24.2  patch_build=232.3  hsi_infer=241.7  pc_infer=29.2  assemble=19.7  match=250.7
+[reverse] S1: total 1813.1 ms  prep=24.5  patch_build=232.0  hsi_infer=264.5  pc_infer=32.3  assemble=19.7  match=1214.5
+[reverse] S0: total 2181.6 ms  prep=24.5  patch_build=425.8  hsi_infer=432.6  pc_infer=29.4  assemble=9.5  match=1265.9
+{
+  "forward": {
+    "S0": 1.0,
+    "S1": 1.1256445053524582,
+    "S2": 2.749348374906572,
+    "S3": 2.6726075579364563,
+    "S4": 3.1009259786207783,
+    "S5": 3.5853285307114224,
+    "S6": 5.237785658829323
+  },
+  "reverse": {
+    "S0": 1.0,
+    "S1": 1.2032389201938072,
+    "S2": 2.7242241671591705,
+    "S3": 2.679412638202302,
+    "S4": 3.0680318312344834,
+    "S5": 3.547598553214938,
+    "S6": 5.240638189150494
+  }
+}
+written -> results/opt_o6_compare.json
+rc=0

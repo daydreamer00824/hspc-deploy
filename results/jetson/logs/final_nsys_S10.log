@@ -1,0 +1,19 @@
+Capture range started in the application.
+Capture range ended in the application.
+Generating '/tmp/nsys-report-ca91.qdstrm'
+[1/1] [0%                          ] final_S10.nsys-repProcessing events...
+[1/1] [0%                          ] final_S10.nsys-rep[1/1] [14%                         ] final_S10.nsys-rep[1/1] [====25%                     ] final_S10.nsys-rep[1/1] [===============67%          ] final_S10.nsys-rep[1/1] [=================73%        ] final_S10.nsys-rep[1/1] [=================74%        ] final_S10.nsys-rep[1/1] [==================75%       ] final_S10.nsys-rep[1/1] [==================76%       ] final_S10.nsys-rep[1/1] [==================77%       ] final_S10.nsys-rep[1/1] [========================100%] final_S10.nsys-rep[1/1] [========================100%] final_S10.nsys-rep
+{
+  "config": "S10",
+  "segments_ms": {
+    "pc_infer": 1.7725629950291477,
+    "prep": 29.28334900207119,
+    "patch_build": 14.467246997810435,
+    "hsi_infer": 108.65530800219858,
+    "assemble": 0.8160849974956363,
+    "match": 43.2220500006224
+  },
+  "n_patches": 9645
+}
+Generated:
+    /home/jetson/hspc_jetson/results/logs/nsys/final_S10.nsys-rep

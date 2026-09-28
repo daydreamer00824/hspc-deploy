@@ -190,6 +190,8 @@ def compute_runner_overhead(hsi_median_sec, n_patches):
     stage3 = json.loads(stage3_path.read_text())
     out = {}
     for key, mode in [("trt_fp16", "trt_fp16"), ("trt_int8", "trt_int8_implicit")]:
+        if key not in hsi_median_sec:
+            continue
         records = stage3.get("results", {}).get("hsi", {}).get(mode, [])
         rec64 = next((r for r in records if r["batch"] == 64), None)
         if rec64 is None:
@@ -219,7 +221,9 @@ def main():
     print(f"scene: grid={rows}x{cols} patches={n_patches} points={n_points}")
 
     backends = {}
-    for name in ["pytorch_fp32", "trt_fp16", "trt_int8"]:
+    # 可选参数指定 TRT 后端（如 Jetson 上没有可交付 INT8 引擎时只跑 trt_fp16）；不传则用默认的两个后端
+    trt_backends = sys.argv[1:] or ["trt_fp16", "trt_int8"]
+    for name in ["pytorch_fp32", *trt_backends]:
         print(f"=== {name} ===")
         backends[name] = run_backend(name, hsi_grid_patches, point_offsets, rows, cols, valid_mask, ref_rows, ref_cols, truth)
         b = backends[name]
@@ -290,7 +294,7 @@ def main():
             entry["pc_embedding_accuracy"] = hc.accuracy_report(base["pc_feats"], res["pc_feats"])
         report["backends"][name] = entry
 
-    hsi_median_sec = {k: backends[k]["timing_sec"]["hsi_infer_median"] for k in ["trt_fp16", "trt_int8"]}
+    hsi_median_sec = {k: backends[k]["timing_sec"]["hsi_infer_median"] for k in trt_backends}
     report["runner_overhead_vs_stage3_kernel"] = compute_runner_overhead(hsi_median_sec, n_patches)
 
     out = ROOT / "results/stage4_e2e.json"

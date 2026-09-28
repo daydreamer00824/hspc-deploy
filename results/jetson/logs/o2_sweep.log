@@ -1,0 +1,187 @@
+/usr/local/lib/python3.10/dist-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[09/26/2026-20:59:37] [TRT] [I] [MemUsageChange] Init CUDA: CPU -1, GPU +0, now: CPU 937, GPU 4108 (MiB)
+[09/26/2026-20:59:39] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU +980, GPU +727, now: CPU 1875, GPU 4838 (MiB)
+[09/26/2026-20:59:39] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:59:39] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_encoder.onnx
+[09/26/2026-20:59:39] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-20:59:39] [TRT] [I] Opset version:    17
+[09/26/2026-20:59:39] [TRT] [I] Producer name:    pytorch
+[09/26/2026-20:59:39] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-20:59:39] [TRT] [I] Domain:           
+[09/26/2026-20:59:39] [TRT] [I] Model version:    0
+[09/26/2026-20:59:39] [TRT] [I] Doc string:       
+[09/26/2026-20:59:39] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-20:59:39] [TRT] [W] ONNXTRT_ShapeElementWise: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-20:59:39] [TRT] [W] ONNXTRT_ShapeElementWise_5: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-20:59:39] [TRT] [W] ONNXTRT_ShapeElementWise_10: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-20:59:39] [TRT] [W] ONNXTRT_ShapeElementWise_11: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-20:59:39] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-20:59:39] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-20:59:41] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-21:00:24] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-21:00:24] [TRT] [I] Total Host Persistent Memory: 5280 bytes
+[09/26/2026-21:00:24] [TRT] [I] Total Device Persistent Memory: 512 bytes
+[09/26/2026-21:00:24] [TRT] [I] Max Scratch Memory: 20971520 bytes
+[09/26/2026-21:00:24] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 4 steps to complete.
+[09/26/2026-21:00:24] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.032257ms to assign 3 blocks to 4 nodes requiring 23331328 bytes.
+[09/26/2026-21:00:24] [TRT] [I] Total Activation Memory: 23330816 bytes
+[09/26/2026-21:00:24] [TRT] [I] Total Weights Memory: 6146564 bytes
+[09/26/2026-21:00:24] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-21:00:24] [TRT] [I] Engine generation completed in 44.7045 seconds.
+[09/26/2026-21:00:24] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 31 MiB
+  [final_hsi_encoder.pt] strict load OK, 49 keys, 2,982,912 params
+  [final_pc_encoder.pt] strict load OK, 47 keys, 2,908,672 params
+[hsi/fp16/mixed['stem']] building from hsi_encoder.onnx -> hsi_fp16_scene512.plan ...
+[hsi/fp16] done in 44.7s, size=7150.8 KB
+hsi tier 512: wall 159.0 ms  gpu 111.8 ms  devmem 22 MiB  cos_min [0.999705]  pairwise {}
+[09/26/2026-21:00:28] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +137, now: CPU 3536, GPU 5900 (MiB)
+[09/26/2026-21:00:28] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:00:28] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_encoder.onnx
+[09/26/2026-21:00:28] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-21:00:28] [TRT] [I] Opset version:    17
+[09/26/2026-21:00:28] [TRT] [I] Producer name:    pytorch
+[09/26/2026-21:00:28] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-21:00:28] [TRT] [I] Domain:           
+[09/26/2026-21:00:28] [TRT] [I] Model version:    0
+[09/26/2026-21:00:28] [TRT] [I] Doc string:       
+[09/26/2026-21:00:28] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:00:28] [TRT] [W] ONNXTRT_ShapeElementWise: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-21:00:28] [TRT] [W] ONNXTRT_ShapeElementWise_5: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-21:00:28] [TRT] [W] ONNXTRT_ShapeElementWise_10: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-21:00:28] [TRT] [W] ONNXTRT_ShapeElementWise_11: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-21:00:28] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-21:00:28] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-21:00:30] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-21:01:12] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-21:01:12] [TRT] [I] Total Host Persistent Memory: 5792 bytes
+[09/26/2026-21:01:12] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-21:01:12] [TRT] [I] Max Scratch Memory: 41943040 bytes
+[09/26/2026-21:01:12] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 4 steps to complete.
+[09/26/2026-21:01:12] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.02781ms to assign 3 blocks to 4 nodes requiring 46662144 bytes.
+[09/26/2026-21:01:12] [TRT] [I] Total Activation Memory: 46661632 bytes
+[09/26/2026-21:01:12] [TRT] [I] Total Weights Memory: 6146564 bytes
+[09/26/2026-21:01:12] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-21:01:12] [TRT] [I] Engine generation completed in 43.999 seconds.
+[09/26/2026-21:01:12] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 57 MiB
+[hsi/fp16/mixed['stem']] building from hsi_encoder.onnx -> hsi_fp16_scene1024.plan ...
+[hsi/fp16] done in 44.0s, size=7206.9 KB
+hsi tier 1024: wall 151.0 ms  gpu 107.4 ms  devmem 44 MiB  cos_min [0.999705]  pairwise {}
+[09/26/2026-21:01:16] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +21, now: CPU 3632, GPU 5986 (MiB)
+[09/26/2026-21:01:16] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:01:16] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/hsi_encoder.onnx
+[09/26/2026-21:01:16] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-21:01:16] [TRT] [I] Opset version:    17
+[09/26/2026-21:01:16] [TRT] [I] Producer name:    pytorch
+[09/26/2026-21:01:16] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-21:01:16] [TRT] [I] Domain:           
+[09/26/2026-21:01:16] [TRT] [I] Model version:    0
+[09/26/2026-21:01:16] [TRT] [I] Doc string:       
+[09/26/2026-21:01:16] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:01:16] [TRT] [W] ONNXTRT_ShapeElementWise: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-21:01:16] [TRT] [W] ONNXTRT_ShapeElementWise_5: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-21:01:16] [TRT] [W] ONNXTRT_ShapeElementWise_10: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-21:01:16] [TRT] [W] ONNXTRT_ShapeElementWise_11: shape tensor output from layer must be Bool, Int32, Int64, or Float
+[09/26/2026-21:01:16] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-21:01:16] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-21:01:19] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-21:02:02] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-21:02:02] [TRT] [I] Total Host Persistent Memory: 5792 bytes
+[09/26/2026-21:02:02] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-21:02:02] [TRT] [I] Max Scratch Memory: 83886080 bytes
+[09/26/2026-21:02:02] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 4 steps to complete.
+[09/26/2026-21:02:02] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.032194ms to assign 3 blocks to 4 nodes requiring 93323776 bytes.
+[09/26/2026-21:02:02] [TRT] [I] Total Activation Memory: 93323264 bytes
+[09/26/2026-21:02:02] [TRT] [I] Total Weights Memory: 6146564 bytes
+[09/26/2026-21:02:02] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-21:02:02] [TRT] [I] Engine generation completed in 46.0443 seconds.
+[09/26/2026-21:02:02] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 108 MiB
+[hsi/fp16/mixed['stem']] building from hsi_encoder.onnx -> hsi_fp16_scene2048.plan ...
+[hsi/fp16] done in 46.1s, size=7206.9 KB
+hsi tier 2048: wall 146.3 ms  gpu 106.3 ms  devmem 89 MiB  cos_min [0.999705]  pairwise {}
+[09/26/2026-21:02:07] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +4, now: CPU 3644, GPU 6120 (MiB)
+[09/26/2026-21:02:07] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:02:07] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_encoder.onnx
+[09/26/2026-21:02:07] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-21:02:07] [TRT] [I] Opset version:    17
+[09/26/2026-21:02:07] [TRT] [I] Producer name:    pytorch
+[09/26/2026-21:02:07] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-21:02:07] [TRT] [I] Domain:           
+[09/26/2026-21:02:07] [TRT] [I] Model version:    0
+[09/26/2026-21:02:07] [TRT] [I] Doc string:       
+[09/26/2026-21:02:07] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:02:07] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-21:02:07] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-21:02:07] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-21:02:56] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-21:02:57] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-21:02:57] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-21:02:57] [TRT] [I] Max Scratch Memory: 37812224 bytes
+[09/26/2026-21:02:57] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-21:02:57] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.026335ms to assign 3 blocks to 3 nodes requiring 38861312 bytes.
+[09/26/2026-21:02:57] [TRT] [I] Total Activation Memory: 38860800 bytes
+[09/26/2026-21:02:57] [TRT] [I] Total Weights Memory: 5822082 bytes
+[09/26/2026-21:02:57] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-21:02:57] [TRT] [I] Engine generation completed in 49.8852 seconds.
+[09/26/2026-21:02:57] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 108 MiB
+[pc/fp16/auto] building from pc_encoder.onnx -> pc_fp16_scene512.plan ...
+[pc/fp16] done in 49.9s, size=6901.2 KB
+pc tier 512: wall 19.2 ms  gpu 17.1 ms  devmem 37 MiB  cos_min [0.999993]  pairwise {}
+[09/26/2026-21:02:59] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU +1, now: CPU 4046, GPU 6192 (MiB)
+[09/26/2026-21:02:59] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:02:59] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_encoder.onnx
+[09/26/2026-21:02:59] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-21:02:59] [TRT] [I] Opset version:    17
+[09/26/2026-21:02:59] [TRT] [I] Producer name:    pytorch
+[09/26/2026-21:02:59] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-21:02:59] [TRT] [I] Domain:           
+[09/26/2026-21:02:59] [TRT] [I] Model version:    0
+[09/26/2026-21:02:59] [TRT] [I] Doc string:       
+[09/26/2026-21:02:59] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:02:59] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-21:02:59] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-21:02:59] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-21:03:52] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-21:03:52] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-21:03:52] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-21:03:52] [TRT] [I] Max Scratch Memory: 75624448 bytes
+[09/26/2026-21:03:52] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-21:03:52] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.026655ms to assign 3 blocks to 3 nodes requiring 77722112 bytes.
+[09/26/2026-21:03:52] [TRT] [I] Total Activation Memory: 77721600 bytes
+[09/26/2026-21:03:52] [TRT] [I] Total Weights Memory: 5821058 bytes
+[09/26/2026-21:03:52] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-21:03:52] [TRT] [I] Engine generation completed in 53.1516 seconds.
+[09/26/2026-21:03:52] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 127 MiB
+[pc/fp16/auto] building from pc_encoder.onnx -> pc_fp16_scene1024.plan ...
+[pc/fp16] done in 53.2s, size=6921.9 KB
+pc tier 1024: wall 17.6 ms  gpu 15.9 ms  devmem 74 MiB  cos_min [0.999993]  pairwise {}
+[09/26/2026-21:03:55] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU -979, GPU -4, now: CPU 4068, GPU 6246 (MiB)
+[09/26/2026-21:03:55] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:03:55] [TRT] [I] Input filename:   /home/jetson/hspc_jetson/onnx/pc_encoder.onnx
+[09/26/2026-21:03:55] [TRT] [I] ONNX IR version:  0.0.8
+[09/26/2026-21:03:55] [TRT] [I] Opset version:    17
+[09/26/2026-21:03:55] [TRT] [I] Producer name:    pytorch
+[09/26/2026-21:03:55] [TRT] [I] Producer version: 2.13.0
+[09/26/2026-21:03:55] [TRT] [I] Domain:           
+[09/26/2026-21:03:55] [TRT] [I] Model version:    0
+[09/26/2026-21:03:55] [TRT] [I] Doc string:       
+[09/26/2026-21:03:55] [TRT] [I] ----------------------------------------------------------------
+[09/26/2026-21:03:55] [TRT] [W] DLA requests all profiles have same min, max, and opt value. All dla layers are falling back to GPU
+[09/26/2026-21:03:55] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[09/26/2026-21:03:55] [TRT] [I] Compiler backend is used during engine build.
+[09/26/2026-21:04:55] [TRT] [I] Detected 1 inputs and 1 output network tensors.
+[09/26/2026-21:04:56] [TRT] [I] Total Host Persistent Memory: 80 bytes
+[09/26/2026-21:04:56] [TRT] [I] Total Device Persistent Memory: 0 bytes
+[09/26/2026-21:04:56] [TRT] [I] Max Scratch Memory: 151248896 bytes
+[09/26/2026-21:04:56] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[09/26/2026-21:04:56] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.026271ms to assign 3 blocks to 3 nodes requiring 155443712 bytes.
+[09/26/2026-21:04:56] [TRT] [I] Total Activation Memory: 155443200 bytes
+[09/26/2026-21:04:56] [TRT] [I] Total Weights Memory: 5821058 bytes
+[09/26/2026-21:04:56] [TRT] [I] Compiler backend is used during engine execution.
+[09/26/2026-21:04:56] [TRT] [I] Engine generation completed in 60.3489 seconds.
+[09/26/2026-21:04:56] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 5 MiB, GPU 243 MiB
+[pc/fp16/auto] building from pc_encoder.onnx -> pc_fp16_scene2048.plan ...
+[pc/fp16] done in 60.4s, size=6904.8 KB
+pc tier 2048: wall 17.6 ms  gpu 15.9 ms  devmem 148 MiB  cos_min [0.999993]  pairwise {}
+written -> results/opt_o2_sweep.json
+rc=0

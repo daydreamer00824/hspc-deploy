@@ -1,0 +1,3670 @@
+Retrieving notices: - \ | / - \ | / - \ done
+Channels:
+ - conda-forge
+Platform: linux-aarch64
+Collecting package metadata (repodata.json): / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / done
+Solving environment: \ | / done
+
+
+==> WARNING: A newer version of conda exists. <==
+    current version: 25.11.1
+    latest version: 26.7.2
+
+Please update conda by running
+
+    $ conda update -n base -c conda-forge conda
+
+
+
+## Package Plan ##
+
+  environment location: /home/jetson/miniforge3/envs/hspc-jetson
+
+  added / updated specs:
+    - gdal=3.11.4
+    - laspy=2.7.0
+    - numpy[version='<2']
+    - proj=9.6.2
+    - pyproj=3.7.1
+    - python=3.10
+    - scipy=1.15.2
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    _openmp_mutex-4.5          |           20_gnu          28 KB  conda-forge
+    blosc-1.21.6               |       hb4dfabd_1          36 KB  conda-forge
+    bzip2-1.0.8                |      h4777abc_10         190 KB  conda-forge
+    c-ares-1.34.8              |       h29ee22c_2         236 KB  conda-forge
+    ca-certificates-2026.7.22  |       hbd8a1cb_0         129 KB  conda-forge
+    certifi-2026.7.22          |     pyhd8ed1ab_0         134 KB  conda-forge
+    docutils-0.23              |     pyhcf101f3_0         449 KB  conda-forge
+    freexl-2.0.0               |       hb8db170_3          63 KB  conda-forge
+    gdal-3.11.4                |  py310h48fd52d_9         1.5 MB  conda-forge
+    geos-3.14.0                |       h57520ee_0         1.8 MB  conda-forge
+    giflib-5.2.2               |       h5dd31e5_1          81 KB  conda-forge
+    json-c-0.18                |       h29ee22c_2          95 KB  conda-forge
+    keyutils-1.6.3             |       h5bc82ec_1         127 KB  conda-forge
+    krb5-1.22.2                |       h095d8e5_2         1.5 MB  conda-forge
+    laspy-2.7.0                |np2py310h5019192_1         1.7 MB  conda-forge
+    lazrs-python-0.8.2         |  py310h598bb90_0         572 KB  conda-forge
+    ld_impl_linux-aarch64-2.46.1|default_h1979696_102         884 KB  conda-forge
+    lerc-4.2.0                 |       h52b7260_0         239 KB  conda-forge
+    libarchive-3.8.9           | gpl_hbe7d12b_100         949 KB  conda-forge
+    libblas-3.11.0             |11_haddc8a3_openblas          18 KB  conda-forge
+    libbrotlicommon-1.2.0      |       h384ecca_4          79 KB  conda-forge
+    libbrotlidec-1.2.0         |       h011f0d3_4          33 KB  conda-forge
+    libbrotlienc-1.2.0         |       hb247b97_4         340 KB  conda-forge
+    libcblas-3.11.0            |11_hd72aa62_openblas          18 KB  conda-forge
+    libcurl-8.21.0             |       hc57f145_1         493 KB  conda-forge
+    libdeflate-1.25            |       hfa851ae_1          70 KB  conda-forge
+    libedit-3.1.20250104       | pl5321hc48eb74_1         146 KB  conda-forge
+    libev-4.33                 |       h80f16a2_3          45 KB  conda-forge
+    libexpat-2.8.5             |       h4154aff_0          78 KB  conda-forge
+    libffi-3.7.0               |       hdaad0be_1          62 KB  conda-forge
+    libgcc-16.2.0              |       h205dda4_7         613 KB  conda-forge
+    libgcc-ng-16.2.0           |       he9431aa_7          28 KB  conda-forge
+    libgdal-core-3.11.4        |       hfa18a71_1        11.4 MB  conda-forge
+    libgfortran-16.2.0         |       he9431aa_7          28 KB  conda-forge
+    libgfortran5-16.2.0        |       hc864f27_7         1.4 MB  conda-forge
+    libgomp-16.2.0             |       h8acb6b2_7         603 KB  conda-forge
+    libhwy-1.4.0               |       h996897a_1         945 KB  conda-forge
+    libiconv-1.18              |       h1ea5142_3         768 KB  conda-forge
+    libjpeg-turbo-3.2.0        |       he30d5cf_1         700 KB  conda-forge
+    libjxl-0.11.2              |       hbae46ee_1         1.4 MB  conda-forge
+    libkml-1.3.0               |    h39bb75a_1023         370 KB  conda-forge
+    liblapack-3.11.0           |11_h88aeb00_openblas          18 KB  conda-forge
+    liblzma-5.8.3              |       he30d5cf_1         123 KB  conda-forge
+    libnghttp2-1.68.1          |       ha4b982d_1         718 KB  conda-forge
+    libopenblas-0.3.34         |pthreads_h4148b7d_2         5.6 MB  conda-forge
+    libpng-1.6.58              |       hf9b7768_1         325 KB  conda-forge
+    librttopo-1.1.0            |      h73d41ca_19         251 KB  conda-forge
+    libspatialite-5.1.0        |      h12ec5e0_16         3.9 MB  conda-forge
+    libsqlite-3.53.4           |       hd26f1b6_1         946 KB  conda-forge
+    libssh2-1.11.1             |       h7572e3e_1         308 KB  conda-forge
+    libstdcxx-16.2.0           |       hef695bb_7         5.9 MB  conda-forge
+    libstdcxx-ng-16.2.0        |       hdbbeba8_7          28 KB  conda-forge
+    libtiff-4.7.2              |       h45f9f85_1         517 KB  conda-forge
+    libuuid-2.42.4             |       hd6fdeab_0          35 KB  conda-forge
+    libwebp-base-1.6.0         |       ha2e29f5_1         349 KB  conda-forge
+    libxcrypt-4.4.38           |       h80f16a2_0         131 KB  conda-forge
+    libxml2-devel-2.15.1       |       h788dabe_0          78 KB  conda-forge
+    libzlib-1.3.2              |       hdc9db2a_3          68 KB  conda-forge
+    lz4-c-1.10.0               |       hfb11796_2         214 KB  conda-forge
+    lzo-2.10                   |    h29ee22c_1003         208 KB  conda-forge
+    m2r2-0.3.4                 |     pyhd8ed1ab_0          17 KB  conda-forge
+    minizip-4.2.2              |       h8279b29_1         548 KB  conda-forge
+    mistune-0.8.4              |  pyh1a96a4e_1006          47 KB  conda-forge
+    muparser-2.3.5             |       hfb11796_1         203 KB  conda-forge
+    ncurses-6.6                |       h2b6f883_1         933 KB  conda-forge
+    numpy-1.26.4               |  py310hcbab775_0         5.8 MB  conda-forge
+    openssl-3.6.4              |       he6ad1d5_0         3.5 MB  conda-forge
+    packaging-26.3             |     pyhc364b38_0         114 KB  conda-forge
+    pcre2-10.46                |       h15761aa_0         1.1 MB  conda-forge
+    pip-26.2.1                 |     pyh8b19718_0         1.1 MB  conda-forge
+    proj-9.6.2                 |       h561be74_2         3.0 MB  conda-forge
+    pyproj-3.7.1               |  py310hea7fe19_1         515 KB  conda-forge
+    python-3.10.21             |h4f76b5d_0_cpython        12.6 MB  conda-forge
+    python_abi-3.10            |          9_cp310           7 KB  conda-forge
+    readline-8.3               |       ha7194a6_1         356 KB  conda-forge
+    scipy-1.15.2               |  py310hf37559f_0        15.5 MB  conda-forge
+    setuptools-84.0.0          |     pyh332efcf_0         512 KB  conda-forge
+    snappy-1.2.2               |       h7d29b6f_2          48 KB  conda-forge
+    sqlite-3.53.4              |       h363059a_1         207 KB  conda-forge
+    tk-8.6.13                  | noxft_hf03c496_4         3.5 MB  conda-forge
+    tzdata-2026c               |       h151e31d_0         116 KB  conda-forge
+    uriparser-0.9.8            |       h0a1ffab_0          47 KB  conda-forge
+    wheel-0.48.0               |     pyhd8ed1ab_0          34 KB  conda-forge
+    xerces-c-3.2.5             |       h595f43b_2         1.6 MB  conda-forge
+    zlib-1.3.2                 |       hdc9db2a_3          98 KB  conda-forge
+    zstd-1.5.7                 |       h9d15635_7         601 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:       101.8 MB
+
+The following NEW packages will be INSTALLED:
+
+  _openmp_mutex      conda-forge/linux-aarch64::_openmp_mutex-4.5-20_gnu 
+  blosc              conda-forge/linux-aarch64::blosc-1.21.6-hb4dfabd_1 
+  bzip2              conda-forge/linux-aarch64::bzip2-1.0.8-h4777abc_10 
+  c-ares             conda-forge/linux-aarch64::c-ares-1.34.8-h29ee22c_2 
+  ca-certificates    conda-forge/noarch::ca-certificates-2026.7.22-hbd8a1cb_0 
+  certifi            conda-forge/noarch::certifi-2026.7.22-pyhd8ed1ab_0 
+  docutils           conda-forge/noarch::docutils-0.23-pyhcf101f3_0 
+  freexl             conda-forge/linux-aarch64::freexl-2.0.0-hb8db170_3 
+  gdal               conda-forge/linux-aarch64::gdal-3.11.4-py310h48fd52d_9 
+  geos               conda-forge/linux-aarch64::geos-3.14.0-h57520ee_0 
+  giflib             conda-forge/linux-aarch64::giflib-5.2.2-h5dd31e5_1 
+  icu                conda-forge/linux-aarch64::icu-75.1-hf9b3779_0 
+  json-c             conda-forge/linux-aarch64::json-c-0.18-h29ee22c_2 
+  keyutils           conda-forge/linux-aarch64::keyutils-1.6.3-h5bc82ec_1 
+  krb5               conda-forge/linux-aarch64::krb5-1.22.2-h095d8e5_2 
+  laspy              conda-forge/linux-aarch64::laspy-2.7.0-np2py310h5019192_1 
+  lazrs-python       conda-forge/linux-aarch64::lazrs-python-0.8.2-py310h598bb90_0 
+  ld_impl_linux-aar~ conda-forge/linux-aarch64::ld_impl_linux-aarch64-2.46.1-default_h1979696_102 
+  lerc               conda-forge/linux-aarch64::lerc-4.2.0-h52b7260_0 
+  libarchive         conda-forge/linux-aarch64::libarchive-3.8.9-gpl_hbe7d12b_100 
+  libblas            conda-forge/linux-aarch64::libblas-3.11.0-11_haddc8a3_openblas 
+  libbrotlicommon    conda-forge/linux-aarch64::libbrotlicommon-1.2.0-h384ecca_4 
+  libbrotlidec       conda-forge/linux-aarch64::libbrotlidec-1.2.0-h011f0d3_4 
+  libbrotlienc       conda-forge/linux-aarch64::libbrotlienc-1.2.0-hb247b97_4 
+  libcblas           conda-forge/linux-aarch64::libcblas-3.11.0-11_hd72aa62_openblas 
+  libcurl            conda-forge/linux-aarch64::libcurl-8.21.0-hc57f145_1 
+  libdeflate         conda-forge/linux-aarch64::libdeflate-1.25-hfa851ae_1 
+  libedit            conda-forge/linux-aarch64::libedit-3.1.20250104-pl5321hc48eb74_1 
+  libev              conda-forge/linux-aarch64::libev-4.33-h80f16a2_3 
+  libexpat           conda-forge/linux-aarch64::libexpat-2.8.5-h4154aff_0 
+  libffi             conda-forge/linux-aarch64::libffi-3.7.0-hdaad0be_1 
+  libgcc             conda-forge/linux-aarch64::libgcc-16.2.0-h205dda4_7 
+  libgcc-ng          conda-forge/linux-aarch64::libgcc-ng-16.2.0-he9431aa_7 
+  libgdal-core       conda-forge/linux-aarch64::libgdal-core-3.11.4-hfa18a71_1 
+  libgfortran        conda-forge/linux-aarch64::libgfortran-16.2.0-he9431aa_7 
+  libgfortran5       conda-forge/linux-aarch64::libgfortran5-16.2.0-hc864f27_7 
+  libgomp            conda-forge/linux-aarch64::libgomp-16.2.0-h8acb6b2_7 
+  libhwy             conda-forge/linux-aarch64::libhwy-1.4.0-h996897a_1 
+  libiconv           conda-forge/linux-aarch64::libiconv-1.18-h1ea5142_3 
+  libjpeg-turbo      conda-forge/linux-aarch64::libjpeg-turbo-3.2.0-he30d5cf_1 
+  libjxl             conda-forge/linux-aarch64::libjxl-0.11.2-hbae46ee_1 
+  libkml             conda-forge/linux-aarch64::libkml-1.3.0-h39bb75a_1023 
+  liblapack          conda-forge/linux-aarch64::liblapack-3.11.0-11_h88aeb00_openblas 
+  liblzma            conda-forge/linux-aarch64::liblzma-5.8.3-he30d5cf_1 
+  libnghttp2         conda-forge/linux-aarch64::libnghttp2-1.68.1-ha4b982d_1 
+  libnsl             conda-forge/linux-aarch64::libnsl-2.0.1-h86ecc28_1 
+  libopenblas        conda-forge/linux-aarch64::libopenblas-0.3.34-pthreads_h4148b7d_2 
+  libpng             conda-forge/linux-aarch64::libpng-1.6.58-hf9b7768_1 
+  librttopo          conda-forge/linux-aarch64::librttopo-1.1.0-h73d41ca_19 
+  libspatialite      conda-forge/linux-aarch64::libspatialite-5.1.0-h12ec5e0_16 
+  libsqlite          conda-forge/linux-aarch64::libsqlite-3.53.4-hd26f1b6_1 
+  libssh2            conda-forge/linux-aarch64::libssh2-1.11.1-h7572e3e_1 
+  libstdcxx          conda-forge/linux-aarch64::libstdcxx-16.2.0-hef695bb_7 
+  libstdcxx-ng       conda-forge/linux-aarch64::libstdcxx-ng-16.2.0-hdbbeba8_7 
+  libtiff            conda-forge/linux-aarch64::libtiff-4.7.2-h45f9f85_1 
+  libuuid            conda-forge/linux-aarch64::libuuid-2.42.4-hd6fdeab_0 
+  libwebp-base       conda-forge/linux-aarch64::libwebp-base-1.6.0-ha2e29f5_1 
+  libxcrypt          conda-forge/linux-aarch64::libxcrypt-4.4.38-h80f16a2_0 
+  libxml2            conda-forge/linux-aarch64::libxml2-2.15.1-h788dabe_0 
+  libxml2-16         conda-forge/linux-aarch64::libxml2-16-2.15.1-h8591a01_0 
+  libxml2-devel      conda-forge/linux-aarch64::libxml2-devel-2.15.1-h788dabe_0 
+  libzlib            conda-forge/linux-aarch64::libzlib-1.3.2-hdc9db2a_3 
+  lz4-c              conda-forge/linux-aarch64::lz4-c-1.10.0-hfb11796_2 
+  lzo                conda-forge/linux-aarch64::lzo-2.10-h29ee22c_1003 
+  m2r2               conda-forge/noarch::m2r2-0.3.4-pyhd8ed1ab_0 
+  minizip            conda-forge/linux-aarch64::minizip-4.2.2-h8279b29_1 
+  mistune            conda-forge/noarch::mistune-0.8.4-pyh1a96a4e_1006 
+  muparser           conda-forge/linux-aarch64::muparser-2.3.5-hfb11796_1 
+  ncurses            conda-forge/linux-aarch64::ncurses-6.6-h2b6f883_1 
+  numpy              conda-forge/linux-aarch64::numpy-1.26.4-py310hcbab775_0 
+  openssl            conda-forge/linux-aarch64::openssl-3.6.4-he6ad1d5_0 
+  packaging          conda-forge/noarch::packaging-26.3-pyhc364b38_0 
+  pcre2              conda-forge/linux-aarch64::pcre2-10.46-h15761aa_0 
+  pip                conda-forge/noarch::pip-26.2.1-pyh8b19718_0 
+  proj               conda-forge/linux-aarch64::proj-9.6.2-h561be74_2 
+  pyproj             conda-forge/linux-aarch64::pyproj-3.7.1-py310hea7fe19_1 
+  python             conda-forge/linux-aarch64::python-3.10.21-h4f76b5d_0_cpython 
+  python_abi         conda-forge/noarch::python_abi-3.10-9_cp310 
+  readline           conda-forge/linux-aarch64::readline-8.3-ha7194a6_1 
+  scipy              conda-forge/linux-aarch64::scipy-1.15.2-py310hf37559f_0 
+  setuptools         conda-forge/noarch::setuptools-84.0.0-pyh332efcf_0 
+  snappy             conda-forge/linux-aarch64::snappy-1.2.2-h7d29b6f_2 
+  sqlite             conda-forge/linux-aarch64::sqlite-3.53.4-h363059a_1 
+  tk                 conda-forge/linux-aarch64::tk-8.6.13-noxft_hf03c496_4 
+  tzdata             conda-forge/noarch::tzdata-2026c-h151e31d_0 
+  uriparser          conda-forge/linux-aarch64::uriparser-0.9.8-h0a1ffab_0 
+  wheel              conda-forge/noarch::wheel-0.48.0-pyhd8ed1ab_0 
+  xerces-c           conda-forge/linux-aarch64::xerces-c-3.2.5-h595f43b_2 
+  zlib               conda-forge/linux-aarch64::zlib-1.3.2-hdc9db2a_3 
+  zstd               conda-forge/linux-aarch64::zstd-1.5.7-h9d15635_7 
+
+
+
+Downloading and Extracting Packages: ...working...scipy-1.15.2         | 15.5 MB   |            |   0% 
+python-3.10.21       | 12.6 MB   |            |   0% [A
+
+libgdal-core-3.11.4  | 11.4 MB   |            |   0% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    |            |   0% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    |            |   0% [A[A[A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    |            |   0% [A[A[A[A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    |            |   0% [A[A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    |            |   0% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    |            |   0% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    |            |   0% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+laspy-2.7.0          | 1.7 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+xerces-c-3.2.5       | 1.6 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+gdal-3.11.4          | 1.5 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libjxl-0.11.2        | 1.4 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    |            |   0% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    |            |   0% [A[A[A[Ascipy-1.15.2         | 15.5 MB   |            |   0% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    |            |   0% [A[A[Ascipy-1.15.2         | 15.5 MB   |            |   0% 
+
+libgdal-core-3.11.4  | 11.4 MB   |            |   0% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 1          |   1% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    |            |   1% [A[A[A[Ascipy-1.15.2         | 15.5 MB   |            |   0% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 1          |   1% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | 1          |   2% [A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   |            |   1% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 1          |   2% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | 2          |   2% [A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   |            |   1% [A[Ascipy-1.15.2         | 15.5 MB   |            |   0% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 2          |   2% [A[A[A
+python-3.10.21       | 12.6 MB   |            |   0% [A
+
+libgdal-core-3.11.4  | 11.4 MB   |            |   1% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | 2          |   3% [A[A[A[Ascipy-1.15.2         | 15.5 MB   |            |   1% 
+python-3.10.21       | 12.6 MB   |            |   0% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 3          |   3% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | 4          |   4% [A[A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | 5          |   6% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 4          |   4% [A[A[A
+python-3.10.21       | 12.6 MB   |            |   1% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | 6          |   6% [A[A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | 7          |   8% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | 1          |   2% 
+
+libgdal-core-3.11.4  | 11.4 MB   | 1          |   1% [A[A
+python-3.10.21       | 12.6 MB   | 1          |   1% [Ascipy-1.15.2         | 15.5 MB   | 2          |   3% 
+
+libgdal-core-3.11.4  | 11.4 MB   | 2          |   2% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 5          |   6% [A[A[A
+python-3.10.21       | 12.6 MB   | 1          |   2% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | 3          |   3% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 7          |   7% [A[A[A
+python-3.10.21       | 12.6 MB   | 2          |   2% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | 8          |   9% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 7          |   8% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | 9          |  10% [A[A[A[A
+python-3.10.21       | 12.6 MB   | 2          |   3% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 8          |   9% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #1         |  11% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 9          |   9% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | 3          |   4% [A[Ascipy-1.15.2         | 15.5 MB   | 3          |   3% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | 9          |  10% [A[A[Ascipy-1.15.2         | 15.5 MB   | 4          |   4% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #          |  10% [A[A[A
+python-3.10.21       | 12.6 MB   | 3          |   3% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #2         |  12% [A[A[A[A
+python-3.10.21       | 12.6 MB   | 4          |   4% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #3         |  13% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | 5          |   5% scipy-1.15.2         | 15.5 MB   | 6          |   6% 
+
+
+
+numpy-1.26.4         | 5.8 MB    | #5         |  15% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #          |  11% [A[A[A
+python-3.10.21       | 12.6 MB   | 6          |   6% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #7         |  17% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #3         |  14% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | 4          |   4% [A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | 5          |   5% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #5         |  15% [A[A[A
+python-3.10.21       | 12.6 MB   | 8          |   8% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #8         |  19% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | 7          |   7% 
+
+libgdal-core-3.11.4  | 11.4 MB   | 6          |   7% [A[Ascipy-1.15.2         | 15.5 MB   | 8          |   8% 
+
+
+
+numpy-1.26.4         | 5.8 MB    | #9         |  20% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | 8          |   9% 
+
+
+
+numpy-1.26.4         | 5.8 MB    | ##         |  21% [A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | 7          |   7% [A[A
+python-3.10.21       | 12.6 MB   | 9          |   9% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #6         |  16% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ##1        |  22% [A[A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ##2        |  23% [A[A[A[A
+python-3.10.21       | 12.6 MB   | #3         |  13% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #8         |  18% [A[A[Ascipy-1.15.2         | 15.5 MB   | 9          |  10% 
+
+
+
+numpy-1.26.4         | 5.8 MB    | ##3        |  24% [A[A[A[A
+python-3.10.21       | 12.6 MB   | #4         |  15% [Ascipy-1.15.2         | 15.5 MB   | #          |  11% 
+
+libgdal-core-3.11.4  | 11.4 MB   | 7          |   8% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ##6        |  26% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | #1         |  11% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #9         |  20% [A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ##3        |  23% [A[A[Ascipy-1.15.2         | 15.5 MB   | #2         |  12% 
+
+
+
+numpy-1.26.4         | 5.8 MB    | ##7        |  27% [A[A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ##9        |  30% [A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | 8          |   9% [A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #          |  10% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ###        |  31% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | #2         |  13% 
+python-3.10.21       | 12.6 MB   | #5         |  16% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ###2       |  32% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ##4        |  25% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ###3       |  33% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ##8        |  28% [A[A[A
+python-3.10.21       | 12.6 MB   | ##2        |  23% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ###4       |  34% [A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #          |  11% [A[Ascipy-1.15.2         | 15.5 MB   | #3         |  13% 
+python-3.10.21       | 12.6 MB   | ##4        |  25% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ##9        |  30% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #1         |  12% [A[Ascipy-1.15.2         | 15.5 MB   | #6         |  17% 
+
+
+
+numpy-1.26.4         | 5.8 MB    | ###7       |  37% [A[A[A[A
+python-3.10.21       | 12.6 MB   | ##6        |  27% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | #2         |  13% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ###9       |  39% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ###1       |  31% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ####       |  41% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ###3       |  33% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #3         |  14% [A[A
+python-3.10.21       | 12.6 MB   | ##8        |  28% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | #4         |  14% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ####1      |  42% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ###4       |  34% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ####5      |  45% [A[A[A[A
+python-3.10.21       | 12.6 MB   | ##9        |  30% [Ascipy-1.15.2         | 15.5 MB   | #7         |  17% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ###6       |  37% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ####6      |  47% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ###8       |  38% [A[A[Ascipy-1.15.2         | 15.5 MB   | #9         |  19% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ###9       |  39% [A[A[Ascipy-1.15.2         | 15.5 MB   | ##1        |  21% 
+
+libgdal-core-3.11.4  | 11.4 MB   | #4         |  15% [A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #6         |  17% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ####8      |  49% [A[A[A[A
+python-3.10.21       | 12.6 MB   | ###1       |  31% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #####      |  51% [A[A[A[A
+python-3.10.21       | 12.6 MB   | ###5       |  35% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | #7         |  18% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #####2     |  52% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ####       |  41% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #8         |  18% [A[A
+python-3.10.21       | 12.6 MB   | ###6       |  37% [Ascipy-1.15.2         | 15.5 MB   | ##2        |  22% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ####3      |  43% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #9         |  19% [A[Ascipy-1.15.2         | 15.5 MB   | ##3        |  23% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ####7      |  47% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #####5     |  55% [A[A[A[A
+python-3.10.21       | 12.6 MB   | ###9       |  39% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ####8      |  49% [A[A[Ascipy-1.15.2         | 15.5 MB   | ##4        |  24% 
+
+
+
+numpy-1.26.4         | 5.8 MB    | #####8     |  58% [A[A[A[A
+python-3.10.21       | 12.6 MB   | ####       |  41% [Ascipy-1.15.2         | 15.5 MB   | ##5        |  25% 
+
+libgdal-core-3.11.4  | 11.4 MB   | #9         |  20% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ######     |  61% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #####      |  50% [A[A[A
+python-3.10.21       | 12.6 MB   | ####2      |  42% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | ##         |  20% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ######4    |  65% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #####1     |  52% [A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #####4     |  54% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ######6    |  66% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | ##6        |  26% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #####5     |  56% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ######9    |  69% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | ###        |  31% 
+python-3.10.21       | 12.6 MB   | ####5      |  45% [A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #######2   |  73% [A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ##1        |  22% [A[Ascipy-1.15.2         | 15.5 MB   | ###2       |  33% 
+python-3.10.21       | 12.6 MB   | #####1     |  51% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #####8     |  58% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #######5   |  75% [A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ######1    |  62% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #######7   |  78% [A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ##3        |  24% [A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ##4        |  25% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #######9   |  79% [A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ##5        |  25% [A[Ascipy-1.15.2         | 15.5 MB   | ###4       |  35% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ######3    |  64% [A[A[A
+python-3.10.21       | 12.6 MB   | #####3     |  53% [Ascipy-1.15.2         | 15.5 MB   | ###6       |  36% 
+
+libgdal-core-3.11.4  | 11.4 MB   | ##6        |  27% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ########   |  80% [A[A[A[A
+python-3.10.21       | 12.6 MB   | #####5     |  55% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ######5    |  66% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ##7        |  27% [A[Ascipy-1.15.2         | 15.5 MB   | ###7       |  37% 
+
+
+
+numpy-1.26.4         | 5.8 MB    | ########2  |  82% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | ###8       |  39% 
+python-3.10.21       | 12.6 MB   | #####6     |  57% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | ##8        |  28% [A[Ascipy-1.15.2         | 15.5 MB   | ###9       |  40% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ######9    |  69% [A[A[Ascipy-1.15.2         | 15.5 MB   | ####1      |  41% 
+
+libgdal-core-3.11.4  | 11.4 MB   | ###        |  31% [A[A
+python-3.10.21       | 12.6 MB   | #####8     |  58% [A
+python-3.10.21       | 12.6 MB   | #####9     |  59% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | ###1       |  31% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #######2   |  72% [A[A[Ascipy-1.15.2         | 15.5 MB   | ####2      |  42% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #######3   |  74% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ###2       |  33% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ########5  |  86% [A[A[A[A
+python-3.10.21       | 12.6 MB   | ######1    |  61% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #######5   |  75% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ###3       |  33% [A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | #########9 |  99% [A[A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ########## | 100% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | ####4      |  45% 
+python-3.10.21       | 12.6 MB   | ######4    |  64% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #######6   |  76% [A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ###4       |  35% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ########   |  81% [A[A[A
+python-3.10.21       | 12.6 MB   | ######5    |  66% [A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    |            |   0% [A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ###5       |  36% [A[A
+python-3.10.21       | 12.6 MB   | ######7    |  67% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ########2  |  83% [A[A[A
+
+
+
+numpy-1.26.4         | 5.8 MB    | ########## | 100% [A[A[A[Ascipy-1.15.2         | 15.5 MB   | ####6      |  46% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ########4  |  84% [A[A[A
+python-3.10.21       | 12.6 MB   | ######8    |  68% [A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | 1          |   2% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #####2     |  52% 
+python-3.10.21       | 12.6 MB   | ######9    |  69% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | ###8       |  38% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ########7  |  88% [A[A[Ascipy-1.15.2         | 15.5 MB   | #####3     |  54% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ########9  |  89% [A[A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | 8          |   8% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #####5     |  55% 
+python-3.10.21       | 12.6 MB   | #######1   |  72% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #########2 |  92% [A[A[A
+python-3.10.21       | 12.6 MB   | #######2   |  73% [Ascipy-1.15.2         | 15.5 MB   | #####6     |  57% 
+python-3.10.21       | 12.6 MB   | #######3   |  74% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | ###8       |  39% [A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #########5 |  96% [A[A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | #1         |  11% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #####7     |  58% scipy-1.15.2         | 15.5 MB   | #####8     |  59% 
+
+libgdal-core-3.11.4  | 11.4 MB   | ###9       |  39% [A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ##1        |  21% [A[A[A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | #########8 |  99% [A[A[A
+python-3.10.21       | 12.6 MB   | #######4   |  75% [A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ##4        |  25% [A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ####1      |  41% [A[Ascipy-1.15.2         | 15.5 MB   | ######     |  60% 
+python-3.10.21       | 12.6 MB   | #######8   |  79% [A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ########## | 100% [A[A[A
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ########## | 100% [A[A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ##6        |  27% [A[A[A[A[A
+python-3.10.21       | 12.6 MB   | #######9   |  80% [Ascipy-1.15.2         | 15.5 MB   | ######4    |  65% 
+
+
+libstdcxx-16.2.0     | 5.9 MB    | ########## | 100% [A[A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ###3       |  34% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ######5    |  66% 
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    |            |   0% [A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ######6    |  67% 
+python-3.10.21       | 12.6 MB   | ########2  |  82% [A
+
+libgdal-core-3.11.4  | 11.4 MB   | ####3      |  44% [A[A
+python-3.10.21       | 12.6 MB   | ########3  |  84% [Ascipy-1.15.2         | 15.5 MB   | ######8    |  69% 
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ###8       |  38% [A[A[A[A[A
+python-3.10.21       | 12.6 MB   | ########4  |  85% [A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | 1          |   1% [A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ####5      |  46% [A[Ascipy-1.15.2         | 15.5 MB   | #######    |  70% 
+
+libgdal-core-3.11.4  | 11.4 MB   | ####6      |  47% [A[A
+python-3.10.21       | 12.6 MB   | ########6  |  86% [A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ####4      |  44% [A[A[A[A[A
+python-3.10.21       | 12.6 MB   | ########7  |  88% [A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | #####2     |  53% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #######2   |  73% 
+
+libgdal-core-3.11.4  | 11.4 MB   | #####      |  51% [A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | 3          |   3% [A[A[A[A[A[A
+python-3.10.21       | 12.6 MB   | ########8  |  89% [A
+python-3.10.21       | 12.6 MB   | #########1 |  92% [A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | 7          |   7% [A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #####2     |  53% [A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | #####8     |  58% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #######4   |  75% 
+
+libgdal-core-3.11.4  | 11.4 MB   | #####3     |  54% [A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ######1    |  62% [A[A[A[A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | #1         |  12% [A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #######6   |  77% 
+python-3.10.21       | 12.6 MB   | #########2 |  93% [A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ######5    |  66% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #######8   |  78% 
+python-3.10.21       | 12.6 MB   | #########4 |  94% [A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | #3         |  13% [A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #######9   |  79% 
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | #######2   |  72% [A[A[A[A[A
+python-3.10.21       | 12.6 MB   | #########5 |  95% [Ascipy-1.15.2         | 15.5 MB   | ########   |  80% 
+
+libgdal-core-3.11.4  | 11.4 MB   | #####5     |  56% [A[Ascipy-1.15.2         | 15.5 MB   | ########   |  81% 
+
+libgdal-core-3.11.4  | 11.4 MB   | #####9     |  59% [A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ##4        |  24% [A[A[A[A[A[A
+python-3.10.21       | 12.6 MB   | #########6 |  97% [A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | #######9   |  79% [A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ######     |  61% [A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ########1  |  81% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ########2  |  83% 
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ##7        |  28% [A[A[A[A[A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ########5  |  86% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ########3  |  84% 
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ###3       |  33% [A[A[A[A[A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ########8  |  89% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ########5  |  86% 
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | #########2 |  93% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ########6  |  86% 
+python-3.10.21       | 12.6 MB   | #########8 |  99% [A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | #########5 |  95% [A[A[A[A[A
+python-3.10.21       | 12.6 MB   | ########## | 100% [A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ###9       |  40% [A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ######3    |  64% [A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | #########8 |  99% [A[A[A[A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ########## | 100% [A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    |            |   0% [A[A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ########6  |  87% 
+
+libgdal-core-3.11.4  | 11.4 MB   | ######4    |  65% [A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ####5      |  45% [A[A[A[A[A[A
+
+
+
+
+libopenblas-0.3.34   | 5.6 MB    | ########## | 100% [A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ########9  |  90% scipy-1.15.2         | 15.5 MB   | #########  |  91% 
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ####9      |  49% [A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ######6    |  67% [A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    |            |   1% [A[A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #########1 |  92% 
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | 4          |   5% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    |            |   0% [A[A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #######1   |  71% [A[Ascipy-1.15.2         | 15.5 MB   | #########2 |  93% 
+
+libgdal-core-3.11.4  | 11.4 MB   | #######2   |  73% [A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | #####5     |  55% [A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #########3 |  94% 
+
+libgdal-core-3.11.4  | 11.4 MB   | #######4   |  74% [A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | 7          |   8% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | 2          |   2% [A[A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #######5   |  75% [A[A
+python-3.10.21       | 12.6 MB   | ########## | 100% [A
+python-3.10.21       | 12.6 MB   | ########## | 100% [A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | #1         |  11% [A[A[A[A[A[A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | #####7     |  57% [A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | #1         |  11% [A[A[A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #########4 |  95% 
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ######4    |  65% [A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #######6   |  77% [A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | #9         |  19% [A[A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #########7 |  97% 
+
+libgdal-core-3.11.4  | 11.4 MB   | #######7   |  78% [A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ######8    |  69% [A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ########   |  80% [A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | #5         |  15% [A[A[A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #########7 |  98% 
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ##7        |  28% [A[A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | #########9 |  99% 
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ###2       |  32% [A[A[A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ########## | 100% 
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ###5       |  35% [A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ########1  |  82% [A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | #######1   |  71% [A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ###9       |  40% [A[A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ########3  |  83% [A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ###8       |  38% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ####4      |  44% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ####1      |  41% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    |            |   1% [A[A[A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ########5  |  85% [A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ########3  |  84% [A[A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ####3      |  43% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ####7      |  48% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | 1          |   1% [A[A[A[A[A[A[A[A[Ascipy-1.15.2         | 15.5 MB   | ########## | 100% scipy-1.15.2         | 15.5 MB   | ########## | 100% 
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ########5  |  86% [A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ########6  |  86% [A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ####5      |  45% [A[A[A[A[A[A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ########## | 100% [A[A[A[A[A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ########## | 100% [A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ######1    |  62% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | #####2     |  52% [A[A[A[A[A[A[A
+
+
+
+
+
+libspatialite-5.1.0  | 3.9 MB    | ########## | 100% [A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | #          |  11% [A[A[A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ########8  |  89% [A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | ##6        |  26% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ######4    |  65% [A[A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #########2 |  92% [A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | #####5     |  55% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | ###        |  31% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ########5  |  85% [A[A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #########3 |  94% [A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | ####1      |  41% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | #######6   |  77% [A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #########5 |  96% [A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | #########1 |  91% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | #####1     |  52% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ########6  |  86% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+tk-8.6.13            | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | #########7 |  97% [A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ########## | 100% [A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | #########6 |  97% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | 4          |   4% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | #####9     |  60% [A[A[A[A[A[A[A[A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ########## | 100% [A[A
+
+libgdal-core-3.11.4  | 11.4 MB   | ########## | 100% [A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | ###3       |  34% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | #######6   |  76% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+laspy-2.7.0          | 1.7 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | ####2      |  42% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | #########4 |  94% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | #####      |  51% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+xerces-c-3.2.5       | 1.6 MB    |            |   1% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | #####7     |  58% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+xerces-c-3.2.5       | 1.6 MB    | 8          |   9% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+xerces-c-3.2.5       | 1.6 MB    | ###3       |  34% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+laspy-2.7.0          | 1.7 MB    | 2          |   3% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | #######1   |  71% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | #######7   |  77% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+laspy-2.7.0          | 1.7 MB    | #####4     |  54% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | ########3  |  84% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+proj-9.6.2           | 3.0 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+laspy-2.7.0          | 1.7 MB    | #######    |  70% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A
+
+
+
+
+
+
+openssl-3.6.4        | 3.5 MB    | ########## | 100% [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+gdal-3.11.4          | 1.5 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+xerces-c-3.2.5       | 1.6 MB    | #####1     |  52% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+laspy-2.7.0          | 1.7 MB    | ########6  |  86% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+laspy-2.7.0          | 1.7 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+laspy-2.7.0          | 1.7 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+xerces-c-3.2.5       | 1.6 MB    | ########7  |  88% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | #########8 |  98% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+gdal-3.11.4          | 1.5 MB    | 6          |   6% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+geos-3.14.0          | 1.8 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+gdal-3.11.4          | 1.5 MB    | ##6        |  27% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | 4          |   4% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+gdal-3.11.4          | 1.5 MB    | ####6      |  46% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+xerces-c-3.2.5       | 1.6 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+gdal-3.11.4          | 1.5 MB    | ########   |  81% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | ###        |  31% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+xerces-c-3.2.5       | 1.6 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libjxl-0.11.2        | 1.4 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | ####1      |  42% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    | 7          |   8% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libjxl-0.11.2        | 1.4 MB    | ####7      |  47% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | #####2     |  52% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | #          |  11% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | ######4    |  65% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | #9         |  19% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | #######1   |  71% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    | ###5       |  35% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+gdal-3.11.4          | 1.5 MB    | #########8 |  98% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+gdal-3.11.4          | 1.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libjxl-0.11.2        | 1.4 MB    | #########3 |  94% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libjxl-0.11.2        | 1.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    | ####8      |  48% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+gdal-3.11.4          | 1.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | 1          |   1% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | ########5  |  85% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libjxl-0.11.2        | 1.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | ##7        |  27% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    | #####9     |  59% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+krb5-1.22.2          | 1.5 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | 2          |   3% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | ###9       |  40% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | #5         |  16% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    | ########8  |  88% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | ######4    |  64% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | ##3        |  24% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | ##9        |  30% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | #######7   |  78% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | ####       |  41% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | #####2     |  52% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | #######6   |  76% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | #########8 |  98% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pcre2-10.46          | 1.1 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ... (more hidden) ...[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pip-26.2.1           | 1.1 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    | #########7 |  98% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+libgfortran5-16.2.0  | 1.4 MB    | ########## | 100% [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A                                                     
+                                                     [A
+
+                                                     [A[A
+
+
+                                                     [A[A[A
+
+
+
+                                                     [A[A[A[A
+
+
+
+
+                                                     [A[A[A[A[A
+
+
+
+
+
+                                                     [A[A[A[A[A[A
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                     [A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+[A
+
+[A[A
+
+
+[A[A[A
+
+
+
+[A[A[A[A
+
+
+
+
+[A[A[A[A[A
+
+
+
+
+
+[A[A[A[A[A[A
+
+
+
+
+
+
+[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+[A[A[A[A[A[A[A[A[A done
+Preparing transaction: \ | / - \ | / done
+Verifying transaction: \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / done
+Executing transaction: \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - done
+#
+# To activate this environment, use
+#
+#     $ conda activate hspc-jetson
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+rc=0

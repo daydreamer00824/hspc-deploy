@@ -1,0 +1,1645 @@
+{
+  "note": "P=Python 最终配置 E（deploy_jetson.py 默认）；K0=C++ 按 E 的调度原样移植；K1=+HSI 掩膜/统计量多线程；K2=+投影多线程；K3=+HSI 文件整块读；K4=+跨景复用 PROJ 变换对象；K5=+LAS 段与 HSI 读取同时开始。各自独立进程，正轮 P→K0→…→K5，反轮 K5→…→K0→P；每个 JSON 内 warmup 2 + 重复 10 次取中位数。total 为整景墙钟中位数（含文件 IO，页缓存热）。",
+  "scenes": {
+    "24data/10.6/1": {
+      "P": {
+        "fwd": {
+          "total_ms": 254.76111551688518,
+          "total_without_io_ms": 195.5185210244963,
+          "segments_ms": {
+            "load_hsi_io": 51.72165599651635,
+            "standardize_and_mask": 22.942836993024684,
+            "hsi_patch_and_launch": 8.451112997136079,
+            "laspy_read_io": 7.520938495872542,
+            "crs_transformer_init": 1.4677840081276372,
+            "projection": 61.110672511858866,
+            "mask_filter": 4.296261991839856,
+            "rng_sample": 0.5649210070259869,
+            "ckdtree_build_wait": 0.14281849144026637,
+            "ckdtree_query_offsets": 26.015670504420996,
+            "hsi_wait": 28.552768504596315,
+            "pc_infer_assemble_match": 40.482082491507754
+          },
+          "cold_start_sec": 0.755417807988124,
+          "engine_load_sec": 0.2499400159867946,
+          "peak_rss_kb": 2747328,
+          "deterministic": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 253.2952474866761,
+          "total_without_io_ms": 194.6826289931778,
+          "segments_ms": {
+            "load_hsi_io": 51.01615299645346,
+            "standardize_and_mask": 22.559777993592434,
+            "hsi_patch_and_launch": 8.428527988144197,
+            "laspy_read_io": 7.596465497044846,
+            "crs_transformer_init": 1.5224419912556186,
+            "projection": 60.87611349357758,
+            "mask_filter": 4.432811503647827,
+            "rng_sample": 0.5535775126190856,
+            "ckdtree_build_wait": 0.132274508359842,
+            "ckdtree_query_offsets": 25.30206499795895,
+            "hsi_wait": 29.462808000971563,
+            "pc_infer_assemble_match": 40.41203550877981
+          },
+          "cold_start_sec": 0.7942270899948198,
+          "engine_load_sec": 0.2505711530102417,
+          "peak_rss_kb": 2737340,
+          "deterministic": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K0": {
+        "fwd": {
+          "total_ms": 210.346,
+          "total_without_io_ms": 143.769,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.013136,
+            "ckdtree_query_offsets": 3.27151,
+            "crs_transformer_init": 6.74872,
+            "gpu_hsi_upload_patch_infer": 132.72,
+            "gpu_normalize_match_download": 4.66006,
+            "gpu_pc_upload_infer": 26.3558,
+            "gpu_tail_pc_match": 57.8687,
+            "hsi_patch_and_launch": 6.55652,
+            "laspy_read_io": 2.12965,
+            "load_hsi_io": 64.448,
+            "mask_filter": 1.16064,
+            "projection": 59.2281,
+            "rng_sample": 0.254388,
+            "standardize_and_mask": 9.31857
+          },
+          "cold_start_sec": 0.308891,
+          "engine_load_sec": 0.227799,
+          "peak_rss_kb": 834388,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 204.018,
+          "total_without_io_ms": 143.697,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.0121285,
+            "ckdtree_query_offsets": 3.53896,
+            "crs_transformer_init": 6.47523,
+            "gpu_hsi_upload_patch_infer": 133.145,
+            "gpu_normalize_match_download": 4.66222,
+            "gpu_pc_upload_infer": 26.4472,
+            "gpu_tail_pc_match": 57.8336,
+            "hsi_patch_and_launch": 6.54315,
+            "laspy_read_io": 2.10808,
+            "load_hsi_io": 58.2129,
+            "mask_filter": 1.2341,
+            "projection": 59.0121,
+            "rng_sample": 0.252244,
+            "standardize_and_mask": 8.98017
+          },
+          "cold_start_sec": 0.282083,
+          "engine_load_sec": 0.218349,
+          "peak_rss_kb": 836452,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K1": {
+        "fwd": {
+          "total_ms": 212.066,
+          "total_without_io_ms": 139.394,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.01184,
+            "ckdtree_query_offsets": 3.38012,
+            "crs_transformer_init": 6.31398,
+            "gpu_hsi_upload_patch_infer": 132.47,
+            "gpu_normalize_match_download": 4.65891,
+            "gpu_pc_upload_infer": 26.6381,
+            "gpu_tail_pc_match": 53.8236,
+            "hsi_patch_and_launch": 10.2871,
+            "laspy_read_io": 2.59703,
+            "load_hsi_io": 70.0748,
+            "mask_filter": 0.934144,
+            "projection": 59.0452,
+            "rng_sample": 0.251844,
+            "standardize_and_mask": 4.94125
+          },
+          "cold_start_sec": 0.278481,
+          "engine_load_sec": 0.218283,
+          "peak_rss_kb": 836240,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 196.711,
+          "total_without_io_ms": 142.363,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.012192,
+            "ckdtree_query_offsets": 3.60213,
+            "crs_transformer_init": 5.98898,
+            "gpu_hsi_upload_patch_infer": 133.12,
+            "gpu_normalize_match_download": 4.66683,
+            "gpu_pc_upload_infer": 26.8728,
+            "gpu_tail_pc_match": 51.4627,
+            "hsi_patch_and_launch": 13.5358,
+            "laspy_read_io": 2.49027,
+            "load_hsi_io": 51.8574,
+            "mask_filter": 0.88608,
+            "projection": 59.2654,
+            "rng_sample": 0.259044,
+            "standardize_and_mask": 5.96832
+          },
+          "cold_start_sec": 0.275065,
+          "engine_load_sec": 0.214784,
+          "peak_rss_kb": 838392,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K2": {
+        "fwd": {
+          "total_ms": 198.223,
+          "total_without_io_ms": 140.514,
+          "segments_ms": {
+            "ckdtree_build_wait": 1.01039,
+            "ckdtree_query_offsets": 3.20532,
+            "crs_transformer_init": 31.2503,
+            "gpu_hsi_upload_patch_infer": 133.207,
+            "gpu_normalize_match_download": 4.65878,
+            "gpu_pc_upload_infer": 27.6077,
+            "gpu_tail_pc_match": 64.1728,
+            "hsi_patch_and_launch": 11.3861,
+            "laspy_read_io": 2.57071,
+            "load_hsi_io": 55.1379,
+            "mask_filter": 1.19452,
+            "projection": 21.563,
+            "rng_sample": 0.271332,
+            "standardize_and_mask": 5.68144
+          },
+          "cold_start_sec": 0.275634,
+          "engine_load_sec": 0.213508,
+          "peak_rss_kb": 829700,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 197.171,
+          "total_without_io_ms": 142.485,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.057681,
+            "ckdtree_query_offsets": 3.31034,
+            "crs_transformer_init": 31.2405,
+            "gpu_hsi_upload_patch_infer": 133.485,
+            "gpu_normalize_match_download": 4.66347,
+            "gpu_pc_upload_infer": 27.1426,
+            "gpu_tail_pc_match": 62.9384,
+            "hsi_patch_and_launch": 13.6564,
+            "laspy_read_io": 2.58912,
+            "load_hsi_io": 52.0975,
+            "mask_filter": 0.968448,
+            "projection": 21.83,
+            "rng_sample": 0.248276,
+            "standardize_and_mask": 5.75035
+          },
+          "cold_start_sec": 0.275805,
+          "engine_load_sec": 0.217597,
+          "peak_rss_kb": 840600,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K3": {
+        "fwd": {
+          "total_ms": 149.01,
+          "total_without_io_ms": 138.609,
+          "segments_ms": {
+            "ckdtree_build_wait": 1.98405,
+            "ckdtree_query_offsets": 3.34852,
+            "crs_transformer_init": 31.3841,
+            "gpu_hsi_upload_patch_infer": 133.18,
+            "gpu_normalize_match_download": 4.65946,
+            "gpu_pc_upload_infer": 26.4705,
+            "gpu_tail_pc_match": 69.1891,
+            "hsi_patch_and_launch": 6.63101,
+            "laspy_read_io": 2.13042,
+            "load_hsi_io": 8.2714,
+            "mask_filter": 1.05151,
+            "projection": 19.9376,
+            "rng_sample": 0.265861,
+            "standardize_and_mask": 2.76377
+          },
+          "cold_start_sec": 0.216552,
+          "engine_load_sec": 0.216333,
+          "peak_rss_kb": 805456,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 148.765,
+          "total_without_io_ms": 138.34,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.061697,
+            "ckdtree_query_offsets": 3.3847,
+            "crs_transformer_init": 31.8308,
+            "gpu_hsi_upload_patch_infer": 132.939,
+            "gpu_normalize_match_download": 4.66176,
+            "gpu_pc_upload_infer": 26.4779,
+            "gpu_tail_pc_match": 67.9362,
+            "hsi_patch_and_launch": 6.62875,
+            "laspy_read_io": 2.10839,
+            "load_hsi_io": 8.317,
+            "mask_filter": 1.05931,
+            "projection": 21.8367,
+            "rng_sample": 0.276437,
+            "standardize_and_mask": 2.80917
+          },
+          "cold_start_sec": 0.216831,
+          "engine_load_sec": 0.215221,
+          "peak_rss_kb": 798292,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K4": {
+        "fwd": {
+          "total_ms": 148.678,
+          "total_without_io_ms": 138.282,
+          "segments_ms": {
+            "ckdtree_build_wait": 28.1098,
+            "ckdtree_query_offsets": 3.14792,
+            "crs_transformer_init": 0.084257,
+            "gpu_hsi_upload_patch_infer": 132.927,
+            "gpu_normalize_match_download": 4.65942,
+            "gpu_pc_upload_infer": 27.2469,
+            "gpu_tail_pc_match": 73.4767,
+            "hsi_patch_and_launch": 6.52968,
+            "laspy_read_io": 2.09571,
+            "load_hsi_io": 8.29979,
+            "mask_filter": 0.873566,
+            "projection": 22.1448,
+            "rng_sample": 0.264229,
+            "standardize_and_mask": 2.67809
+          },
+          "cold_start_sec": 0.21422,
+          "engine_load_sec": 0.213284,
+          "peak_rss_kb": 799052,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 148.023,
+          "total_without_io_ms": 137.698,
+          "segments_ms": {
+            "ckdtree_build_wait": 28.6476,
+            "ckdtree_query_offsets": 3.19673,
+            "crs_transformer_init": 0.09429,
+            "gpu_hsi_upload_patch_infer": 132.284,
+            "gpu_normalize_match_download": 4.66168,
+            "gpu_pc_upload_infer": 26.4724,
+            "gpu_tail_pc_match": 72.6415,
+            "hsi_patch_and_launch": 6.66226,
+            "laspy_read_io": 2.09285,
+            "load_hsi_io": 8.23143,
+            "mask_filter": 0.869567,
+            "projection": 22.0832,
+            "rng_sample": 0.253508,
+            "standardize_and_mask": 2.74958
+          },
+          "cold_start_sec": 0.216025,
+          "engine_load_sec": 0.217512,
+          "peak_rss_kb": 802412,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K5": {
+        "fwd": {
+          "total_ms": 154.039,
+          "total_without_io_ms": 142.825,
+          "segments_ms": {
+            "ckdtree_build_wait": 28.7167,
+            "ckdtree_query_offsets": 3.48702,
+            "crs_transformer_init": 0.086865,
+            "gpu_hsi_upload_patch_infer": 130.42,
+            "gpu_normalize_match_download": 4.666,
+            "gpu_pc_upload_infer": 27.2459,
+            "gpu_tail_pc_match": 97.6441,
+            "hsi_patch_and_launch": 7.0186,
+            "laspy_read_io": 2.25077,
+            "load_hsi_io": 8.96357,
+            "mask_filter": 0.846686,
+            "projection": 17.3364,
+            "rng_sample": 0.187219,
+            "standardize_and_mask": 9.76624
+          },
+          "cold_start_sec": 0.220091,
+          "engine_load_sec": 0.217788,
+          "peak_rss_kb": 806712,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 153.954,
+          "total_without_io_ms": 142.151,
+          "segments_ms": {
+            "ckdtree_build_wait": 29.3366,
+            "ckdtree_query_offsets": 3.59388,
+            "crs_transformer_init": 0.0958895,
+            "gpu_hsi_upload_patch_infer": 129.792,
+            "gpu_normalize_match_download": 4.6544,
+            "gpu_pc_upload_infer": 26.8052,
+            "gpu_tail_pc_match": 96.8763,
+            "hsi_patch_and_launch": 7.27806,
+            "laspy_read_io": 2.38129,
+            "load_hsi_io": 9.4211,
+            "mask_filter": 0.84219,
+            "projection": 17.3546,
+            "rng_sample": 0.188259,
+            "standardize_and_mask": 10.091
+          },
+          "cold_start_sec": 0.219439,
+          "engine_load_sec": 0.216004,
+          "peak_rss_kb": 800224,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      }
+    },
+    "24data/10.6/10": {
+      "P": {
+        "fwd": {
+          "total_ms": 267.6759324967861,
+          "total_without_io_ms": 200.2673759998288,
+          "segments_ms": {
+            "load_hsi_io": 57.085002001258545,
+            "standardize_and_mask": 23.878444510046393,
+            "hsi_patch_and_launch": 7.9893860092852265,
+            "laspy_read_io": 10.323554495698772,
+            "crs_transformer_init": 1.5446824982063845,
+            "projection": 79.84329899773002,
+            "mask_filter": 4.856643499806523,
+            "rng_sample": 0.5594014946836978,
+            "ckdtree_build_wait": 0.1446899987058714,
+            "ckdtree_query_offsets": 21.550931996898726,
+            "hsi_wait": 1.3358149881241843,
+            "pc_infer_assemble_match": 57.25175548286643
+          },
+          "cold_start_sec": 0.7803203460061923,
+          "engine_load_sec": 0.27890860801562667,
+          "peak_rss_kb": 2342624,
+          "deterministic": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 266.7596935061738,
+          "total_without_io_ms": 199.16462150285952,
+          "segments_ms": {
+            "load_hsi_io": 56.92340750829317,
+            "standardize_and_mask": 23.76837951305788,
+            "hsi_patch_and_launch": 8.022464011446573,
+            "laspy_read_io": 10.671664495021105,
+            "crs_transformer_init": 1.5362834965344518,
+            "projection": 79.89812699088361,
+            "mask_filter": 4.857127496507019,
+            "rng_sample": 0.5628585058730096,
+            "ckdtree_build_wait": 0.14755500887986273,
+            "ckdtree_query_offsets": 21.192828498897143,
+            "hsi_wait": 1.3067909894743934,
+            "pc_infer_assemble_match": 56.579897020128556
+          },
+          "cold_start_sec": 0.8397986229974777,
+          "engine_load_sec": 0.2532019799982663,
+          "peak_rss_kb": 2325640,
+          "deterministic": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K0": {
+        "fwd": {
+          "total_ms": 187.064,
+          "total_without_io_ms": 127.313,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.0111685,
+            "ckdtree_query_offsets": 2.92282,
+            "crs_transformer_init": 6.81119,
+            "gpu_hsi_upload_patch_infer": 92.5715,
+            "gpu_normalize_match_download": 3.27093,
+            "gpu_pc_upload_infer": 15.5691,
+            "gpu_tail_pc_match": 19.2386,
+            "hsi_patch_and_launch": 6.01337,
+            "laspy_read_io": 3.09577,
+            "load_hsi_io": 56.6556,
+            "mask_filter": 1.63163,
+            "projection": 78.4417,
+            "rng_sample": 0.234132,
+            "standardize_and_mask": 11.3033
+          },
+          "cold_start_sec": 0.282878,
+          "engine_load_sec": 0.219411,
+          "peak_rss_kb": 817332,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 188.301,
+          "total_without_io_ms": 127.153,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.011024,
+            "ckdtree_query_offsets": 3.1314,
+            "crs_transformer_init": 6.70044,
+            "gpu_hsi_upload_patch_infer": 92.8092,
+            "gpu_normalize_match_download": 3.26683,
+            "gpu_pc_upload_infer": 15.6755,
+            "gpu_tail_pc_match": 19.3427,
+            "hsi_patch_and_launch": 6.07867,
+            "laspy_read_io": 3.07026,
+            "load_hsi_io": 58.0775,
+            "mask_filter": 1.637,
+            "projection": 78.7153,
+            "rng_sample": 0.233364,
+            "standardize_and_mask": 11.436
+          },
+          "cold_start_sec": 0.284737,
+          "engine_load_sec": 0.219127,
+          "peak_rss_kb": 819332,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K1": {
+        "fwd": {
+          "total_ms": 183.873,
+          "total_without_io_ms": 123.524,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.011072,
+            "ckdtree_query_offsets": 2.96429,
+            "crs_transformer_init": 5.93785,
+            "gpu_hsi_upload_patch_infer": 92.5548,
+            "gpu_normalize_match_download": 3.2713,
+            "gpu_pc_upload_infer": 15.7136,
+            "gpu_tail_pc_match": 19.3875,
+            "hsi_patch_and_launch": 9.81713,
+            "laspy_read_io": 3.64741,
+            "load_hsi_io": 56.7011,
+            "mask_filter": 1.6264,
+            "projection": 78.3351,
+            "rng_sample": 0.2385,
+            "standardize_and_mask": 4.49704
+          },
+          "cold_start_sec": 0.279651,
+          "engine_load_sec": 0.217159,
+          "peak_rss_kb": 831192,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 184.103,
+          "total_without_io_ms": 123.331,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.012177,
+            "ckdtree_query_offsets": 2.89512,
+            "crs_transformer_init": 5.95201,
+            "gpu_hsi_upload_patch_infer": 92.4512,
+            "gpu_normalize_match_download": 3.26805,
+            "gpu_pc_upload_infer": 15.7677,
+            "gpu_tail_pc_match": 19.4167,
+            "hsi_patch_and_launch": 10.2848,
+            "laspy_read_io": 3.51059,
+            "load_hsi_io": 57.2607,
+            "mask_filter": 1.63043,
+            "projection": 78.1456,
+            "rng_sample": 0.238692,
+            "standardize_and_mask": 3.93018
+          },
+          "cold_start_sec": 0.27741,
+          "engine_load_sec": 0.218169,
+          "peak_rss_kb": 827280,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K2": {
+        "fwd": {
+          "total_ms": 194.635,
+          "total_without_io_ms": 114.434,
+          "segments_ms": {
+            "ckdtree_build_wait": 16.3785,
+            "ckdtree_query_offsets": 3.48981,
+            "crs_transformer_init": 31.3858,
+            "gpu_hsi_upload_patch_infer": 93.8573,
+            "gpu_normalize_match_download": 3.26918,
+            "gpu_pc_upload_infer": 15.8798,
+            "gpu_tail_pc_match": 19.47,
+            "hsi_patch_and_launch": 9.06749,
+            "laspy_read_io": 3.23406,
+            "load_hsi_io": 76.9671,
+            "mask_filter": 2.05183,
+            "projection": 27.3343,
+            "rng_sample": 0.253541,
+            "standardize_and_mask": 4.23831
+          },
+          "cold_start_sec": 0.271547,
+          "engine_load_sec": 0.216217,
+          "peak_rss_kb": 837612,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 176.478,
+          "total_without_io_ms": 115.72,
+          "segments_ms": {
+            "ckdtree_build_wait": 15.647,
+            "ckdtree_query_offsets": 3.28603,
+            "crs_transformer_init": 31.3889,
+            "gpu_hsi_upload_patch_infer": 93.7375,
+            "gpu_normalize_match_download": 3.26419,
+            "gpu_pc_upload_infer": 15.8773,
+            "gpu_tail_pc_match": 19.3401,
+            "hsi_patch_and_launch": 10.0544,
+            "laspy_read_io": 3.46904,
+            "load_hsi_io": 57.2894,
+            "mask_filter": 2.51504,
+            "projection": 26.467,
+            "rng_sample": 0.241972,
+            "standardize_and_mask": 4.52789
+          },
+          "cold_start_sec": 0.26977,
+          "engine_load_sec": 0.215577,
+          "peak_rss_kb": 839556,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K3": {
+        "fwd": {
+          "total_ms": 124.914,
+          "total_without_io_ms": 112.784,
+          "segments_ms": {
+            "ckdtree_build_wait": 15.2317,
+            "ckdtree_query_offsets": 3.54448,
+            "crs_transformer_init": 31.6484,
+            "gpu_hsi_upload_patch_infer": 108.454,
+            "gpu_normalize_match_download": 3.22894,
+            "gpu_pc_upload_infer": 19.4453,
+            "gpu_tail_pc_match": 23.2768,
+            "hsi_patch_and_launch": 6.07635,
+            "laspy_read_io": 3.12353,
+            "load_hsi_io": 9.0067,
+            "mask_filter": 2.0942,
+            "projection": 26.1125,
+            "rng_sample": 0.243029,
+            "standardize_and_mask": 3.35822
+          },
+          "cold_start_sec": 0.204517,
+          "engine_load_sec": 0.216831,
+          "peak_rss_kb": 790996,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 125.201,
+          "total_without_io_ms": 113.243,
+          "segments_ms": {
+            "ckdtree_build_wait": 15.3488,
+            "ckdtree_query_offsets": 3.79539,
+            "crs_transformer_init": 31.8587,
+            "gpu_hsi_upload_patch_infer": 109.041,
+            "gpu_normalize_match_download": 3.22178,
+            "gpu_pc_upload_infer": 19.1528,
+            "gpu_tail_pc_match": 22.7988,
+            "hsi_patch_and_launch": 6.09636,
+            "laspy_read_io": 2.99593,
+            "load_hsi_io": 8.96193,
+            "mask_filter": 2.05096,
+            "projection": 26.9149,
+            "rng_sample": 0.244949,
+            "standardize_and_mask": 3.61915
+          },
+          "cold_start_sec": 0.204241,
+          "engine_load_sec": 0.217214,
+          "peak_rss_kb": 790820,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K4": {
+        "fwd": {
+          "total_ms": 124.73,
+          "total_without_io_ms": 112.533,
+          "segments_ms": {
+            "ckdtree_build_wait": 43.1535,
+            "ckdtree_query_offsets": 3.60272,
+            "crs_transformer_init": 0.107186,
+            "gpu_hsi_upload_patch_infer": 107.919,
+            "gpu_normalize_match_download": 3.22216,
+            "gpu_pc_upload_infer": 18.0231,
+            "gpu_tail_pc_match": 21.3808,
+            "hsi_patch_and_launch": 6.09905,
+            "laspy_read_io": 3.15711,
+            "load_hsi_io": 9.03993,
+            "mask_filter": 2.39132,
+            "projection": 28.0758,
+            "rng_sample": 0.278213,
+            "standardize_and_mask": 3.60995
+          },
+          "cold_start_sec": 0.201416,
+          "engine_load_sec": 0.216494,
+          "peak_rss_kb": 790596,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 123.799,
+          "total_without_io_ms": 111.729,
+          "segments_ms": {
+            "ckdtree_build_wait": 41.7446,
+            "ckdtree_query_offsets": 3.53896,
+            "crs_transformer_init": 0.112258,
+            "gpu_hsi_upload_patch_infer": 108.222,
+            "gpu_normalize_match_download": 3.22974,
+            "gpu_pc_upload_infer": 21.4591,
+            "gpu_tail_pc_match": 25.9448,
+            "hsi_patch_and_launch": 6.01662,
+            "laspy_read_io": 3.10175,
+            "load_hsi_io": 8.96894,
+            "mask_filter": 2.26404,
+            "projection": 28.3332,
+            "rng_sample": 0.371367,
+            "standardize_and_mask": 3.27809
+          },
+          "cold_start_sec": 0.202092,
+          "engine_load_sec": 0.216637,
+          "peak_rss_kb": 781136,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K5": {
+        "fwd": {
+          "total_ms": 133.13,
+          "total_without_io_ms": 119.234,
+          "segments_ms": {
+            "ckdtree_build_wait": 46.3096,
+            "ckdtree_query_offsets": 3.82844,
+            "crs_transformer_init": 0.0968815,
+            "gpu_hsi_upload_patch_infer": 106.726,
+            "gpu_normalize_match_download": 3.22918,
+            "gpu_pc_upload_infer": 26.6007,
+            "gpu_tail_pc_match": 51.7144,
+            "hsi_patch_and_launch": 6.36082,
+            "laspy_read_io": 3.20607,
+            "load_hsi_io": 10.6896,
+            "mask_filter": 1.97293,
+            "projection": 23.0123,
+            "rng_sample": 0.192995,
+            "standardize_and_mask": 12.7935
+          },
+          "cold_start_sec": 0.192047,
+          "engine_load_sec": 0.216202,
+          "peak_rss_kb": 796232,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 133.021,
+          "total_without_io_ms": 119.918,
+          "segments_ms": {
+            "ckdtree_build_wait": 46.7407,
+            "ckdtree_query_offsets": 3.70907,
+            "crs_transformer_init": 0.093586,
+            "gpu_hsi_upload_patch_infer": 106.621,
+            "gpu_normalize_match_download": 3.23883,
+            "gpu_pc_upload_infer": 27.0938,
+            "gpu_tail_pc_match": 49.8688,
+            "hsi_patch_and_launch": 6.38888,
+            "laspy_read_io": 3.05105,
+            "load_hsi_io": 10.0519,
+            "mask_filter": 1.9724,
+            "projection": 23.3235,
+            "rng_sample": 0.23106,
+            "standardize_and_mask": 12.5816
+          },
+          "cold_start_sec": 0.19575,
+          "engine_load_sec": 0.21589,
+          "peak_rss_kb": 798172,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      }
+    },
+    "25data/8.4/1": {
+      "P": {
+        "fwd": {
+          "total_ms": 212.75121251528617,
+          "total_without_io_ms": 156.91106602025684,
+          "segments_ms": {
+            "load_hsi_io": 50.37697599618696,
+            "standardize_and_mask": 20.07186849368736,
+            "hsi_patch_and_launch": 7.480183514417149,
+            "laspy_read_io": 5.4631704988423735,
+            "crs_transformer_init": 1.5474359970539808,
+            "projection": 39.847266001743264,
+            "mask_filter": 2.7120969898533076,
+            "rng_sample": 0.49474499246571213,
+            "ckdtree_build_wait": 0.13139400107320398,
+            "ckdtree_query_offsets": 24.467579496558756,
+            "hsi_wait": 13.17654299782589,
+            "pc_infer_assemble_match": 46.15088501304854
+          },
+          "cold_start_sec": 0.7651807510119397,
+          "engine_load_sec": 0.2506118569872342,
+          "peak_rss_kb": 2219432,
+          "deterministic": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 216.90559650596697,
+          "total_without_io_ms": 157.57475749705918,
+          "segments_ms": {
+            "load_hsi_io": 54.022707510739565,
+            "standardize_and_mask": 20.006006496259943,
+            "hsi_patch_and_launch": 7.549549496616237,
+            "laspy_read_io": 5.308131498168223,
+            "crs_transformer_init": 1.3789374934276566,
+            "projection": 39.90207450988237,
+            "mask_filter": 2.662305487319827,
+            "rng_sample": 0.498697510920465,
+            "ckdtree_build_wait": 0.13285099703352898,
+            "ckdtree_query_offsets": 24.47785050026141,
+            "hsi_wait": 13.077620998956263,
+            "pc_infer_assemble_match": 46.24101000081282
+          },
+          "cold_start_sec": 0.8114087370049674,
+          "engine_load_sec": 0.252094915980706,
+          "peak_rss_kb": 2203300,
+          "deterministic": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K0": {
+        "fwd": {
+          "total_ms": 164.226,
+          "total_without_io_ms": 108.443,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.011216,
+            "ckdtree_query_offsets": 2.76059,
+            "crs_transformer_init": 6.63673,
+            "gpu_hsi_upload_patch_infer": 98.962,
+            "gpu_normalize_match_download": 3.16712,
+            "gpu_pc_upload_infer": 27.3524,
+            "gpu_tail_pc_match": 46.5396,
+            "hsi_patch_and_launch": 5.80345,
+            "laspy_read_io": 1.30513,
+            "load_hsi_io": 54.4783,
+            "mask_filter": 0.800303,
+            "projection": 37.7367,
+            "rng_sample": 0.241828,
+            "standardize_and_mask": 7.31239
+          },
+          "cold_start_sec": 0.235531,
+          "engine_load_sec": 0.218594,
+          "peak_rss_kb": 747996,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 164.947,
+          "total_without_io_ms": 107.352,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.010944,
+            "ckdtree_query_offsets": 2.75077,
+            "crs_transformer_init": 6.59828,
+            "gpu_hsi_upload_patch_infer": 98.8224,
+            "gpu_normalize_match_download": 3.16101,
+            "gpu_pc_upload_infer": 27.0936,
+            "gpu_tail_pc_match": 45.73,
+            "hsi_patch_and_launch": 5.71504,
+            "laspy_read_io": 1.28585,
+            "load_hsi_io": 56.3089,
+            "mask_filter": 0.965153,
+            "projection": 38.4687,
+            "rng_sample": 0.239765,
+            "standardize_and_mask": 6.53361
+          },
+          "cold_start_sec": 0.246071,
+          "engine_load_sec": 0.215818,
+          "peak_rss_kb": 739088,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K1": {
+        "fwd": {
+          "total_ms": 164.976,
+          "total_without_io_ms": 103.774,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.010704,
+            "ckdtree_query_offsets": 3.03423,
+            "crs_transformer_init": 6.57766,
+            "gpu_hsi_upload_patch_infer": 99.2807,
+            "gpu_normalize_match_download": 3.15718,
+            "gpu_pc_upload_infer": 27.3045,
+            "gpu_tail_pc_match": 45.7914,
+            "hsi_patch_and_launch": 5.82292,
+            "laspy_read_io": 1.3114,
+            "load_hsi_io": 59.8913,
+            "mask_filter": 0.759806,
+            "projection": 38.3036,
+            "rng_sample": 0.241333,
+            "standardize_and_mask": 2.93855
+          },
+          "cold_start_sec": 0.236046,
+          "engine_load_sec": 0.214433,
+          "peak_rss_kb": 756052,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 170.061,
+          "total_without_io_ms": 102.92,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.010464,
+            "ckdtree_query_offsets": 2.71484,
+            "crs_transformer_init": 6.64147,
+            "gpu_hsi_upload_patch_infer": 98.9783,
+            "gpu_normalize_match_download": 3.16536,
+            "gpu_pc_upload_infer": 27.2012,
+            "gpu_tail_pc_match": 45.6662,
+            "hsi_patch_and_launch": 5.8408,
+            "laspy_read_io": 1.3097,
+            "load_hsi_io": 65.8311,
+            "mask_filter": 0.795023,
+            "projection": 38.0578,
+            "rng_sample": 0.238644,
+            "standardize_and_mask": 2.57722
+          },
+          "cold_start_sec": 0.244074,
+          "engine_load_sec": 0.21863,
+          "peak_rss_kb": 751520,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K2": {
+        "fwd": {
+          "total_ms": 163.619,
+          "total_without_io_ms": 105.095,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.038481,
+            "ckdtree_query_offsets": 2.82032,
+            "crs_transformer_init": 31.4317,
+            "gpu_hsi_upload_patch_infer": 99.8158,
+            "gpu_normalize_match_download": 3.2268,
+            "gpu_pc_upload_infer": 27.0883,
+            "gpu_tail_pc_match": 44.5358,
+            "hsi_patch_and_launch": 5.99045,
+            "laspy_read_io": 1.2987,
+            "load_hsi_io": 57.2255,
+            "mask_filter": 0.701165,
+            "projection": 12.2059,
+            "rng_sample": 0.233892,
+            "standardize_and_mask": 2.62571
+          },
+          "cold_start_sec": 0.231178,
+          "engine_load_sec": 0.218027,
+          "peak_rss_kb": 752664,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 171.626,
+          "total_without_io_ms": 103.726,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.0422725,
+            "ckdtree_query_offsets": 2.87145,
+            "crs_transformer_init": 31.9174,
+            "gpu_hsi_upload_patch_infer": 99.0293,
+            "gpu_normalize_match_download": 3.1628,
+            "gpu_pc_upload_infer": 27.0675,
+            "gpu_tail_pc_match": 45.3146,
+            "hsi_patch_and_launch": 5.90117,
+            "laspy_read_io": 1.30428,
+            "load_hsi_io": 66.5962,
+            "mask_filter": 0.778254,
+            "projection": 11.6375,
+            "rng_sample": 0.249173,
+            "standardize_and_mask": 2.69509
+          },
+          "cold_start_sec": 0.237244,
+          "engine_load_sec": 0.218569,
+          "peak_rss_kb": 750156,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K3": {
+        "fwd": {
+          "total_ms": 113.612,
+          "total_without_io_ms": 104.458,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.045473,
+            "ckdtree_query_offsets": 2.90617,
+            "crs_transformer_init": 31.8774,
+            "gpu_hsi_upload_patch_infer": 99.8392,
+            "gpu_normalize_match_download": 3.2224,
+            "gpu_pc_upload_infer": 26.4775,
+            "gpu_tail_pc_match": 49.2243,
+            "hsi_patch_and_launch": 5.87585,
+            "laspy_read_io": 1.27012,
+            "load_hsi_io": 7.88317,
+            "mask_filter": 0.94176,
+            "projection": 8.79698,
+            "rng_sample": 0.239476,
+            "standardize_and_mask": 2.53635
+          },
+          "cold_start_sec": 0.177981,
+          "engine_load_sec": 0.217868,
+          "peak_rss_kb": 719276,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 113.975,
+          "total_without_io_ms": 104.775,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.0386085,
+            "ckdtree_query_offsets": 2.93164,
+            "crs_transformer_init": 32.0163,
+            "gpu_hsi_upload_patch_infer": 99.8159,
+            "gpu_normalize_match_download": 3.19616,
+            "gpu_pc_upload_infer": 26.827,
+            "gpu_tail_pc_match": 45.6464,
+            "hsi_patch_and_launch": 5.83004,
+            "laspy_read_io": 1.2902,
+            "load_hsi_io": 7.90981,
+            "mask_filter": 0.712957,
+            "projection": 12.4742,
+            "rng_sample": 0.246932,
+            "standardize_and_mask": 2.92063
+          },
+          "cold_start_sec": 0.180643,
+          "engine_load_sec": 0.216347,
+          "peak_rss_kb": 725556,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K4": {
+        "fwd": {
+          "total_ms": 111.91,
+          "total_without_io_ms": 102.748,
+          "segments_ms": {
+            "ckdtree_build_wait": 19.7896,
+            "ckdtree_query_offsets": 2.75451,
+            "crs_transformer_init": 0.08221,
+            "gpu_hsi_upload_patch_infer": 98.2395,
+            "gpu_normalize_match_download": 3.20624,
+            "gpu_pc_upload_infer": 26.808,
+            "gpu_tail_pc_match": 58.1358,
+            "hsi_patch_and_launch": 5.90977,
+            "laspy_read_io": 1.28602,
+            "load_hsi_io": 7.87674,
+            "mask_filter": 0.99469,
+            "projection": 13.4124,
+            "rng_sample": 0.277301,
+            "standardize_and_mask": 2.47622
+          },
+          "cold_start_sec": 0.177603,
+          "engine_load_sec": 0.217888,
+          "peak_rss_kb": 719808,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 111.514,
+          "total_without_io_ms": 102.363,
+          "segments_ms": {
+            "ckdtree_build_wait": 19.2608,
+            "ckdtree_query_offsets": 2.62256,
+            "crs_transformer_init": 0.0793455,
+            "gpu_hsi_upload_patch_infer": 97.6163,
+            "gpu_normalize_match_download": 3.15806,
+            "gpu_pc_upload_infer": 26.5956,
+            "gpu_tail_pc_match": 57.8099,
+            "hsi_patch_and_launch": 5.88006,
+            "laspy_read_io": 1.25594,
+            "load_hsi_io": 7.89429,
+            "mask_filter": 1.01555,
+            "projection": 13.6544,
+            "rng_sample": 0.25314,
+            "standardize_and_mask": 2.45057
+          },
+          "cold_start_sec": 0.178966,
+          "engine_load_sec": 0.217495,
+          "peak_rss_kb": 715432,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K5": {
+        "fwd": {
+          "total_ms": 115.102,
+          "total_without_io_ms": 104.862,
+          "segments_ms": {
+            "ckdtree_build_wait": 17.4934,
+            "ckdtree_query_offsets": 2.98716,
+            "crs_transformer_init": 0.08637,
+            "gpu_hsi_upload_patch_infer": 96.5054,
+            "gpu_normalize_match_download": 3.16826,
+            "gpu_pc_upload_infer": 27.077,
+            "gpu_tail_pc_match": 75.9199,
+            "hsi_patch_and_launch": 6.38265,
+            "laspy_read_io": 1.48832,
+            "load_hsi_io": 8.75202,
+            "mask_filter": 0.692525,
+            "projection": 11.5435,
+            "rng_sample": 0.186644,
+            "standardize_and_mask": 6.24851
+          },
+          "cold_start_sec": 0.184215,
+          "engine_load_sec": 0.216138,
+          "peak_rss_kb": 719448,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 115.521,
+          "total_without_io_ms": 105.212,
+          "segments_ms": {
+            "ckdtree_build_wait": 17.5031,
+            "ckdtree_query_offsets": 2.82962,
+            "crs_transformer_init": 0.0880015,
+            "gpu_hsi_upload_patch_infer": 96.8117,
+            "gpu_normalize_match_download": 3.22006,
+            "gpu_pc_upload_infer": 26.6797,
+            "gpu_tail_pc_match": 76.5763,
+            "hsi_patch_and_launch": 6.55905,
+            "laspy_read_io": 1.49579,
+            "load_hsi_io": 8.81339,
+            "mask_filter": 0.691885,
+            "projection": 11.2854,
+            "rng_sample": 0.187108,
+            "standardize_and_mask": 6.28309
+          },
+          "cold_start_sec": 0.184193,
+          "engine_load_sec": 0.216217,
+          "peak_rss_kb": 715240,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      }
+    },
+    "25data/10.22/1": {
+      "P": {
+        "fwd": {
+          "total_ms": 232.27356100687757,
+          "total_without_io_ms": 175.0869625248015,
+          "segments_ms": {
+            "load_hsi_io": 51.61130949272774,
+            "standardize_and_mask": 21.36688301106915,
+            "hsi_patch_and_launch": 7.862804486649111,
+            "laspy_read_io": 5.575288989348337,
+            "crs_transformer_init": 1.5233239973895252,
+            "projection": 44.114239019108936,
+            "mask_filter": 3.301662000012584,
+            "rng_sample": 0.6441080040531233,
+            "ckdtree_build_wait": 0.16891499399207532,
+            "ckdtree_query_offsets": 24.45790098863654,
+            "hsi_wait": 29.94595651398413,
+            "pc_infer_assemble_match": 40.075331504340284
+          },
+          "cold_start_sec": 0.8099457650096156,
+          "engine_load_sec": 0.2506414160015993,
+          "peak_rss_kb": 2701684,
+          "deterministic": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 230.58867549116258,
+          "total_without_io_ms": 175.8006819873117,
+          "segments_ms": {
+            "load_hsi_io": 49.17900450527668,
+            "standardize_and_mask": 21.272893995046616,
+            "hsi_patch_and_launch": 7.884841499617323,
+            "laspy_read_io": 5.608988998574205,
+            "crs_transformer_init": 1.5162854979280382,
+            "projection": 44.841080001788214,
+            "mask_filter": 3.3263845107285306,
+            "rng_sample": 0.7135659980122,
+            "ckdtree_build_wait": 0.20339598995633423,
+            "ckdtree_query_offsets": 24.376170011237264,
+            "hsi_wait": 30.378526498680003,
+            "pc_infer_assemble_match": 39.85792699677404
+          },
+          "cold_start_sec": 0.8219910629850347,
+          "engine_load_sec": 0.24738992200582288,
+          "peak_rss_kb": 2693352,
+          "deterministic": {
+            "DTP": true,
+            "DTP+Spatial": true
+          },
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K0": {
+        "fwd": {
+          "total_ms": 183.282,
+          "total_without_io_ms": 124.232,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.012896,
+            "ckdtree_query_offsets": 3.06782,
+            "crs_transformer_init": 6.61355,
+            "gpu_hsi_upload_patch_infer": 114.509,
+            "gpu_normalize_match_download": 4.05195,
+            "gpu_pc_upload_infer": 27.6234,
+            "gpu_tail_pc_match": 57.6192,
+            "hsi_patch_and_launch": 5.95933,
+            "laspy_read_io": 1.59097,
+            "load_hsi_io": 57.4592,
+            "mask_filter": 0.880497,
+            "projection": 42.0173,
+            "rng_sample": 0.332967,
+            "standardize_and_mask": 7.10476
+          },
+          "cold_start_sec": 0.286642,
+          "engine_load_sec": 0.218756,
+          "peak_rss_kb": 785328,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 187.526,
+          "total_without_io_ms": 124.241,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.01248,
+            "ckdtree_query_offsets": 3.2784,
+            "crs_transformer_init": 6.6685,
+            "gpu_hsi_upload_patch_infer": 114.875,
+            "gpu_normalize_match_download": 4.05365,
+            "gpu_pc_upload_infer": 27.2417,
+            "gpu_tail_pc_match": 57.041,
+            "hsi_patch_and_launch": 6.0013,
+            "laspy_read_io": 1.55958,
+            "load_hsi_io": 61.7246,
+            "mask_filter": 1.18409,
+            "projection": 42.1339,
+            "rng_sample": 0.252501,
+            "standardize_and_mask": 7.12814
+          },
+          "cold_start_sec": 0.256341,
+          "engine_load_sec": 0.217941,
+          "peak_rss_kb": 785944,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K1": {
+        "fwd": {
+          "total_ms": 175.478,
+          "total_without_io_ms": 119.833,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.012048,
+            "ckdtree_query_offsets": 3.36837,
+            "crs_transformer_init": 6.48216,
+            "gpu_hsi_upload_patch_infer": 114.37,
+            "gpu_normalize_match_download": 4.03942,
+            "gpu_pc_upload_infer": 26.9794,
+            "gpu_tail_pc_match": 56.4492,
+            "hsi_patch_and_launch": 6.28849,
+            "laspy_read_io": 1.57445,
+            "load_hsi_io": 54.0699,
+            "mask_filter": 1.17554,
+            "projection": 42.1877,
+            "rng_sample": 0.257845,
+            "standardize_and_mask": 2.99393
+          },
+          "cold_start_sec": 0.252707,
+          "engine_load_sec": 0.217607,
+          "peak_rss_kb": 788476,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 175.534,
+          "total_without_io_ms": 120.412,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.0121125,
+            "ckdtree_query_offsets": 3.47061,
+            "crs_transformer_init": 6.62352,
+            "gpu_hsi_upload_patch_infer": 115.17,
+            "gpu_normalize_match_download": 4.04544,
+            "gpu_pc_upload_infer": 26.8243,
+            "gpu_tail_pc_match": 55.2147,
+            "hsi_patch_and_launch": 7.22545,
+            "laspy_read_io": 1.72934,
+            "load_hsi_io": 53.3926,
+            "mask_filter": 1.17442,
+            "projection": 42.629,
+            "rng_sample": 0.251333,
+            "standardize_and_mask": 3.97611
+          },
+          "cold_start_sec": 0.25094,
+          "engine_load_sec": 0.218709,
+          "peak_rss_kb": 787364,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K2": {
+        "fwd": {
+          "total_ms": 176.291,
+          "total_without_io_ms": 120.815,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.038417,
+            "ckdtree_query_offsets": 3.07187,
+            "crs_transformer_init": 31.2683,
+            "gpu_hsi_upload_patch_infer": 114.808,
+            "gpu_normalize_match_download": 4.04853,
+            "gpu_pc_upload_infer": 26.9222,
+            "gpu_tail_pc_match": 57.1976,
+            "hsi_patch_and_launch": 7.20966,
+            "laspy_read_io": 1.66194,
+            "load_hsi_io": 53.8139,
+            "mask_filter": 0.732158,
+            "projection": 13.6613,
+            "rng_sample": 0.24106,
+            "standardize_and_mask": 3.86348
+          },
+          "cold_start_sec": 0.252772,
+          "engine_load_sec": 0.216782,
+          "peak_rss_kb": 792512,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 179.259,
+          "total_without_io_ms": 121.614,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.042401,
+            "ckdtree_query_offsets": 2.79324,
+            "crs_transformer_init": 31.6326,
+            "gpu_hsi_upload_patch_infer": 115.394,
+            "gpu_normalize_match_download": 4.04992,
+            "gpu_pc_upload_infer": 27.388,
+            "gpu_tail_pc_match": 60.9247,
+            "hsi_patch_and_launch": 6.13426,
+            "laspy_read_io": 1.57304,
+            "load_hsi_io": 56.0717,
+            "mask_filter": 0.904594,
+            "projection": 13.5497,
+            "rng_sample": 0.244165,
+            "standardize_and_mask": 2.78989
+          },
+          "cold_start_sec": 0.252079,
+          "engine_load_sec": 0.21694,
+          "peak_rss_kb": 790644,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K3": {
+        "fwd": {
+          "total_ms": 130.435,
+          "total_without_io_ms": 120.611,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.0385925,
+            "ckdtree_query_offsets": 2.76687,
+            "crs_transformer_init": 31.6301,
+            "gpu_hsi_upload_patch_infer": 115.142,
+            "gpu_normalize_match_download": 4.04984,
+            "gpu_pc_upload_infer": 27.3643,
+            "gpu_tail_pc_match": 59.5127,
+            "hsi_patch_and_launch": 6.08546,
+            "laspy_read_io": 1.55441,
+            "load_hsi_io": 8.26909,
+            "mask_filter": 0.808176,
+            "projection": 14.6203,
+            "rng_sample": 0.237764,
+            "standardize_and_mask": 2.77757
+          },
+          "cold_start_sec": 0.19939,
+          "engine_load_sec": 0.216951,
+          "peak_rss_kb": 761828,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 130.766,
+          "total_without_io_ms": 120.947,
+          "segments_ms": {
+            "ckdtree_build_wait": 0.0371365,
+            "ckdtree_query_offsets": 3.04719,
+            "crs_transformer_init": 31.4803,
+            "gpu_hsi_upload_patch_infer": 115.308,
+            "gpu_normalize_match_download": 4.04107,
+            "gpu_pc_upload_infer": 27.4044,
+            "gpu_tail_pc_match": 59.7159,
+            "hsi_patch_and_launch": 6.09444,
+            "laspy_read_io": 1.57904,
+            "load_hsi_io": 8.23976,
+            "mask_filter": 0.847888,
+            "projection": 14.3604,
+            "rng_sample": 0.244772,
+            "standardize_and_mask": 3.11635
+          },
+          "cold_start_sec": 0.19834,
+          "engine_load_sec": 0.217787,
+          "peak_rss_kb": 761768,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K4": {
+        "fwd": {
+          "total_ms": 129.306,
+          "total_without_io_ms": 119.51,
+          "segments_ms": {
+            "ckdtree_build_wait": 19.317,
+            "ckdtree_query_offsets": 2.88878,
+            "crs_transformer_init": 0.08677,
+            "gpu_hsi_upload_patch_infer": 113.954,
+            "gpu_normalize_match_download": 4.04106,
+            "gpu_pc_upload_infer": 27.3474,
+            "gpu_tail_pc_match": 70.479,
+            "hsi_patch_and_launch": 6.0594,
+            "laspy_read_io": 1.55547,
+            "load_hsi_io": 8.24117,
+            "mask_filter": 0.928625,
+            "projection": 15.5337,
+            "rng_sample": 0.429816,
+            "standardize_and_mask": 2.99191
+          },
+          "cold_start_sec": 0.198019,
+          "engine_load_sec": 0.217055,
+          "peak_rss_kb": 754948,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 128.832,
+          "total_without_io_ms": 119.02,
+          "segments_ms": {
+            "ckdtree_build_wait": 20.596,
+            "ckdtree_query_offsets": 2.87805,
+            "crs_transformer_init": 0.08229,
+            "gpu_hsi_upload_patch_infer": 113.524,
+            "gpu_normalize_match_download": 4.04718,
+            "gpu_pc_upload_infer": 27.2624,
+            "gpu_tail_pc_match": 69.9274,
+            "hsi_patch_and_launch": 6.10071,
+            "laspy_read_io": 1.56552,
+            "load_hsi_io": 8.24713,
+            "mask_filter": 1.03591,
+            "projection": 15.5423,
+            "rng_sample": 0.313734,
+            "standardize_and_mask": 2.99833
+          },
+          "cold_start_sec": 0.199024,
+          "engine_load_sec": 0.217911,
+          "peak_rss_kb": 757704,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      },
+      "K5": {
+        "fwd": {
+          "total_ms": 132.55,
+          "total_without_io_ms": 122.108,
+          "segments_ms": {
+            "ckdtree_build_wait": 17.9535,
+            "ckdtree_query_offsets": 2.877,
+            "crs_transformer_init": 0.0897935,
+            "gpu_hsi_upload_patch_infer": 111.81,
+            "gpu_normalize_match_download": 4.05075,
+            "gpu_pc_upload_infer": 27.2922,
+            "gpu_tail_pc_match": 91.5969,
+            "hsi_patch_and_launch": 6.74638,
+            "laspy_read_io": 1.57609,
+            "load_hsi_io": 8.86582,
+            "mask_filter": 0.711773,
+            "projection": 13.0099,
+            "rng_sample": 0.1877,
+            "standardize_and_mask": 7.12442
+          },
+          "cold_start_sec": 0.198051,
+          "engine_load_sec": 0.217525,
+          "peak_rss_kb": 748336,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        },
+        "rev": {
+          "total_ms": 131.679,
+          "total_without_io_ms": 121.702,
+          "segments_ms": {
+            "ckdtree_build_wait": 18.4438,
+            "ckdtree_query_offsets": 2.92002,
+            "crs_transformer_init": 0.089281,
+            "gpu_hsi_upload_patch_infer": 111.594,
+            "gpu_normalize_match_download": 4.04632,
+            "gpu_pc_upload_infer": 26.9036,
+            "gpu_tail_pc_match": 90.5955,
+            "hsi_patch_and_launch": 6.61395,
+            "laspy_read_io": 1.51921,
+            "load_hsi_io": 8.45794,
+            "mask_filter": 0.714158,
+            "projection": 12.4793,
+            "rng_sample": 0.188115,
+            "standardize_and_mask": 6.68709
+          },
+          "cold_start_sec": 0.200668,
+          "engine_load_sec": 0.217795,
+          "peak_rss_kb": 751944,
+          "deterministic": true,
+          "match_rowcols_identical_to_P": {
+            "DTP": true,
+            "DTP+Spatial": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+24data_10.6_1 A fwd total 920.9 ms (w/o IO 864.0) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard None
+24data_10.6_1 A rev total 921.8 ms (w/o IO 865.0) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard None
+24data_10.6_1 B fwd total 376.9 ms (w/o IO 318.5) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_1 B rev total 374.9 ms (w/o IO 314.1) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_1 C fwd total 290.2 ms (w/o IO 226.2) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_1 C rev total 290.9 ms (w/o IO 226.1) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 A fwd total 860.9 ms (w/o IO 796.4) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard None
+24data_10.6_10 A rev total 859.7 ms (w/o IO 795.6) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard None
+24data_10.6_10 B fwd total 396.0 ms (w/o IO 330.6) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 B rev total 396.4 ms (w/o IO 330.3) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 C fwd total 325.6 ms (w/o IO 260.2) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+24data_10.6_10 C rev total 327.8 ms (w/o IO 261.8) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 A fwd total 742.3 ms (w/o IO 685.2) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard None
+25data_8.4_1 A rev total 734.9 ms (w/o IO 679.9) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard None
+25data_8.4_1 B fwd total 299.9 ms (w/o IO 241.7) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 B rev total 303.2 ms (w/o IO 245.9) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 C fwd total 239.1 ms (w/o IO 180.5) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_8.4_1 C rev total 242.5 ms (w/o IO 182.9) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+NvMapMemAllocInternalTagged: 1075072515 error 12
+NvMapMemHandleAlloc: error 0
+NvMapMemAllocInternalTagged: 1075072515 error 12
+NvMapMemHandleAlloc: error 0
+25data_10.22_1 A fwd total 801.8 ms (w/o IO 747.1) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard None
+25data_10.22_1 A rev total 804.4 ms (w/o IO 749.2) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard None
+25data_10.22_1 B fwd total 323.3 ms (w/o IO 265.6) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_10.22_1 B rev total 322.9 ms (w/o IO 267.9) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_10.22_1 C fwd total 250.2 ms (w/o IO 191.8) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+25data_10.22_1 C rev total 249.1 ms (w/o IO 195.5) rowcols==S11b {'DTP': True, 'DTP+Spatial': True} guard {'valid_mask': True, 'point_offsets': True, 'ref_rows': True, 'ref_cols': True}
+written -> results/e2e_full_summary.json

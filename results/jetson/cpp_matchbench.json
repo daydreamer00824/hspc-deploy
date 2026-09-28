@@ -1,0 +1,15 @@
+{
+  "note": "同一景（24data/10.6/1）、同一份特征、板上 CUDA event 计时。Python 范围：整幅特征网格构建（zeros + 按有效像元写入）+ gpu_score_window_multi（特征归一化、窗口 gather、bmm、两个 variant 打分/argmax、取回结果）；C++ 范围：特征归一化 + 融合匹配 kernel + 取回结果（hspc_deploy 里的 gpu_normalize_match_download，K4 的 fwd/rev 中位数）。两者输出的匹配行列逐位相同（cpp_e2e_summary.json 的护栏）。",
+  "python_medians_ms": [
+    40.1940975189209,
+    40.15692710876465,
+    40.208208084106445
+  ],
+  "python_median_ms": 40.1940975189209,
+  "cpp_medians_ms": [
+    4.65422,
+    4.66213
+  ],
+  "cpp_median_ms": 4.658175,
+  "speedup": 8.628722089427919
+}

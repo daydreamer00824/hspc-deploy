@@ -1,0 +1,25 @@
+{
+  "note": "板上统计：每景 1000 个匹配窗口（11x11）覆盖了多少有效 HSI 像元；只对被覆盖的像元做 HSI 推理最多能省 (1-fraction) 的推理量。",
+  "scenes": {
+    "24data/10.6/1": {
+      "valid_pixels": 9645,
+      "valid_pixels_covered_by_match_windows": 9637,
+      "fraction": 0.99917055469155
+    },
+    "24data/10.6/10": {
+      "valid_pixels": 7404,
+      "valid_pixels_covered_by_match_windows": 7358,
+      "fraction": 0.9937871420853592
+    },
+    "25data/10.22/1": {
+      "valid_pixels": 8077,
+      "valid_pixels_covered_by_match_windows": 8066,
+      "fraction": 0.9986381082084933
+    },
+    "25data/8.4/1": {
+      "valid_pixels": 6808,
+      "valid_pixels_covered_by_match_windows": 6802,
+      "fraction": 0.9991186839012925
+    }
+  }
+}

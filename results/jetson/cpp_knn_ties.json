@@ -1,0 +1,41 @@
+{
+  "note": "板上统计：每景 1000 个采样点的 16 近邻（含自身）里距离并列的情况，以及'并列时改按下标（小者优先）取舍'相对 SciPy cKDTree 实际返回结果的差异点数。",
+  "scenes": {
+    "24data/10.6/1": {
+      "n_points": 1000,
+      "n_cloud_points": 159897,
+      "points_with_tie_inside_16_nearest": 0,
+      "points_with_tie_at_15th_16th": 0,
+      "points_with_tie_at_16th_17th_cut": 0,
+      "points_where_index_tiebreak_changes_neighbor_set": 0,
+      "points_where_index_tiebreak_changes_neighbor_order": 0
+    },
+    "24data/10.6/10": {
+      "n_points": 1000,
+      "n_cloud_points": 213564,
+      "points_with_tie_inside_16_nearest": 0,
+      "points_with_tie_at_15th_16th": 0,
+      "points_with_tie_at_16th_17th_cut": 0,
+      "points_where_index_tiebreak_changes_neighbor_set": 0,
+      "points_where_index_tiebreak_changes_neighbor_order": 0
+    },
+    "25data/10.22/1": {
+      "n_points": 1000,
+      "n_cloud_points": 114058,
+      "points_with_tie_inside_16_nearest": 939,
+      "points_with_tie_at_15th_16th": 589,
+      "points_with_tie_at_16th_17th_cut": 207,
+      "points_where_index_tiebreak_changes_neighbor_set": 106,
+      "points_where_index_tiebreak_changes_neighbor_order": 907
+    },
+    "25data/8.4/1": {
+      "n_points": 1000,
+      "n_cloud_points": 102557,
+      "points_with_tie_inside_16_nearest": 0,
+      "points_with_tie_at_15th_16th": 0,
+      "points_with_tie_at_16th_17th_cut": 0,
+      "points_where_index_tiebreak_changes_neighbor_set": 0,
+      "points_where_index_tiebreak_changes_neighbor_order": 0
+    }
+  }
+}
