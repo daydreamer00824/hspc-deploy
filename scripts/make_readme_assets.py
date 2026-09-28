@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import sys
+from decimal import ROUND_FLOOR, Decimal, localcontext
 from pathlib import Path
 
 import matplotlib
@@ -59,6 +60,20 @@ def rec(where: str, shown: str, file: str, field: str, value, derived: str = "")
 
 def load(name: str) -> dict:
     return json.loads((RES / name).read_text(encoding="utf-8"))
+
+
+def lower_bound_2dp(a: Decimal, e: Decimal) -> Decimal:
+    """A/E 的保守下界，向下截断到两位小数——不用 round()、`:.2f`（会四舍五入）或
+    floor(float*100)/100（float 乘法可能进位）。a、e 必须是从原始 JSON 文本用
+    parse_float=Decimal 读出的 Decimal，除法与截断都在 ROUND_FLOOR 下进行，
+    保证返回值不高于真实比值（下面用 assert 再核实一次）。"""
+    with localcontext() as ctx:
+        ctx.prec = 50
+        ctx.rounding = ROUND_FLOOR
+        raw = a / e
+        shown = raw.quantize(Decimal("0.01"), rounding=ROUND_FLOOR)
+    assert shown <= raw, f"下界截断错误：{shown} > {raw}"
+    return shown
 
 
 def check_readme(readme: str, desc: str, needle: str) -> None:
@@ -150,18 +165,73 @@ for summ in (jf, jl):
                     sys.exit(f"完整端到端 {sc} {c} {rnd}：匹配行列与缓存 S11b 不一致")
                 if r["preprocess_guardrail_vs_cache"] is not None and not all(r["preprocess_guardrail_vs_cache"].values()):
                     sys.exit(f"完整端到端 {sc} {c} {rnd}：前处理护栏未通过")
-                # A（各段中位数之和）与 B~E（整景墙钟中位数）曾是两种不同的统计量，直接相除会混用口径；
-                # p5_a_run_totals.py 已把 A 也改成同一种统计量，这里要求每条记录显式声明，缺失就拒绝算加速比。
+                # A（各段中位数之和）与 B~E（整景墙钟中位数）曾是两种不同的统计量，直接相除会混用聚合方式；
+                # p5_a_run_totals.py 已把两边的聚合方式统一成"10 次运行取中位数"，这里要求每条记录显式声明，缺失就拒绝算加速比。
                 if r.get("total_statistic") != "median_of_run_totals":
                     sys.exit(f"完整端到端 {sc} {c} {rnd}：total_statistic 不是 median_of_run_totals（{r.get('total_statistic')!r}），"
-                             "拒绝计算加速比——先用 results/jetson/logs/p5_a_run_totals.py 统一口径")
+                             "拒绝计算加速比——先用 results/jetson/logs/p5_a_run_totals.py 统一聚合方式")
+                # 聚合方式相同不代表计时覆盖的范围相同：A 目前是"每次运行各分段之和"，B~E 是"整景外层墙钟"，
+                # 二者相除只能得到保守下界，不是精确 speedup。每条记录必须显式声明 timing_boundary，
+                # 下面据此决定 A→E 的展示方式；B~E（作分母时必须是真实墙钟）不允许是下界口径。
+                tb = r.get("timing_boundary")
+                if c == "A":
+                    if tb not in ("whole_scene_wall_clock", "per_run_segment_sum_lower_bound"):
+                        sys.exit(f"完整端到端 {sc} {c} {rnd}：timing_boundary 不合法（{tb!r}）")
+                else:
+                    if tb != "whole_scene_wall_clock":
+                        sys.exit(f"完整端到端 {sc} {c} {rnd}：timing_boundary 不是 whole_scene_wall_clock（{tb!r}），"
+                                 "不能作为加速比的分母/分子")
 F_SC = "24data/10.6/1"
 FULL = {"A": jf[F_SC]["A"]["fwd"], "B": jf[F_SC]["B"]["fwd"], "C": jf[F_SC]["C"]["fwd"],
         "D": jl[F_SC]["D"]["fwd"], "E": jl[F_SC]["E"]["fwd"]}
 full_sp = {sc: jf[sc]["A"]["fwd"]["total_ms"] / jl[sc]["E"]["fwd"]["total_ms"] for sc in jf}
-check_readme(readme, "Jetson 完整端到端（默认景）",
-             f"{FULL['A']['total_ms']:.1f}ms → {FULL['E']['total_ms']:.1f}ms（{full_sp[F_SC]:.2f}x）")
-check_readme(readme, "Jetson 完整端到端 4 景范围", f"{min(full_sp.values()):.1f}～{max(full_sp.values()):.1f}x")
+a_lb = any(jf[sc]["A"][rd]["timing_boundary"] == "per_run_segment_sum_lower_bound"
+           for sc in jf for rd in ("fwd", "rev"))
+
+if a_lb:
+    # 只用于计算 A/E 下界：从 JSON 原始文本按 Decimal 解析，避免与其余按 float 解析、用于画图的
+    # jf/jl 混算；除法与截断全部在 ROUND_FLOOR 下进行，保证展示值不高于原始比值。
+    jf_dec = json.loads((ROOT / FJF).read_text(encoding="utf-8"), parse_float=Decimal)["scenes"]
+    jl_dec = json.loads((ROOT / FJL).read_text(encoding="utf-8"), parse_float=Decimal)["scenes"]
+    lb_by_scene = {sc: lower_bound_2dp(jf_dec[sc]["A"]["fwd"]["total_ms"], jl_dec[sc]["E"]["fwd"]["total_ms"])
+                   for sc in jf}
+    for sc in jf:
+        rec(f"FigJ3 / A→E lower bound / {sc}", f"≥{lb_by_scene[sc]}x", f"{FJF}, {FJL}",
+            f"scenes.{sc}.A.fwd.total_ms / scenes.{sc}.E.fwd.total_ms（Decimal, ROUND_FLOOR, 截断到 2 位）",
+            full_sp[sc], "原始比值（float，仅供核对，不是展示值）")
+    lb_default = lb_by_scene[F_SC]
+    lb_lo, lb_hi = min(lb_by_scene.values()), max(lb_by_scene.values())
+    check_readme(readme, "Jetson 完整端到端（默认景）",
+                 f"{FULL['A']['total_ms']:.1f}ms → {FULL['E']['total_ms']:.1f}ms（≥{lb_default}x，保守下界）")
+    check_readme(readme, "Jetson 完整端到端 4 景范围", f"4 个场景的保守下界为 {lb_lo}～{lb_hi}x")
+
+    # 防漏标 ①：旧的"精确默认景倍数"写法（四舍五入两位小数、无 ≥ 前缀）不得残留。
+    # 括号+两位小数+右括号的组合是安全的判据：正确写法在左括号后紧跟"≥"，不会被误伤。
+    for sc in jf:
+        stale = f"（{full_sp[sc]:.2f}x）"
+        if stale in readme:
+            sys.exit(f"README 残留未标注下界的精确加速比写法：{stale!r}（场景 {sc}）")
+    # 防漏标 ②：旧的"精确范围"写法（一位小数、无下界前缀）不得残留。
+    stale_range = f"{min(full_sp.values()):.1f}～{max(full_sp.values()):.1f}x"
+    if stale_range in readme:
+        sys.exit(f"README 残留未标注下界的精确范围写法：{stale_range!r}")
+    # 防漏标 ③：裸的每景四舍五入倍数不得出现——但如果四舍五入值恰好等于截断值（如 3.47），
+    # 这个字符串就是正确下界文本"≥3.47x"的子串，禁止会误伤，所以跳过。
+    for sc in jf:
+        rounded = f"{full_sp[sc]:.2f}x"
+        if rounded != f"{lb_by_scene[sc]}x" and rounded in readme:
+            sys.exit(f"README 残留未标注下界的四舍五入倍数：{rounded!r}（场景 {sc}）")
+    # 防漏标 ④：范围数字出现次数必须与带"保守下界为"前缀的出现次数一致，防止裸范围漏标下界说明。
+    bare_range = f"{lb_lo}～{lb_hi}x"
+    prefixed_range = f"保守下界为 {bare_range}"
+    if readme.count(bare_range) != readme.count(prefixed_range):
+        sys.exit(f"README 里 {bare_range!r} 出现次数与带“保守下界为”前缀的次数不一致，可能有未标注下界的裸范围")
+else:
+    # 将来如果 A 也有了真实整景墙钟（timing_boundary 全部是 whole_scene_wall_clock），
+    # 恢复精确 speedup 的展示方式。
+    check_readme(readme, "Jetson 完整端到端（默认景）",
+                 f"{FULL['A']['total_ms']:.1f}ms → {FULL['E']['total_ms']:.1f}ms（{full_sp[F_SC]:.2f}x）")
+    check_readme(readme, "Jetson 完整端到端 4 景范围", f"{min(full_sp.values()):.1f}～{max(full_sp.values()):.1f}x")
 
 # ---- Jetson C++ 部署：P=Python 最终配置 E，K0..K5 为 C++ 的累加配置；每个 JSON 都已核对匹配行列与同景 P 逐位相同
 ce = json.loads((ROOT / FCE).read_text(encoding="utf-8"))["scenes"]
@@ -446,12 +516,21 @@ def fig_jetson_full() -> None:
     ax.grid(axis="x", color=GRID, linewidth=1, zorder=0)
     for lab in ax.get_yticklabels():
         lab.set_color(INK); lab.set_fontsize(9)
+    if a_lb:
+        title_sp = f"(≥{lb_default}x, conservative lower bound)"
+        caption = ("Scene 24data/10.6/1; each config in its own process; all match results bit-identical to the cached-input pipeline; "
+                   "file cache warm; overlapped stages show CPU-side time; segment bars are per-segment medians and may not sum exactly "
+                   "to the printed total (median of whole-scene run totals). A's total is the sum of its (sequential, non-overlapping) "
+                   "segment timers per run, which is <= A's true whole-scene wall clock; B-E use the true whole-scene wall clock. "
+                   "So A/E is only a conservative lower bound on the true speedup, truncated (not rounded) to 2 decimals.")
+    else:
+        title_sp = f"({full_sp[F_SC]:.1f}x)"
+        caption = ("Scene 24data/10.6/1; each config in its own process; all match results bit-identical to the cached-input pipeline; "
+                   "file cache warm; overlapped stages show CPU-side time; segment bars are per-segment medians and may not sum exactly "
+                   "to the printed total (median of whole-scene run totals)")
     fig.text(0.02, 0.93, f"Jetson, raw files → match results: {FULL['A']['total_ms']:.0f} ms → {FULL['E']['total_ms']:.0f} ms "
-             f"({full_sp[F_SC]:.1f}x)", color=INK, fontsize=14, weight="bold", ha="left")
-    fig.text(0.02, 0.87, "Scene 24data/10.6/1; each config in its own process; all match results bit-identical to the cached-input pipeline; "
-             "file cache warm; overlapped stages show CPU-side time; segment bars are per-segment medians and may not sum exactly "
-             "to the printed total (median of whole-scene run totals)",
-             color=INK2, fontsize=9, ha="left")
+             f"{title_sp}", color=INK, fontsize=14, weight="bold", ha="left")
+    fig.text(0.02, 0.87, caption, color=INK2, fontsize=9, ha="left")
     fig.legend(handles=[Patch(color=c, label=g) for g, _, c in groups], loc="upper left",
                bbox_to_anchor=(0.015, 0.855), ncol=3, frameon=False, fontsize=9.5, labelcolor=INK2, handlelength=1.2)
     fig.savefig(ASSETS / "jetson_full_e2e.png", dpi=200, facecolor=SURFACE)

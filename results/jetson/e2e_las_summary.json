@@ -1,5 +1,5 @@
 {
-  "note": "C2=第二批复测的 C（B + LAS 与 GPU 推理重叠，用于确认批次间无漂移）；D=C2 + kNN 查询多核；E=D + kd 树构建与投影并行（最终配置，deploy_jetson.py 默认）。各自独立进程，每景 C2→D→E（fwd）再 E→D→C2（rev）；每个 JSON 内 warmup 2 + 重复 10 次取中位数，total_ms 为整景墙钟中位数。",
+  "note": "C2=第二批复测的 C（B + LAS 与 GPU 推理重叠，用于确认批次间无漂移）；D=C2 + kNN 查询多核；E=D + kd 树构建与投影并行（最终配置，deploy_jetson.py 默认）。各自独立进程，每景 C2→D→E（fwd）再 E→D→C2（rev）；每个 JSON 内 warmup 2 + 重复 10 次取中位数，total_ms 为整景墙钟中位数（timing_boundary=whole_scene_wall_clock）。",
   "scenes": {
     "24data/10.6/1": {
       "C2": {
@@ -32,8 +32,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 288.8871904979169,
@@ -64,8 +65,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "D": {
@@ -98,8 +100,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 285.4395305039361,
@@ -130,8 +133,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "E": {
@@ -164,8 +168,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 254.77150199731113,
@@ -196,8 +201,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       }
     },
@@ -232,8 +238,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 326.6434229990409,
@@ -264,8 +271,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "D": {
@@ -298,8 +306,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 320.59979849873343,
@@ -330,8 +339,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "E": {
@@ -364,8 +374,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 267.7836309958366,
@@ -396,8 +407,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       }
     },
@@ -432,8 +444,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 239.61047300326754,
@@ -464,8 +477,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "D": {
@@ -498,8 +512,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 238.584852002532,
@@ -530,8 +545,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "E": {
@@ -564,8 +580,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 216.94729150112835,
@@ -596,8 +613,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       }
     },
@@ -632,8 +650,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 251.52987499677693,
@@ -664,8 +683,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "D": {
@@ -698,8 +718,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 247.25320949801244,
@@ -730,8 +751,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "E": {
@@ -764,8 +786,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 231.60770449976553,
@@ -796,8 +819,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       }
     }

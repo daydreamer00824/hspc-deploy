@@ -1,5 +1,5 @@
 {
-  "note": "A=deploy_scene.py（x86 最终链路原样）；B=deploy_jetson.py 顺序执行；C=B+LAS 与 GPU 推理重叠。各自独立进程，顺序 A→B→C（fwd）再 C→B→A（rev）；每个 JSON 内 warmup 2 + 重复 10 次取中位数。（A 的 total_ms 与 B/C 同口径，均为 10 次整景墙钟耗时的中位数；A 自身各段中位数之和另见 total_ms_sum_of_segment_medians。）",
+  "note": "A=deploy_scene.py（x86 最终链路原样）；B=deploy_jetson.py 顺序执行；C=B+LAS 与 GPU 推理重叠。各自独立进程，顺序 A→B→C（fwd）再 C→B→A（rev）；每个 JSON 内 warmup 2 + 重复 10 次取中位数。A/B/C 的 total_statistic 都是 median_of_run_totals（10 次运行取中位数），但 timing_boundary 不同：B/C 是整景外层墙钟（whole_scene_wall_clock）；A 是每次运行各分段耗时之和（per_run_segment_sum_lower_bound），小于等于其真实整景墙钟。因此 A.total_ms / E.total_ms （E 见 e2e_las_summary.json）只能作为真实加速比的保守下界，展示时向下截断到两位小数，详见每条记录的 total_definition。",
   "scenes": {
     "24data/10.6/1": {
       "A": {
@@ -29,10 +29,11 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_definition": "A（deploy_scene.py）顺序执行。total_ms 的计算：①每次运行把该次各正式分段的耗时相加；②对 10 次运行的和取中位数。各分段计时都在主线程上顺序发生、互不重叠，且不包含分段之间未被计时的胶水代码，所以每次运行的“分段之和”小于等于该次运行真实的整景墙钟；中位数对逐项不等式单调，因此 A 的 total_ms 小于等于 A 真实整景墙钟耗时的中位数。当时没有记录 A 的外层整景墙钟，这个差值无法恢复。以 E 的整景墙钟为分母时，A.total_ms / E.total_ms 只能作为真实加速比的保守下界（timing_boundary=per_run_segment_sum_lower_bound），展示时要向下截断到两位小数，不能四舍五入。deploy_scene.py 自身报告的“各段中位数之和”（与上面①②的顺序相反：先取每段中位数再相加）保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，只作来源追溯，不能当作比较用的正式值，也不能用它与 total_ms 的差值反推未计时胶水代码的耗时（两者是不同的聚合顺序，不是同一件事的两次测量）。",
           "total_ms_sum_of_segment_medians": 920.9481329853588,
           "total_without_io_ms_sum_of_segment_medians": 863.9558879876859,
-          "total_statistic": "median_of_run_totals"
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "per_run_segment_sum_lower_bound"
         },
         "rev": {
           "total_ms": 920.8849134920456,
@@ -60,10 +61,11 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_definition": "A（deploy_scene.py）顺序执行。total_ms 的计算：①每次运行把该次各正式分段的耗时相加；②对 10 次运行的和取中位数。各分段计时都在主线程上顺序发生、互不重叠，且不包含分段之间未被计时的胶水代码，所以每次运行的“分段之和”小于等于该次运行真实的整景墙钟；中位数对逐项不等式单调，因此 A 的 total_ms 小于等于 A 真实整景墙钟耗时的中位数。当时没有记录 A 的外层整景墙钟，这个差值无法恢复。以 E 的整景墙钟为分母时，A.total_ms / E.total_ms 只能作为真实加速比的保守下界（timing_boundary=per_run_segment_sum_lower_bound），展示时要向下截断到两位小数，不能四舍五入。deploy_scene.py 自身报告的“各段中位数之和”（与上面①②的顺序相反：先取每段中位数再相加）保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，只作来源追溯，不能当作比较用的正式值，也不能用它与 total_ms 的差值反推未计时胶水代码的耗时（两者是不同的聚合顺序，不是同一件事的两次测量）。",
           "total_ms_sum_of_segment_medians": 921.8029785006365,
           "total_without_io_ms_sum_of_segment_medians": 864.9800365019473,
-          "total_statistic": "median_of_run_totals"
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "per_run_segment_sum_lower_bound"
         }
       },
       "B": {
@@ -95,8 +97,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 374.8561044994858,
@@ -126,8 +129,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "C": {
@@ -160,8 +164,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 290.9213400016597,
@@ -192,8 +197,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       }
     },
@@ -225,10 +231,11 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_definition": "A（deploy_scene.py）顺序执行。total_ms 的计算：①每次运行把该次各正式分段的耗时相加；②对 10 次运行的和取中位数。各分段计时都在主线程上顺序发生、互不重叠，且不包含分段之间未被计时的胶水代码，所以每次运行的“分段之和”小于等于该次运行真实的整景墙钟；中位数对逐项不等式单调，因此 A 的 total_ms 小于等于 A 真实整景墙钟耗时的中位数。当时没有记录 A 的外层整景墙钟，这个差值无法恢复。以 E 的整景墙钟为分母时，A.total_ms / E.total_ms 只能作为真实加速比的保守下界（timing_boundary=per_run_segment_sum_lower_bound），展示时要向下截断到两位小数，不能四舍五入。deploy_scene.py 自身报告的“各段中位数之和”（与上面①②的顺序相反：先取每段中位数再相加）保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，只作来源追溯，不能当作比较用的正式值，也不能用它与 total_ms 的差值反推未计时胶水代码的耗时（两者是不同的聚合顺序，不是同一件事的两次测量）。",
           "total_ms_sum_of_segment_medians": 860.8675300019968,
           "total_without_io_ms_sum_of_segment_medians": 796.4034500000707,
-          "total_statistic": "median_of_run_totals"
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "per_run_segment_sum_lower_bound"
         },
         "rev": {
           "total_ms": 859.2323099946952,
@@ -256,10 +263,11 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_definition": "A（deploy_scene.py）顺序执行。total_ms 的计算：①每次运行把该次各正式分段的耗时相加；②对 10 次运行的和取中位数。各分段计时都在主线程上顺序发生、互不重叠，且不包含分段之间未被计时的胶水代码，所以每次运行的“分段之和”小于等于该次运行真实的整景墙钟；中位数对逐项不等式单调，因此 A 的 total_ms 小于等于 A 真实整景墙钟耗时的中位数。当时没有记录 A 的外层整景墙钟，这个差值无法恢复。以 E 的整景墙钟为分母时，A.total_ms / E.total_ms 只能作为真实加速比的保守下界（timing_boundary=per_run_segment_sum_lower_bound），展示时要向下截断到两位小数，不能四舍五入。deploy_scene.py 自身报告的“各段中位数之和”（与上面①②的顺序相反：先取每段中位数再相加）保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，只作来源追溯，不能当作比较用的正式值，也不能用它与 total_ms 的差值反推未计时胶水代码的耗时（两者是不同的聚合顺序，不是同一件事的两次测量）。",
           "total_ms_sum_of_segment_medians": 859.6910295018461,
           "total_without_io_ms_sum_of_segment_medians": 795.5891710043943,
-          "total_statistic": "median_of_run_totals"
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "per_run_segment_sum_lower_bound"
         }
       },
       "B": {
@@ -291,8 +299,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 396.41426500020316,
@@ -322,8 +331,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "C": {
@@ -356,8 +366,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 327.77654800156597,
@@ -388,8 +399,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       }
     },
@@ -421,10 +433,11 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_definition": "A（deploy_scene.py）顺序执行。total_ms 的计算：①每次运行把该次各正式分段的耗时相加；②对 10 次运行的和取中位数。各分段计时都在主线程上顺序发生、互不重叠，且不包含分段之间未被计时的胶水代码，所以每次运行的“分段之和”小于等于该次运行真实的整景墙钟；中位数对逐项不等式单调，因此 A 的 total_ms 小于等于 A 真实整景墙钟耗时的中位数。当时没有记录 A 的外层整景墙钟，这个差值无法恢复。以 E 的整景墙钟为分母时，A.total_ms / E.total_ms 只能作为真实加速比的保守下界（timing_boundary=per_run_segment_sum_lower_bound），展示时要向下截断到两位小数，不能四舍五入。deploy_scene.py 自身报告的“各段中位数之和”（与上面①②的顺序相反：先取每段中位数再相加）保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，只作来源追溯，不能当作比较用的正式值，也不能用它与 total_ms 的差值反推未计时胶水代码的耗时（两者是不同的聚合顺序，不是同一件事的两次测量）。",
           "total_ms_sum_of_segment_medians": 742.2867499990389,
           "total_without_io_ms_sum_of_segment_medians": 685.2062169964483,
-          "total_statistic": "median_of_run_totals"
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "per_run_segment_sum_lower_bound"
         },
         "rev": {
           "total_ms": 734.5150559995091,
@@ -452,10 +465,11 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_definition": "A（deploy_scene.py）顺序执行。total_ms 的计算：①每次运行把该次各正式分段的耗时相加；②对 10 次运行的和取中位数。各分段计时都在主线程上顺序发生、互不重叠，且不包含分段之间未被计时的胶水代码，所以每次运行的“分段之和”小于等于该次运行真实的整景墙钟；中位数对逐项不等式单调，因此 A 的 total_ms 小于等于 A 真实整景墙钟耗时的中位数。当时没有记录 A 的外层整景墙钟，这个差值无法恢复。以 E 的整景墙钟为分母时，A.total_ms / E.total_ms 只能作为真实加速比的保守下界（timing_boundary=per_run_segment_sum_lower_bound），展示时要向下截断到两位小数，不能四舍五入。deploy_scene.py 自身报告的“各段中位数之和”（与上面①②的顺序相反：先取每段中位数再相加）保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，只作来源追溯，不能当作比较用的正式值，也不能用它与 total_ms 的差值反推未计时胶水代码的耗时（两者是不同的聚合顺序，不是同一件事的两次测量）。",
           "total_ms_sum_of_segment_medians": 734.910734998266,
           "total_without_io_ms_sum_of_segment_medians": 679.8569625025266,
-          "total_statistic": "median_of_run_totals"
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "per_run_segment_sum_lower_bound"
         }
       },
       "B": {
@@ -487,8 +501,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 303.2089049993374,
@@ -518,8 +533,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "C": {
@@ -552,8 +568,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 242.47697750251973,
@@ -584,8 +601,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       }
     },
@@ -617,10 +635,11 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_definition": "A（deploy_scene.py）顺序执行。total_ms 的计算：①每次运行把该次各正式分段的耗时相加；②对 10 次运行的和取中位数。各分段计时都在主线程上顺序发生、互不重叠，且不包含分段之间未被计时的胶水代码，所以每次运行的“分段之和”小于等于该次运行真实的整景墙钟；中位数对逐项不等式单调，因此 A 的 total_ms 小于等于 A 真实整景墙钟耗时的中位数。当时没有记录 A 的外层整景墙钟，这个差值无法恢复。以 E 的整景墙钟为分母时，A.total_ms / E.total_ms 只能作为真实加速比的保守下界（timing_boundary=per_run_segment_sum_lower_bound），展示时要向下截断到两位小数，不能四舍五入。deploy_scene.py 自身报告的“各段中位数之和”（与上面①②的顺序相反：先取每段中位数再相加）保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，只作来源追溯，不能当作比较用的正式值，也不能用它与 total_ms 的差值反推未计时胶水代码的耗时（两者是不同的聚合顺序，不是同一件事的两次测量）。",
           "total_ms_sum_of_segment_medians": 801.7791370075429,
           "total_without_io_ms_sum_of_segment_medians": 747.1016190102091,
-          "total_statistic": "median_of_run_totals"
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "per_run_segment_sum_lower_bound"
         },
         "rev": {
           "total_ms": 805.6619844901434,
@@ -648,10 +667,11 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_definition": "A（deploy_scene.py）顺序执行。total_ms 的计算：①每次运行把该次各正式分段的耗时相加；②对 10 次运行的和取中位数。各分段计时都在主线程上顺序发生、互不重叠，且不包含分段之间未被计时的胶水代码，所以每次运行的“分段之和”小于等于该次运行真实的整景墙钟；中位数对逐项不等式单调，因此 A 的 total_ms 小于等于 A 真实整景墙钟耗时的中位数。当时没有记录 A 的外层整景墙钟，这个差值无法恢复。以 E 的整景墙钟为分母时，A.total_ms / E.total_ms 只能作为真实加速比的保守下界（timing_boundary=per_run_segment_sum_lower_bound），展示时要向下截断到两位小数，不能四舍五入。deploy_scene.py 自身报告的“各段中位数之和”（与上面①②的顺序相反：先取每段中位数再相加）保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，只作来源追溯，不能当作比较用的正式值，也不能用它与 total_ms 的差值反推未计时胶水代码的耗时（两者是不同的聚合顺序，不是同一件事的两次测量）。",
           "total_ms_sum_of_segment_medians": 804.3978105015412,
           "total_without_io_ms_sum_of_segment_medians": 749.157953006943,
-          "total_statistic": "median_of_run_totals"
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "per_run_segment_sum_lower_bound"
         }
       },
       "B": {
@@ -683,8 +703,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 322.9050645022653,
@@ -714,8 +735,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       },
       "C": {
@@ -748,8 +770,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         },
         "rev": {
           "total_ms": 249.14900600197143,
@@ -780,8 +803,9 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
-          "total_statistic": "median_of_run_totals"
+          "total_definition": "整景墙钟中位数（timing_boundary=whole_scene_wall_clock）：每次整景整体计时（pipe.run 前后同步并计时，含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals",
+          "timing_boundary": "whole_scene_wall_clock"
         }
       }
     }
