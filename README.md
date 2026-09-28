@@ -9,7 +9,7 @@ TensorRT FP32、FP16 推理引擎，以 PyTorch FP32 为基线完成精度验证
 
 **三个核心结果**（完整数据见下方「结果速览」表，来源均为 `results/`）：
 
-- **Jetson C++** 从原始文件到匹配结果（vs 上一行的 Python 最终配置，同板同场次，4 景）：254.8ms → 148.7ms（1.71x）；4 个场景 1.7～2.1x；匹配行列与 Python 版逐位相同（`results/jetson/cpp_e2e_summary.json`）
+- **Jetson C++** 从原始文件到匹配结果（vs Python 最终配置，同板同场次，4 景）：254.8ms → 148.7ms（1.71x）；4 个场景 1.7～2.1x；匹配行列与 Python 版逐位相同（`results/jetson/cpp_e2e_summary.json`）
 - **Jetson** 从原始文件到匹配结果（含 HSI/LAS 读取、投影、kNN，4 景）：920.9ms → 256.7ms（3.59x）；4 个场景 3.2～3.6x（`results/jetson/e2e_full_summary.json`、`e2e_las_summary.json`）
 - **Jetson** 整景推理链路（缓存的原始 HSI 起算，同进程累加对比）：2280.0ms → 181.8ms（**12.54x**）；4 个场景 12.0～15.4x（`results/jetson/opt_final2_compare.json`、`opt_final2_multiscene_*.json`）
 
@@ -46,14 +46,16 @@ LAS 点云 ──▶ 投影 / 采样 / kNN 邻域偏移 ────────
 部署过程中几个反直觉的发现，比单纯的加速比更能说明工程方法：
 
 1. **TensorRT 隐式 INT8 校准引擎里其实没有 INT8 层。** 用它构建出的"INT8"引擎精度和速度都和 FP16 几乎一样；
-   用 `--exportLayerInfo` 逐层核查（x86、Jetson 各自独立重建 3 次）才发现，Transformer 主体由 TensorRT 的
-   Myelin 融合核整体执行，根本没用上校准算出的 scale——0 个 Int8 层。真正的 INT8 只能走显式 QDQ 量化。
-   详见下方「技术要点」第 3 条。
+   用 `--exportLayerInfo` 逐层核查才发现，Transformer 主体由 TensorRT 的 Myelin 融合核整体执行，根本没用上
+   校准算出的 scale——0 个 Int8 层（x86 对隐式校准路径独立重建 3 次核查；Jetson 对隐式 INT8 引擎与 FP16
+   对照引擎各导出一次逐层信息，结果一致）。真正的 INT8 只能走显式 QDQ 量化。详见下方「技术要点」第 3 条。
 
 2. **FP16 默认构建结果不可复现，得自己搜敏感层。** 同一份 ONNX 用 TensorRT 默认精度模式反复构建，
-   cos_sim_min 会在 0.99～1.0 之间随机跳动；nsys 定位到是大 batch 下 tactic 选择不稳定，偶尔退回接近 FP32 的
-   实现。改成显式约束 + 按算子分组的敏感度贪心搜索，只把搜到的敏感层组（如 HSI 的 stem）强制保留 FP32，
-   其余用 FP16，5 次独立构建全部稳定。详见下方「技术要点」第 1 条。
+   cos_sim_min 会在 0.99～1.0 之间随机跳动；用受控重建实验确认了大 batch 下 TensorRT 会选择不同 tactic、
+   部分构建退回接近 FP32 的实现——具体的不稳定性来源推测与 TensorRT 内部基于计时的 tactic 自动调优受 GPU
+   负载/时钟噪声影响有关，但没有做锁频等隔离实验进一步确认。改成显式约束 + 按算子分组的敏感度贪心搜索，
+   只把搜到的敏感层组（如 HSI 的 stem）强制保留 FP32，其余用 FP16，5 次独立构建全部稳定。详见下方
+   「技术要点」第 1 条。
 
 3. **要让 C++ 和 Python 逐位一致，得抠到 NumPy 的求和顺序和 ARM 的浮点融合。** 第一版 C++ 算出的均值/标准差，
    约三成波段和 NumPy 差最后一位。定位发现 NumPy 对 `.mean(axis=(1,2))` 的实际求和顺序是"每 8192 个元素一块

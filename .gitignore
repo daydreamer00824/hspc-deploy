@@ -44,7 +44,7 @@ results/jetson/e2e_full/
 # 同上：控制台日志里打印了整份结果 JSON（含每个点的匹配行列）
 results/jetson/logs/p5_A_*.log
 
-# TensorRT 逐层导出会暴露未公开模型的层名和张量维度
+# TensorRT 完整逐层导出包含比公开范围更完整的层名和张量维度（全网络逐层，非选择性混合精度用到的层组名）
 results/jetson/logs/int8diag/*_layers.json
 
 # C++ 部署：不入库的私有匹配规则头文件与构建目录
