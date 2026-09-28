@@ -150,6 +150,11 @@ for summ in (jf, jl):
                     sys.exit(f"完整端到端 {sc} {c} {rnd}：匹配行列与缓存 S11b 不一致")
                 if r["preprocess_guardrail_vs_cache"] is not None and not all(r["preprocess_guardrail_vs_cache"].values()):
                     sys.exit(f"完整端到端 {sc} {c} {rnd}：前处理护栏未通过")
+                # A（各段中位数之和）与 B~E（整景墙钟中位数）曾是两种不同的统计量，直接相除会混用口径；
+                # p5_a_run_totals.py 已把 A 也改成同一种统计量，这里要求每条记录显式声明，缺失就拒绝算加速比。
+                if r.get("total_statistic") != "median_of_run_totals":
+                    sys.exit(f"完整端到端 {sc} {c} {rnd}：total_statistic 不是 median_of_run_totals（{r.get('total_statistic')!r}），"
+                             "拒绝计算加速比——先用 results/jetson/logs/p5_a_run_totals.py 统一口径")
 F_SC = "24data/10.6/1"
 FULL = {"A": jf[F_SC]["A"]["fwd"], "B": jf[F_SC]["B"]["fwd"], "C": jf[F_SC]["C"]["fwd"],
         "D": jl[F_SC]["D"]["fwd"], "E": jl[F_SC]["E"]["fwd"]}
@@ -436,14 +441,16 @@ def fig_jetson_full() -> None:
     ax.set_yticks(range(len(cfgs)), [F_LABELS[c] for c in cfgs])
     ax.invert_yaxis()
     ax.set_xlim(0, xmax * 1.15)
-    ax.set_xlabel("End-to-end latency from raw files on Jetson Orin Nano Super (ms, median of 10 runs)")
+    ax.set_xlabel("End-to-end latency from raw files on Jetson Orin Nano Super (ms; bars = per-segment median, "
+                  "label = median of 10 whole-scene runs)")
     ax.grid(axis="x", color=GRID, linewidth=1, zorder=0)
     for lab in ax.get_yticklabels():
         lab.set_color(INK); lab.set_fontsize(9)
     fig.text(0.02, 0.93, f"Jetson, raw files → match results: {FULL['A']['total_ms']:.0f} ms → {FULL['E']['total_ms']:.0f} ms "
              f"({full_sp[F_SC]:.1f}x)", color=INK, fontsize=14, weight="bold", ha="left")
     fig.text(0.02, 0.87, "Scene 24data/10.6/1; each config in its own process; all match results bit-identical to the cached-input pipeline; "
-             "file cache warm; overlapped stages show CPU-side time",
+             "file cache warm; overlapped stages show CPU-side time; segment bars are per-segment medians and may not sum exactly "
+             "to the printed total (median of whole-scene run totals)",
              color=INK2, fontsize=9, ha="left")
     fig.legend(handles=[Patch(color=c, label=g) for g, _, c in groups], loc="upper left",
                bbox_to_anchor=(0.015, 0.855), ncol=3, frameon=False, fontsize=9.5, labelcolor=INK2, handlelength=1.2)

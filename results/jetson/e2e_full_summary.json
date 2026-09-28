@@ -1,11 +1,11 @@
 {
-  "note": "A=deploy_scene.py（x86 最终链路原样）；B=deploy_jetson.py 顺序执行；C=B+LAS 与 GPU 推理重叠。各自独立进程，顺序 A→B→C（fwd）再 C→B→A（rev）；每个 JSON 内 warmup 2 + 重复 10 次取中位数。",
+  "note": "A=deploy_scene.py（x86 最终链路原样）；B=deploy_jetson.py 顺序执行；C=B+LAS 与 GPU 推理重叠。各自独立进程，顺序 A→B→C（fwd）再 C→B→A（rev）；每个 JSON 内 warmup 2 + 重复 10 次取中位数。（A 的 total_ms 与 B/C 同口径，均为 10 次整景墙钟耗时的中位数；A 自身各段中位数之和另见 total_ms_sum_of_segment_medians。）",
   "scenes": {
     "24data/10.6/1": {
       "A": {
         "fwd": {
-          "total_ms": 920.9481329853588,
-          "total_without_io_ms": 863.9558879876859,
+          "total_ms": 921.5307119920908,
+          "total_without_io_ms": 864.705417498044,
           "segments_ms": {
             "load_hsi_io": 50.46375399979297,
             "standardize_and_mask": 30.865367996739224,
@@ -29,11 +29,14 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_ms_sum_of_segment_medians": 920.9481329853588,
+          "total_without_io_ms_sum_of_segment_medians": 863.9558879876859,
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
-          "total_ms": 921.8029785006365,
-          "total_without_io_ms": 864.9800365019473,
+          "total_ms": 920.8849134920456,
+          "total_without_io_ms": 863.7751934948028,
           "segments_ms": {
             "load_hsi_io": 50.40247099896078,
             "standardize_and_mask": 30.822181495750556,
@@ -57,7 +60,10 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_ms_sum_of_segment_medians": 921.8029785006365,
+          "total_without_io_ms_sum_of_segment_medians": 864.9800365019473,
+          "total_statistic": "median_of_run_totals"
         }
       },
       "B": {
@@ -89,7 +95,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
           "total_ms": 374.8561044994858,
@@ -119,7 +126,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         }
       },
       "C": {
@@ -152,7 +160,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
           "total_ms": 290.9213400016597,
@@ -183,15 +192,16 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         }
       }
     },
     "24data/10.6/10": {
       "A": {
         "fwd": {
-          "total_ms": 860.8675300019968,
-          "total_without_io_ms": 796.4034500000707,
+          "total_ms": 861.1879745039914,
+          "total_without_io_ms": 795.9474519957439,
           "segments_ms": {
             "load_hsi_io": 55.62753850244917,
             "standardize_and_mask": 34.932425998704275,
@@ -215,11 +225,14 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_ms_sum_of_segment_medians": 860.8675300019968,
+          "total_without_io_ms_sum_of_segment_medians": 796.4034500000707,
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
-          "total_ms": 859.6910295018461,
-          "total_without_io_ms": 795.5891710043943,
+          "total_ms": 859.2323099946952,
+          "total_without_io_ms": 795.1337800004694,
           "segments_ms": {
             "load_hsi_io": 55.366712498653214,
             "standardize_and_mask": 34.75697900285013,
@@ -243,7 +256,10 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_ms_sum_of_segment_medians": 859.6910295018461,
+          "total_without_io_ms_sum_of_segment_medians": 795.5891710043943,
+          "total_statistic": "median_of_run_totals"
         }
       },
       "B": {
@@ -275,7 +291,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
           "total_ms": 396.41426500020316,
@@ -305,7 +322,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         }
       },
       "C": {
@@ -338,7 +356,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
           "total_ms": 327.77654800156597,
@@ -369,15 +388,16 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         }
       }
     },
     "25data/8.4/1": {
       "A": {
         "fwd": {
-          "total_ms": 742.2867499990389,
-          "total_without_io_ms": 685.2062169964483,
+          "total_ms": 741.2497880104638,
+          "total_without_io_ms": 684.2771940100647,
           "segments_ms": {
             "load_hsi_io": 52.35642750267289,
             "standardize_and_mask": 27.96228599981987,
@@ -401,11 +421,14 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_ms_sum_of_segment_medians": 742.2867499990389,
+          "total_without_io_ms_sum_of_segment_medians": 685.2062169964483,
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
-          "total_ms": 734.910734998266,
-          "total_without_io_ms": 679.8569625025266,
+          "total_ms": 734.5150559995091,
+          "total_without_io_ms": 679.5197820028989,
           "segments_ms": {
             "load_hsi_io": 50.299793500016676,
             "standardize_and_mask": 27.96353349913261,
@@ -429,7 +452,10 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_ms_sum_of_segment_medians": 734.910734998266,
+          "total_without_io_ms_sum_of_segment_medians": 679.8569625025266,
+          "total_statistic": "median_of_run_totals"
         }
       },
       "B": {
@@ -461,7 +487,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
           "total_ms": 303.2089049993374,
@@ -491,7 +518,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         }
       },
       "C": {
@@ -524,7 +552,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
           "total_ms": 242.47697750251973,
@@ -555,15 +584,16 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         }
       }
     },
     "25data/10.22/1": {
       "A": {
         "fwd": {
-          "total_ms": 801.7791370075429,
-          "total_without_io_ms": 747.1016190102091,
+          "total_ms": 801.6529255073692,
+          "total_without_io_ms": 746.0842054897512,
           "segments_ms": {
             "load_hsi_io": 49.669770000036806,
             "standardize_and_mask": 30.255696499807527,
@@ -587,11 +617,14 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_ms_sum_of_segment_medians": 801.7791370075429,
+          "total_without_io_ms_sum_of_segment_medians": 747.1016190102091,
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
-          "total_ms": 804.3978105015412,
-          "total_without_io_ms": 749.157953006943,
+          "total_ms": 805.6619844901434,
+          "total_without_io_ms": 749.5454550007707,
           "segments_ms": {
             "load_hsi_io": 50.111576998460805,
             "standardize_and_mask": 30.439317499258323,
@@ -615,7 +648,10 @@
             "DTP+Spatial": true
           },
           "preprocess_guardrail_vs_cache": null,
-          "total_definition": "A 的总计为各段中位数之和（deploy_scene.py 原有口径）"
+          "total_definition": "A（deploy_scene.py）顺序执行；每次整景耗时 = 该次各分段耗时之和（不含分段之间约 <1ms 未计时的胶水代码），10 次取中位数，与 B～E 同口径。deploy_scene.py 自身报告的“各段中位数之和”保留在 total_ms_sum_of_segment_medians / total_without_io_ms_sum_of_segment_medians，两者通常相差不到 2ms。",
+          "total_ms_sum_of_segment_medians": 804.3978105015412,
+          "total_without_io_ms_sum_of_segment_medians": 749.157953006943,
+          "total_statistic": "median_of_run_totals"
         }
       },
       "B": {
@@ -647,7 +683,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
           "total_ms": 322.9050645022653,
@@ -677,7 +714,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         }
       },
       "C": {
@@ -710,7 +748,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         },
         "rev": {
           "total_ms": 249.14900600197143,
@@ -741,7 +780,8 @@
             "ref_rows": true,
             "ref_cols": true
           },
-          "total_definition": "B/C 的总计为整景墙钟中位数"
+          "total_definition": "整景墙钟中位数：每次整景整体计时（含文件读取，页缓存热），10 次取中位数。",
+          "total_statistic": "median_of_run_totals"
         }
       }
     }
