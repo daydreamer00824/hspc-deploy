@@ -7,11 +7,72 @@ TensorRT FP32、FP16 推理引擎，以 PyTorch FP32 为基线完成精度验证
 在板上重建引擎、验证精度，并针对端侧的统一内存架构做了整景推理加速；最后按实际端侧部署的形态，用 **C++（TensorRT C++ API + 自定义 CUDA kernel）**
 重写了从原始文件到匹配结果的整条链路，并与 Python 版逐位对照（见[「Jetson Orin Nano 端侧部署」](#jetson-orin-nano-端侧部署)）。
 
+**部署主线**：PyTorch FP32 → ONNX → TensorRT → x86 Python Runtime → Jetson Python Runtime → **C++/CUDA Runtime** → Native Optimization → Final Edge Deployment
+
+**技术栈**：C++17 · CUDA · TensorRT · Jetson Orin Nano · ONNX · Python · GDAL · PROJ
+
 **三个核心结果**（完整数据见下方「结果速览」表，来源均为 `results/`）：
 
 - **Jetson C++** 从原始文件到匹配结果（vs Python 最终配置，同板同场次，4 景）：254.8ms → 148.7ms（1.71x）；4 个场景 1.7～2.1x；匹配行列与 Python 版逐位相同（`results/jetson/cpp_e2e_summary.json`）
 - **Jetson** 从原始文件到匹配结果（含 HSI/LAS 读取、投影、kNN，4 景）：921.5ms → 256.7ms（≥3.58x，保守下界）；4 个场景的保守下界为 3.23～3.58x（`results/jetson/e2e_full_summary.json`、`e2e_las_summary.json`）
 - **Jetson** 整景推理链路（缓存的原始 HSI 起算，同进程累加对比）：2280.0ms → 181.8ms（**12.54x**）；4 个场景 12.0～15.4x（`results/jetson/opt_final2_compare.json`、`opt_final2_multiscene_*.json`）
+
+
+## 完整端侧部署技术路线
+
+这套工程不是单点 benchmark，而是从训练完成的双编码器出发，依次完成模型转换、精度闸门、TensorRT 优化、x86 整景部署、Jetson 板上重建与端侧优化，再迁移到 C++/CUDA 原生 Runtime，并用精度、逐位一致性、延迟、冷启动、内存和能耗做最终验收。
+
+```mermaid
+flowchart LR
+    A["PyTorch FP32<br/>PC / HSI Transformer"]
+    B["ONNX Export"]
+    C["TensorRT FP32<br/>Accuracy Gate"]
+    D["FP16 / INT8<br/>Precision Exploration"]
+    E["Selective Mixed Precision<br/>+ Large-batch Engine"]
+    F["x86 Python Runtime<br/>Whole-scene Deployment"]
+    G["Jetson Orin Nano<br/>On-device Engine Rebuild"]
+    H["Jetson Python Runtime<br/>GPU Pipeline / Overlap / Unified Memory"]
+    I["C++ / CUDA Runtime<br/>Equivalent Migration"]
+    J["Native C++ Optimization<br/>K0 → K4"]
+    K["Final Validation<br/>Correctness · Latency · Memory · Energy"]
+
+    A --> B --> C --> D --> E --> F --> G --> H --> I --> J --> K
+```
+
+关键 Gate 贯穿整个流程：TensorRT 相对 PyTorch FP32 使用精度阈值；Python 与 C++ 的确定性中间结果使用逐位一致性；最终端侧交付同时检查整景结果、延迟、冷启动、进程内存和整板能耗。
+
+### Python Runtime → C++/CUDA Runtime
+
+Jetson 上先保留 Python 最终版作为 reference，再做语义等价的 C++ baseline（K0），最后仅在 C++ 侧继续做 native optimization（K1～K4）。这样可以把“Runtime 迁移收益”和“后续原生优化收益”分开观察，而不是把所有收益混在一次改写里。
+
+```mermaid
+flowchart LR
+    P["Python final P<br/>TensorRT Python + PyTorch CUDA<br/>254.8 ms"]
+    K0["C++ baseline K0<br/>TensorRT C++ + CUDA<br/>210.3 ms"]
+    K4["C++ optimized K4<br/>Native I/O / CPU / CUDA optimization<br/>148.7 ms"]
+
+    P -->|"runtime migration"| K0
+    K0 -->|"native optimization"| K4
+```
+
+| Runtime | 实现定位 | 默认景 Jetson E2E |
+|---|---|---:|
+| Python final P | TensorRT Python + PyTorch CUDA，端侧最终 Python reference | 254.8 ms |
+| C++ baseline K0 | TensorRT C++ + CUDA，按 Python 最终调度语义等价迁移 | 210.3 ms |
+| C++ optimized K4 | C++/CUDA 原生 Runtime + bulk I/O / CPU 并行 / 对象复用等优化 | 148.7 ms |
+
+数据来自 `results/jetson/cpp_e2e_summary.json`。最终 K4 相对 Python P 为 1.71x；4 个场景为 1.7～2.1x，且最终匹配行列与 Python reference 逐位相同。
+
+### C++/CUDA Runtime 覆盖范围
+
+公开的 C++ 部署并不只是调用一次 TensorRT API，而是覆盖完整部署链路：
+
+- TensorRT engine lifecycle、execution context 与 dynamic batch；
+- CUDA stream、异步推理与 CPU/GPU 调度；
+- HSI / LAS 原生前处理与 GDAL/PROJ I/O；
+- 自定义 CUDA kernel：标准化、patch 提取、特征归一化与跨模态窗口匹配；
+- SciPy cKDTree C++ 内核复用，保证并列近邻行为与 Python reference 一致；
+- Python → C++ 中间数组逐级回归，以及最终匹配行列的逐位一致性护栏。
 
 ## 输入、输出与业务流程
 
