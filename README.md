@@ -120,7 +120,7 @@ LAS 点云 ──▶ 投影 / 采样 / kNN 邻域偏移 ────────
 | 跨模态匹配任务一致率（最终混合精度部署版 vs PyTorch FP32，1000点/景） | DTP 99.7%　DTP+Spatial 99.5% | `results/stage7_mixed_precision.json` |
 | **Jetson** 单样本推理加速比（batch=1，p50，vs 板上 PyTorch FP32-GPU） | PC 14.2x（0.328ms）　HSI 14.8x（0.355ms） | `results/jetson/stage3_benchmark.json` |
 | **Jetson** 从原始文件到匹配结果（含 HSI/LAS 读取、投影、kNN，4 景） | 921.5ms → 256.7ms（≥3.58x，保守下界）；4 个场景的保守下界为 3.23～3.58x | `results/jetson/e2e_full_summary.json`、`e2e_las_summary.json` |
-| **Jetson C++** 从原始文件到匹配结果（vs 上一行的 Python 最终配置，同板同场次，4 景） | 254.8ms → 148.7ms（1.71x）；4 个场景 1.7～2.1x；匹配行列与 Python 版逐位相同 | `results/jetson/cpp_e2e_summary.json` |
+| **Jetson C++** 从原始文件到匹配结果（vs Python final P，同板同场次交替测量，4 景） | 254.8ms → 148.7ms（1.71x）；4 个场景 1.7～2.1x；匹配行列与 Python 版逐位相同 | `results/jetson/cpp_e2e_summary.json` |
 | **Jetson C++** 单样本请求延迟（batch=1，含拷贝与同步，vs Python + CUDA Graph） | PC 0.419 → 0.254ms、HSI 0.452 → 0.282ms；输出逐位相同 | `results/jetson/cpp_latency_summary.json` |
 | **Jetson C++** 进程冷启动 / 每景能耗（整板）/ 进程内存峰值（vs Python） | 4.50s → 0.65s　/　4.60J → 3.20J　/　2,132 MB → 746 MB | `results/jetson/cpp_power_summary.json` |
 | **Jetson** 整景推理链路（缓存的原始 HSI 起算，同进程累加对比） | 2280.0ms → 181.8ms（**12.54x**）；4 个场景 12.0～15.4x | `results/jetson/opt_final2_compare.json`、`opt_final2_multiscene_*.json` |
