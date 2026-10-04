@@ -1,4 +1,4 @@
-# Jetson Orin Nano 端侧部署报告
+# Jetson Orin Nano Super 端侧部署报告
 
 本文记录把 x86 上的 PyTorch → ONNX → TensorRT 流程移植到 Jetson Orin Nano Super，在板上做整景推理加速，并给出从原始文件到匹配结果的完整端到端数字。
 **文中所有端侧数字都在开发板上实测**；x86（RTX 3060）数字只在标明的地方作为不同平台的对照出现。原始结果都在 `results/jetson/`。
@@ -9,7 +9,7 @@
 |---|---|
 | 硬件 | Jetson Orin Nano Engineering Reference Developer Kit Super；GPU SM 8.7、8 个 SM；6 核 ARM CPU；CPU/GPU 共享 7.4 GiB 内存 |
 | 软件 | L4T R36.4.7（JetPack 6）、TensorRT 10.7.0、CUDA 12.6、PyTorch 2.5.0（NVIDIA Jetson 版）、Python 3.10 |
-| 功耗模式 | MAXN_SUPER，时钟锁定（板子常态即为锁频：CPU 1.728GHz、GPU 1.02GHz、EMC 3.2GHz）；所有数字都在这个状态下测得 |
+| 功耗模式 | MAXN_SUPER；测试期间使用 `jetson_clocks` 锁定时钟（CPU 1.728GHz、GPU 1.02GHz、EMC 3.2GHz）；所有数字都在这个状态下测得 |
 
 - 代码在本机写、用 git 管理，用 rsync 单向推到板上运行，结果拉回 `results/jetson/`。板上只有运行副本，不改动板上任何已有环境。
 - `.plan` 与 GPU 架构、TRT 版本绑定，x86 的引擎不能用；板上用同一份 ONNX 重建。交付引擎的构建配置与 sha256 见 `results/jetson/engine_manifest.json`。
@@ -26,13 +26,13 @@
 
 ## 1. 精度与单样本性能
 
-**FP32 基准**：板上 PyTorch FP32 与 x86 CPU FP32 参考的差异 PC ≤1.1e-5、HSI ≤6.6e-5（`j1_cross_platform_fp32.json`），因此全程以 x86 CPU FP32 为唯一基准，与 x86 口径一致。
+**FP32 基准**：板上 PyTorch FP32 与 x86 CPU FP32 参考的差异 PC ≤1.1e-5、HSI ≤6.6e-5（`j1_cross_platform_fp32.json`）。引擎精度验证以 x86 CPU FP32 为参考，与 x86 阶段保持同一精度口径；Jetson 整景任务级匹配一致率则对照板上 PyTorch FP32。
 
 **引擎精度**（后 200 条验证集，与校准集不重叠；`stage2_trt_accuracy.json`、`j2_*.json`）：
 
 | 模型 / 模式 | cos_sim_min | 同模态最近邻 Top-1 | 说明 |
 |---|---|---|---|
-| PC / HSI FP32（TF32 off） | 1.000000 / 1.000000 | 100% / 100% | 闸门通过：max_abs 1.0e-5 / 1.0e-4（阈值 1.5e-4） |
+| PC / HSI FP32（TF32 off） | 1.000000 / 1.000000 | 100% / 100% | 闸门通过：`cos_sim_min ≥ 0.9999` 且 `max_abs_err ≤ 1.5e-4`；实测 max_abs 为 1.0e-5 / 1.0e-4 |
 | PC FP16（默认精度） | 0.999993 | 100% | 3 次独立构建输出逐位相同，未触发补救 |
 | HSI FP16（默认精度） | 0.990～0.996 | 97.5%～98.0% | 3 次构建之间 max_abs 相差 0.114：复现了 x86 上的构建不稳定 |
 | **HSI FP16 mixed（stem 组保留 FP32）** | **0.999705** | **99.0%** | 触发补救后采用；3 次构建指标相同 |
@@ -56,20 +56,19 @@
 
 ## 2. INT8：板上没有可交付的 INT8
 
-- **隐式校准（calibrator）没有量化**：板上用 `trtexec --int8 --calib=<缓存> --exportLayerInfo` 逐层核查，PC/HSI 的隐式校准引擎及 FP16 对照引擎均为 0 个 Int8 层
-  （`results/jetson/int8_implicit_layer_check.json`），精度指标与 FP16 逐位相同。
-  校准 scale 已读入（日志逐个打印），但 Transformer 主体交给 Myelin 融合核执行，不使用这些 scale；stem 卷积测过 INT8 kernel，最终也选了 FP16。
-- **x86 同样如此**：回到 x86 用 `build_trt.py` 重建 3 次并逐层核查，同样 0 个 Int8 层；HSI “INT8” 引擎的精度与一次 FP16(auto) 构建完全相同
-  （`results/x86_int8_implicit_verification.json`），结果总表不含这类 implicit calibration 引擎。
-- **显式 QDQ 是真 INT8**（3 次构建中 HSI 均有 30 个 Int8 层、总层数为 41～42，PC 均为 32/41，见 `results/jetson/j2_qdq_stability.json`），但 HSI cos_sim_min 0.755、PC 输出数值错误（cos_mean -0.09），3 次构建稳定复现，与 x86 表现一致——问题在 ModelOpt 生成的 QDQ 图本身。
-- 即便量化成功，HSI QDQ 在 b64 下也只比 FP16 快约 5%（0.915 vs 0.968ms），这个规模的模型 INT8 收益很小，因此没有回 x86 重做 PTQ。
+- **隐式校准路径没有真正执行 Int8**：板上使用 `trtexec --int8 --calib=<缓存> --exportLayerInfo` 逐层核查，PC / HSI 的隐式校准引擎均为 0 个 Int8 层（`results/jetson/int8_implicit_layer_check.json`）。因此该路径不作为 INT8 性能结果报告。
+- **x86 复核结论一致**：使用同一构建脚本对 PC / HSI 各独立重建 3 次，所有构建仍为 0 个 Int8 层（`results/x86_int8_implicit_verification.json`）。不同构建之间仍可能因 TensorRT tactic 选择表现出 FP16 / auto 路径上的数值差异，但没有构建真正进入 Int8。
+- **显式 QDQ 才真正产生 Int8 层**：Jetson 上 HSI 的 3 次构建均有 30 个 Int8 层，PC 均有 32 个 Int8 层（`results/jetson/j2_qdq_stability.json`）。
+- **HSI QDQ**：TensorRT 中 cos_sim_min 约 0.755；同一个 QDQ ONNX 模型直接使用 ONNX Runtime 执行时也出现明显精度下降，因此 HSI 的主要精度问题在 TensorRT 执行之前已经存在于量化后的 QDQ 模型中。
+- **PC QDQ**：Jetson 上 3 次独立 TensorRT 构建均稳定复现严重数值异常（cos_sim_mean 约 -0.089，max_abs 约 11.886）。当前公开 evidence 中没有 PC QDQ 的 ONNX Runtime direct 对照，因此现有证据不足以进一步区分问题来自 QDQ 图本身还是 TensorRT 对该图的执行路径。
+- HSI QDQ 在当前 batch=64 测试中延迟由 0.968ms 降至 0.915ms，降低约 5.5%（对应约 1.058x）。综合精度和性能结果，本项目没有形成可交付 INT8，正式部署继续采用 FP16 / selective mixed precision。
 
 ## 3. 整景推理链路加速（缓存输入）
 
 ### 起点与瓶颈
 
 起点 S0 是 x86 阶段 4 的“验证工具”写法：整个网格 15,840 个 patch 全部推理、torch 版 runner（每次调用重新分配显存）、batch64 引擎、torch 逐点循环匹配。
-nsys 时间线（`logs/nsys/o0_S0_*`）显示一次整景 2.7s 里 **GPU 只忙了 9.6%**：61.6% 在 CPU 逐点匹配，16% 在 CPU 构建 patch；HSI 推理窗口里 GPU 也有 55% 在空等每次调用的 CPU 开销。
+nsys 时间线（独立 profiling run，计时口径见下文“GPU 时间线”；`logs/nsys/o0_S0_*`）显示一次整景约 2.7s 里 **GPU 只忙了 9.6%**：61.6% 在 CPU 逐点匹配，16% 在 CPU 构建 patch；HSI 推理窗口里 GPU 也有 55% 在空等每次调用的 CPU 开销。
 
 ### 累加式单变量对比
 
@@ -97,13 +96,15 @@ nsys 时间线（`logs/nsys/o0_S0_*`）显示一次整景 2.7s 里 **GPU 只忙�
 
 ### 各项优化做了什么
 
+S1 和 S2 沿用 x86 阶段已有的整景链路优化，其中 S1 → S2 从 1855.9ms 降至 795.4ms，是整个累加链中最大的单步下降。S3 之后主要考察 Jetson 上的 Runtime、统一内存和 GPU 数据通路优化。
+
 - **统一内存零拷贝（S5）**：Jetson 的 CPU 和 GPU 是同一块 DRAM。输入输出改用 `cudaHostAlloc(cudaHostAllocMapped)` 分配、`cudaHostGetDevicePointer`
   取得 GPU 地址，patch 直接写进这块内存，TensorRT 按偏移直接读写（`deploy_scene.py`：`PinnedArray(mapped=True)`、`LiteTrtRunner.infer_ptrs`）。
   收益约 100ms，远大于 nsys 里 memcpy 本身的 12ms：同时省掉了 `np.stack` 之后再整体拷贝的一次 118MB host 内存搬运。
   x86（独立显卡 + PCIe）上 pinned 内存没有稳定收益（README 技术要点第 2 条）；Jetson 统一内存下，映射内存还同时省掉 host 端整理拷贝，因此收益明显。
 - **GPU 匹配（S6）**：搜索窗口四周补边后固定为 11×11，1,000 个点按块 gather 成 (点数, 121, 1024) 再做一次 bmm，行优先取第一个最大值，
   与逐点循环的 NumPy 版行列、cosine、像元位移全部逐位相同（`deploy_jetson.py` 的 `gpu_score_window_multi`）。
-- **GPU 上提取 patch（S7，最大的一步）**：标准化后的立方体（21.7MB）上传一次，四周补一圈零（与 `extract_patch` 的零填充一致），
+- **GPU 上提取 patch（S7，关键 GPU 数据通路优化）**：标准化后的立方体（21.7MB）上传一次，四周补一圈零（与 `extract_patch` 的零填充一致），
   用预先算好的 3×3 邻域索引一次 gather 出 (N, 342, 3, 3)，直接作为 TensorRT 输入地址。原来这里是 CPU 单线程 Python 循环（tegrastats 显示 6 核只有 1 核跑满）。
 - **特征留在 GPU（S8）**：TensorRT 输出写进 torch 设备张量，在 GPU 上 scatter 成网格并直接匹配，最后只把 1,000 个点的结果取回 host。
 - **双 stream（S9）**：PC 推理不依赖 HSI，在 CPU 做标准化之前先发射到第二个 stream。
@@ -118,7 +119,7 @@ nsys 时间线（`logs/nsys/o0_S0_*`）显示一次整景 2.7s 里 **GPU 只忙�
 | 候选 | 默认景 ms | 结果 | 判定 |
 |---|---|---|---|
 | S11：标准化与掩膜整体放 GPU（归约也在 GPU） | 190 → 173 | 掩膜逐位相同，但 4 景里 3 景匹配行列变了（近平局翻转，特征差 0.03～0.05） | 不采纳：条件是 4 景行列不变 |
-| S10T：HSI 引擎 stem 组允许 TF32 | 190 → 190 | hsi_infer 只快 0.3%；3 次构建中 1 次与另两次差 0.039 | 不采纳：提速 <3%，且按第 1 节的构建稳定性标准（重复构建之间的差异 >0.01 即判为不稳定） |
+| S10T：HSI 引擎 stem 组允许 TF32 | 190 → 190 | hsi_infer 只快 0.3%；3 次构建中 1 次与另两次差 0.039 | 不采纳：提速 <3%，且 3 次构建结果不一致 |
 
 S11 说明了一点：输入末位级的差异经过 FP16 引擎会放大成 0.03～0.05 的特征差，足以翻转近平局；S11b 把归约留在 CPU，拿到了大部分收益并保持逐位相同。
 
@@ -130,8 +131,11 @@ S11 说明了一点：输入末位级的差异经过 FP16 引擎会放大成 0.0
 
 ### GPU 时间线：9.6% → 91.4%
 
-S11b 的一次整景 188.7ms 里 GPU 忙碌 172.5ms（`logs/nsys/final_S11b_gpu_busy.txt`）：HSI 推理窗口 99.0%、patch 窗口 97.2%、匹配窗口 82.3%。
-剩下的约 107ms HSI 推理是 FP16 下这个模型的下限：`builderOptimizationLevel=5` 重建后 GPU 时间不变（108.0 vs 107.7ms），构建耗时却从 47s 变成 257s，未采纳（`opt_optlevel.json`）。
+nsys 的独立 profiling run 中，S0 一次整景约 2.7s，GPU 忙碌约 258.8ms（9.6%）；S11b 一次整景 188.7ms，GPU 忙碌 172.5ms（91.4%）。S11b 的 HSI 推理窗口 GPU 忙碌率约 99%。
+
+这里的 nsys 数据用于分析 GPU 活跃区间和时间线，不作为正式延迟统计；第 3 节累加表中的 2280.0ms → 181.8ms 来自不启用 profiler 的同进程重复测量中位数。因此两组绝对耗时不要求完全一致，现有 evidence 也不把全部差异简单归因于 profiler 开销。
+
+剩下的约 107ms HSI 推理是当前 TensorRT 版本、引擎、输入形状和 MAXN_SUPER 功耗模式下观察到的主要瓶颈：`builderOptimizationLevel=5` 重建后 GPU 时间基本不变（108.0 vs 107.7ms），构建耗时却从 47s 增至 257s，因此该方案未采纳（`opt_optlevel.json`）。
 
 ### 多场景验证
 
@@ -144,7 +148,7 @@ S11b 的一次整景 188.7ms 里 GPU 忙碌 172.5ms（`logs/nsys/final_S11b_gpu_
 | 25data/8.4/1 | 6,808 | 2213 / 2213 | 144.1 / 144.8 | 15.36x / 15.28x | 8 / 2 | 0.00068 | 0.998787 |
 | 25data/10.22/1 | 8,077 | 2072 / 2258 | 161.4 / 162.0 | 12.84x / 13.94x | 3 / 4 | 0.00037 | 0.999774 |
 
-4 景加速 12.0～15.4x（正向），前处理与掩膜护栏全部通过，不一致点全部是近平局。25data/8.4/1 的 HSI 特征 cos_sim_min 为 0.998787，
+4 景加速 12.0～15.4x（正向），前处理与掩膜护栏全部通过，不一致点全部是近平局。这里默认景的 12.04x 来自后续 4 景独立验证批次；前文 12.54x 来自默认景同进程累加实验，两者不是同一次测量。25data/8.4/1 的 HSI 特征 cos_sim_min 为 0.998787，
 S0 与 S11b 相同（6,808 个 patch 上取最小值，比 200 条验证集更容易碰到尾部），不是优化造成的，任务级仍全部近平局。
 
 ## 4. 从原始文件到匹配结果（完整端到端）
@@ -190,7 +194,7 @@ E 的默认景分段（ms）：读 HSI 57.9、标准化与掩膜 19.5、HSI patc
 
 前面各节的部署入口都是 Python（`deploy_jetson.py`：TensorRT Python 绑定 + torch 做 GPU 算子）。实际端侧部署一般是一个 C++ 可执行文件，不带 Python 和 libtorch，
 所以 `cpp/` 下用 C++ 把整条链路重做了一遍：读文件、前处理、推理、匹配全部在一个进程里完成。Python 版保留，作为**参考实现**（逐位对照）和**基线**（同一块板、同一场次对比）。
-加载的是同一批 `.plan` 引擎（引擎本来就是离线构建产物），所以推理本身的 GPU 时间与 Python 版相同，差别全部来自运行时。
+加载的是同一批 `.plan` 引擎，因此两个编码器本身使用相同的 TensorRT engine；Python 与 C++ 版本的整景差异则同时来自 Runtime 调度、CPU 前处理、I/O 和自定义 CUDA kernel 等实现差异。
 
 | 模块 | 内容 |
 |---|---|
@@ -211,8 +215,7 @@ E 的默认景分段（ms）：读 HSI 57.9、标准化与掩膜 19.5、HSI patc
 cd cpp && cmake -B build -DCMAKE_CUDA_COMPILER=/usr/local/cuda/bin/nvcc -DHSPC_CONDA_PREFIX=$CONDA_PREFIX && cmake --build build -j4
 ```
 
-编译选项里有两条对逐位一致很关键：CPU 端 `-ffp-contract=off`（aarch64 上 GCC 默认把 `a*b+c` 融成一条 FMA，而 NumPy / laspy 的 `X*scale+offset` 是两步舍入）；
-nvcc 不开 `--use_fast_math`、加 `-fmad=false`（标准化里的除法要 IEEE 舍入）。
+编译选项里有两类浮点控制对逐位一致很关键：CPU 端使用 `-ffp-contract=off`，避免 aarch64 GCC 将 `a*b+c` 自动融合成 FMA；CUDA 端不开 `--use_fast_math`，保持精确除法等默认浮点行为，同时显式使用 `-fmad=false` 禁止乘加融合。这样可以与 NumPy / laspy 的两步舍入口径保持一致。
 
 ### 逐位复现：怎么做到、怎么验证
 
@@ -222,7 +225,7 @@ nvcc 不开 `--use_fast_math`、加 `-fmad=false`（标准化里的除法要 IEE
 |---|---|
 | CPU 前处理（`prep-check`） | geotransform 与 WKT、原始立方体、有效像元掩膜、342 个波段的均值与标准差、点云 xyz、PROJ 投影后的坐标（float64）、全部点的像元行列、采样后的点下标、参考行列、邻域偏移 `point_offsets` |
 | 整景链路（`deploy-check`） | patch、HSI 特征、PC 特征、两个 variant 的匹配行列 |
-| 每一次性能测量运行 | 匹配行列与同一景的 Python 版（P）逐位相同，K0～K5、正反两轮、4 景共 56 次运行（`cpp_e2e_summary.json`），每个进程内的 10 次重复也相同 |
+| 每一次性能测量运行 | 匹配行列与同一景的 Python 版（P）逐位相同；P + K0～K5、正反两轮、4 景共 56 个配置轮次，其中 C++ K0～K5 为 48 个配置轮次（`cpp_e2e_summary.json`），每个进程内的 10 次重复也相同 |
 
 其中需要说明的几处：
 
@@ -250,15 +253,15 @@ request 口径 = 页锁定内存 H2D + 推理 + D2H + 同步。C++ 与 Python �
 | HSI / 1 | 0.507 | 0.452 | 0.424 | 0.282 | 1.60x |
 | HSI / 8 | 0.523 | 0.471 | 0.437 | 0.303 | 1.56x |
 
-（单位 ms。）GPU 段（event 口径）两者基本一样（batch 1 的 PC：Python + Graph 0.230ms，C++ + Graph 0.220ms），差别在每次调用的 CPU 下发开销：
+（单位 ms；表中加速比由未取整的原始测量值计算。）GPU 段（event 口径）两者基本一样（batch 1 的 PC：Python + Graph 0.230ms，C++ + Graph 0.220ms），差别在每次调用的 CPU 下发开销：
 用了 CUDA Graph 之后 Python 的 wall 口径仍比 C++ 高约 0.1ms，这就是 C++ 的收益所在。
 
 ### 整景：从原始文件到匹配结果
 
 每景 7 种配置，各自独立进程，正轮 P→K0→…→K5、反轮反向；每个进程内 warmup 2 + 重复 10 次取中位数，页缓存不清（文件 IO 是"文件缓存热"的数字）。
-P 是 Python 最终配置 E（同一场次重测），K0 是把 E 的调度原样搬到 C++，K1～K5 每步只改一处（`cpp_e2e_summary.json`）。
+P 是 Python 最终配置 E（同一场次重测）；K0 是功能与调度语义对齐 P 的 C++/CUDA baseline，但已经包含完成原生链路所需的 CUDA kernel 重写，因此不是“只换语言/运行时”的纯移植基线。K1～K5 在 K0 基础上每步只改一处（`cpp_e2e_summary.json`）。
 
-| 场景 | P：Python（E） | K0：C++ 原样移植 | K1：+ 掩膜/统计量多线程 | K2：+ 投影多线程 | **K3：+ 整块读文件** | **K4：+ 复用 PROJ 变换** | K5：+ LAS 与 HSI 读取同时开始（未采纳） | P→K4 |
+| 场景 | P：Python（E） | K0：C++/CUDA baseline | K1：+ 掩膜/统计量多线程 | K2：+ 投影多线程 | **K3：+ 整块读文件** | **K4：+ 复用 PROJ 变换** | K5：+ LAS 与 HSI 读取同时开始（未采纳） | P→K4 |
 |---|---|---|---|---|---|---|---|---|
 | 24data/10.6/1 | 254.8 / 253.3 | 210.3 / 204.0 | 212.1 / 196.7 | 198.2 / 197.2 | **149.0 / 148.8** | **148.7 / 148.0** | 154.0 / 154.0 | 1.71x |
 | 24data/10.6/10 | 267.7 / 266.8 | 187.1 / 188.3 | 183.9 / 184.1 | 194.6 / 176.5 | **124.9 / 125.2** | **124.7 / 123.8** | 133.1 / 133.0 | 2.15x |
@@ -267,15 +270,14 @@ P 是 Python 最终配置 E（同一场次重测），K0 是把 E 的调度原�
 
 （单位 ms，正/反两轮。）
 
-- **P → K0**（Python 运行时 → C++，调度不变）：默认景 254.8 → 210.3ms。融合匹配 kernel 是最明显的一块：同一份特征、同一范围（特征归一化 + 窗口匹配 + 取回结果，含 Python 侧的整幅网格构建）在板上
-  40.2ms → 4.7ms（8.6x，`cpp_matchbench.json`）；标准化与 patch 提取融合成一个 kernel，也不再生成整幅标准化立方体。
+- **P → K0（Python reference → 功能/调度语义对齐的 C++/CUDA baseline）**：默认景 254.8 → 210.3ms。K0 已经包含为完成原生链路所需的实现级重写，因此这部分收益不能解释成纯 Python Runtime 开销。主要变化包括融合窗口匹配 kernel，以及标准化 + patch 提取的融合 CUDA 实现；其中匹配微基准从 40.2ms 降至 4.7ms（8.6x，`cpp_matchbench.json`）。
 - **K2 → K3：整块读文件是最大的一项**（默认景 198.2 → 149.0ms）。GDAL 的 `RasterIO` 读这个 21.7MB 的 ENVI BSQ 文件要约 55ms，改成按头部信息（BSQ、float32、小端、无头部偏移）整块 `pread` 一次只要约 8ms，读到的立方体逐位相同（`prep-check` 的 `raw_cube`）；
   不满足这些条件的文件仍走 GDAL。
 - **K1、K2（掩膜/统计量多线程、投影多线程）收益小且不稳定**：K0 → K2 各场景、各轮次有正有负，波动幅度约 0～20ms（默认景基本持平）。在 K3 之前，关键路径是"读文件 + 前处理 + GPU 上的 HSI 推理"这一串，LAS 段的 CPU 工作藏在 GPU 推理后面，缩短它们只有部分能体现在总耗时上。保留是因为无害。
 - **K4（复用 PROJ 变换对象）**：CRS 初始化 31 → 0.1ms，但同样被 GPU 链路盖住，总耗时只差 0.3ms（噪声内）。保留是因为同一进程处理多景时不必每景重建；单景冷启动不受益。
 - **K5（LAS 段与 HSI 读取同时开始）没有采纳**：默认景慢约 5ms（148.7 → 154.0ms）。6 个核上同时跑 HSI 读取/统计量、LAS 读取、6 线程投影和后台建树，核被抢占，标准化与掩膜这一段变慢最明显（2.7 → 9.8ms）。
 - **K3 之后整景是 GPU 受限的**：默认景 K4 的 148.7ms ≈ 头部约 18ms（读 8.3 + 标准化与掩膜 2.7 + patch 提取与发射 6.5）+ GPU 链路 132.9ms（上传、patch、HSI 推理，PC 推理在第二个 stream 并行；两部分略有重叠）。HSI 推理本身与 Python 版相同（同一个引擎），
-  引擎层面的手段（FP16 / 大 batch / 优化级别 / TF32）前面已经用尽。
+  在当前 TensorRT 10.7、输入形状、MAXN_SUPER 功耗模式以及已经尝试的 FP16 / 大 batch / optimization level / TF32 配置下，没有获得进一步稳定且满足护栏的收益。
 - **也评估过、没有做的**：只对匹配窗口覆盖到的有效像元做 HSI 推理。4 景里窗口并集覆盖了 99%～100% 的有效像元（1,000 个点的 11×11 窗口在 96×165 左右的影像上几乎铺满，`cpp_window_cover.json`），省不下算力。
 
 ### 进程冷启动、内存、能效
@@ -339,6 +341,8 @@ tegrastats 记录整板输入功率 VDD_IN（每 500ms），每个配置（缓�
 - 多场景只有 4 景（覆盖两个年份、有效像元 6,808～9,645），更大或更稀疏的场景没有测。
 
 ## 复现命令（板上）
+
+说明：下面命令中的 `pylibs/` 是板端通过 `pip --target` 安装额外 Python 包时使用的本地依赖目录，不属于 Git 仓库内容，因此不会出现在公开目录树中。
 
 `cpp_e2e_run.sh`、`cpp_power_run.sh`、`cpp_latency_run.sh` 重跑时不删除旧结果：会被覆盖的文件先移进
 结果目录旁边的 `<目录>_archive/replaced_at_<时间戳>_<随机后缀>/`，同名文件重复归档时加 `.dupN` 后缀，

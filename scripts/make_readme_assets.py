@@ -125,7 +125,8 @@ n8 = [b["layers_with_int8"] for m in ("pc", "hsi") for b in x8[m]["int8_implicit
 if any(n8):
     sys.exit(f"x86_int8_implicit_verification.json 里出现了含 Int8 的层：{n8}，README 的更正说明需要重写")
 rec("Tech note 3 / Int8 layers in int8_implicit builds", "0", FX8, "<pc|hsi>.int8_implicit[*].layers_with_int8", max(n8))
-check_readme(readme, "隐式 INT8 更正说明", "逐层统计全部为 0 个 Int8 层")
+check_readme(readme, "隐式 INT8 更正说明",
+             "逐层核查显示这类引擎中没有任何 Int8 层，因此不作为 INT8 结果报告")
 
 # ---- Jetson：累加对比、能效、GPU 忙碌率、多场景
 jc = json.loads((ROOT / FJ).read_text(encoding="utf-8"))
@@ -691,8 +692,8 @@ def build_table() -> str:
                     spd = f"{sp:.1f}x"
             lines.append(f"| {name} | {backend} | {precision} | {acc} | {lat} | {spd} |")
 
-    table_note = ("PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。原表中的两行 “INT8 (implicit calibration)” 已删除："
-                  "逐层核查显示这类引擎中没有任何 Int8 层，数值行为与 FP16(auto) 构建一致，不是 INT8 结果（见「技术要点」第 3 条）。")
+    table_note = ("PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。表中不含 “INT8 (implicit calibration)”："
+                  "逐层核查显示这类引擎中没有任何 Int8 层，因此不作为 INT8 结果报告（见「技术要点」第 3 条）。")
     if any(NOT_MEASURED in line for line in lines):
         table_note = (f"“{NOT_MEASURED}”表示 `stage2_trt_accuracy.json` / "
                       f"`stage3_benchmark.json` 中没有对应数值。{table_note}")

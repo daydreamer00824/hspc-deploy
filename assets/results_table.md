@@ -12,4 +12,4 @@
 | HSI | TensorRT | FP16 mixed | 0.999847 / 99.0% | 0.248 | 7.3x |
 | HSI | TensorRT | INT8 (QDQ) | 0.754749 / 91.0% | 0.301 | 6.0x |
 
-PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。原表中的两行 “INT8 (implicit calibration)” 已删除：逐层核查显示这类引擎中没有任何 Int8 层，数值行为与 FP16(auto) 构建一致，不是 INT8 结果（见「技术要点」第 3 条）。
+PC 的 INT8 QDQ 路径已放弃，说明见「技术要点」第 3 条。表中不含 “INT8 (implicit calibration)”：逐层核查显示这类引擎中没有任何 Int8 层，因此不作为 INT8 结果报告（见「技术要点」第 3 条）。
